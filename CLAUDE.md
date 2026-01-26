@@ -5,12 +5,14 @@
 DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비스입니다.
 
 ### 주요 기능
+
 - 📰 실시간 주식 뉴스 수집
 - 🤖 AI 기반 감성 분석
 - 📊 종목 추천 및 인사이트 제공
 - 📈 투자 의사결정 지원
 
 ### 타겟 사용자
+
 - 개인 투자자
 - 주식 투자에 관심 있는 일반 사용자
 
@@ -19,6 +21,7 @@ DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비�
 ## 🛠 기술 스택
 
 ### Frontend
+
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript 5
 - **UI Library**: React 18
@@ -26,6 +29,7 @@ DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비�
 - **State Management**: TanStack Query (React Query)
 
 ### Development Tools
+
 - **Package Manager**: pnpm (workspace)
 - **Monorepo**: Turbo
 - **Testing**: Vitest, Playwright (E2E)
@@ -33,6 +37,7 @@ DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비�
 - **Version Control**: Git
 
 ### Infrastructure
+
 - **Build**: Next.js Build
 - **Deployment**: TBD
 
@@ -79,23 +84,28 @@ app/
 ### 레이어별 역할
 
 #### 1. `app/` - 애플리케이션 초기화
+
 - Next.js App Router 라우팅
 - 전역 레이아웃 및 프로바이더
 - 메타데이터 설정
 
 #### 2. `widgets/` - 복합 UI 블록
+
 - 여러 features와 entities를 조합한 독립적 UI
 - 예: `NewsCardWidget`, `StockChartWidget`, `HeaderWidget`
 
 #### 3. `features/` - 사용자 기능
+
 - 특정 비즈니스 로직을 수행하는 기능
 - 예: `search-stocks/`, `filter-news/`, `like-stock/`
 
 #### 4. `entities/` - 비즈니스 엔티티
+
 - 도메인 모델 및 관련 로직
 - 예: `stock/`, `news/`, `user/`
 
 #### 5. `shared/` - 공유 코드
+
 - 재사용 가능한 유틸리티 및 설정
 - **주의**: UI 컴포넌트는 `@repo/ui` 패키지 사용
 
@@ -107,20 +117,17 @@ app/
 
 ```typescript
 // ✅ 올바른 예시
-components/
-  stock-card/
-    index.ts
-    stock-card.tsx
-    stock-card.test.tsx
-    stock-card.stories.tsx
+components / stock - card / index.ts
+stock - card.tsx
+stock - card.test.tsx
+stock - card.stories.tsx
 
 // ❌ 잘못된 예시
-components/
-  StockCard/
-    StockCard.tsx  // PascalCase 사용 금지
+components / StockCard / StockCard.tsx // PascalCase 사용 금지
 ```
 
 #### 규칙
+
 - **파일명, 폴더명**: `kebab-case` 사용
 - **컴포넌트명**: `PascalCase` (코드 내부)
 - **변수, 함수명**: `camelCase`
@@ -189,6 +196,7 @@ export function StockCard({ stockId, title, price, onChange }: StockCardProps) {
 ```
 
 #### 규칙
+
 - **함수형 컴포넌트만 사용** (클래스 컴포넌트 금지)
 - **Props는 `interface`로 정의** (type 대신)
 - **화살표 함수 대신 `function` 키워드 사용** (컴포넌트)
@@ -201,7 +209,7 @@ export function StockCard({ stockId, title, price, onChange }: StockCardProps) {
 interface User {
   id: string
   name: string
-  email?: string  // optional은 ? 사용
+  email?: string // optional은 ? 사용
 }
 
 function getUser(id: string): Promise<User> {
@@ -209,12 +217,14 @@ function getUser(id: string): Promise<User> {
 }
 
 // ❌ 잘못된 예시
-const getUser = (id: any) => {  // any 사용 금지 (warn)
+const getUser = (id: any) => {
+  // any 사용 금지 (warn)
   // ...
 }
 ```
 
 #### 규칙
+
 - `any` 사용 시 ESLint warning
 - 사용하지 않는 변수는 `_` prefix (`_unusedVar`)
 - 타입 추론 가능한 경우 타입 생략 가능
@@ -372,7 +382,81 @@ refactor/shared-hooks
 
 ## 📝 커밋 메시지 규칙
 
-**TODO**: 팀과 논의 후 작성 예정
+### Conventional Commits
+
+[Conventional Commits](https://www.conventionalcommits.org/) 규칙을 따릅니다.
+`commitlint`와 `husky`가 설정되어 있어 커밋 시 자동 검증됩니다.
+
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+### Type 종류
+
+| Type       | 설명                          |
+| ---------- | ----------------------------- |
+| `feat`     | 새로운 기능 추가              |
+| `fix`      | 버그 수정                     |
+| `docs`     | 문서 변경                     |
+| `style`    | 코드 포맷팅 (기능 변경 없음)  |
+| `refactor` | 코드 리팩토링                 |
+| `perf`     | 성능 개선                     |
+| `test`     | 테스트 추가/수정              |
+| `build`    | 빌드 시스템, 외부 의존성 변경 |
+| `ci`       | CI 설정 변경                  |
+| `chore`    | 기타 변경사항                 |
+| `revert`   | 이전 커밋 되돌리기            |
+
+### 예시
+
+```bash
+# 기능 추가
+feat(stock): 주식 검색 기능 추가
+
+# 버그 수정
+fix(api): 주식 가격 조회 시 null 에러 수정
+
+# 리팩토링
+refactor(ui): Button 컴포넌트 forwardRef 적용
+
+# 스코프 없이
+docs: README 업데이트
+```
+
+### 규칙
+
+- subject는 **소문자**로 시작
+- subject 끝에 **마침표(.) 금지**
+- subject 최대 **72자**
+- body 한 줄 최대 **100자**
+
+---
+
+## 📦 버전 관리 (Changesets)
+
+### 변경사항 추가
+
+PR에 포함된 변경사항이 버전 업데이트가 필요한 경우:
+
+```bash
+pnpm changeset
+```
+
+1. 변경된 패키지 선택
+2. 버전 범프 타입 선택 (patch/minor/major)
+3. 변경 내용 설명 작성
+
+### 버전 범프 기준
+
+| Type    | 언제 사용               |
+| ------- | ----------------------- |
+| `patch` | 버그 수정, 내부 변경    |
+| `minor` | 새로운 기능 (하위 호환) |
+| `major` | Breaking Changes        |
 
 ---
 
@@ -403,6 +487,7 @@ refactor/shared-hooks
 이 문서는 Claude 등 AI 개발 도우미가 프로젝트를 이해하고 규칙을 준수하도록 돕습니다.
 
 AI에게 작업 요청 시:
+
 - "FSD 아키텍처를 따라서..."
 - "kebab-case로 파일명 작성..."
 - "index.ts로 export 해줘..."
