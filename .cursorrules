@@ -1,0 +1,133 @@
+# DailyStock - Cursor Rules
+
+이 프로젝트는 AI 기반 주식 뉴스 분석 서비스입니다.
+아래 규칙을 반드시 따라주세요.
+
+## 커밋 메시지 규칙
+
+### Conventional Commits 형식
+
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+### Type 종류 (필수)
+
+- `feat`: 새로운 기능 추가
+- `fix`: 버그 수정
+- `docs`: 문서 변경
+- `style`: 코드 포맷팅 (기능 변경 없음)
+- `refactor`: 코드 리팩토링
+- `perf`: 성능 개선
+- `test`: 테스트 추가/수정
+- `build`: 빌드 시스템, 외부 의존성 변경
+- `ci`: CI 설정 변경
+- `chore`: 기타 변경사항
+- `revert`: 이전 커밋 되돌리기
+
+### 커밋 메시지 규칙
+
+1. subject는 소문자로 시작
+2. subject 끝에 마침표(.) 금지
+3. subject 최대 72자
+4. body 한 줄 최대 100자
+5. 한글 또는 영어 사용 가능
+
+### 커밋 메시지 예시
+
+```
+feat(stock): 주식 검색 기능 추가
+
+사용자가 종목명으로 주식을 검색할 수 있는 기능 구현
+- SearchBar 컴포넌트 추가
+- useSearchStocks 훅 구현
+```
+
+```
+fix(api): 주식 가격 조회 시 null 에러 수정
+```
+
+```
+refactor(ui): Button 컴포넌트 forwardRef 적용
+```
+
+## PR 생성 규칙
+
+PR 생성 시 아래 템플릿을 따릅니다:
+
+```markdown
+## Summary
+[변경 사항 요약]
+
+## Type of Change
+- [ ] feat: 새로운 기능
+- [ ] fix: 버그 수정
+- [ ] docs: 문서 변경
+- [ ] refactor: 리팩토링
+- [ ] test: 테스트
+
+## Changes
+- [주요 변경사항 1]
+- [주요 변경사항 2]
+
+## Test Plan
+- [ ] 로컬에서 테스트 완료
+- [ ] 기존 테스트 통과
+```
+
+## 코드 스타일 규칙
+
+### 파일/폴더 네이밍
+- kebab-case 사용: `stock-card.tsx`, `use-search-stocks.ts`
+- PascalCase 금지: `StockCard.tsx` ❌
+
+### 컴포넌트 작성
+- 함수형 컴포넌트만 사용
+- Props는 interface로 정의
+- function 키워드 사용 (화살표 함수 대신)
+
+```typescript
+interface StockCardProps {
+  stockId: string;
+  title: string;
+}
+
+export function StockCard({ stockId, title }: StockCardProps) {
+  return <div>{title}</div>;
+}
+```
+
+### Import 순서
+1. React/Next.js
+2. 외부 라이브러리
+3. @ds/* 패키지
+4. 내부 절대경로 (@/)
+5. 상대경로
+
+### Export 규칙
+- 모든 모듈은 index.ts를 통해 export
+
+## 프로젝트 구조
+
+- FSD (Feature-Sliced Design) 아키텍처 사용
+- 공통 UI 컴포넌트는 @ds/ui 패키지에서만 관리
+- TanStack Query로 서버 상태 관리
+
+## 버전 관리
+
+버전 업데이트가 필요한 변경사항은 changeset 추가:
+```bash
+pnpm changeset
+```
+
+## 금지 사항
+
+- any 타입 남발
+- PascalCase 파일명
+- shared/ui 폴더 생성
+- index.ts 없이 직접 import
+- 클래스 컴포넌트 사용
