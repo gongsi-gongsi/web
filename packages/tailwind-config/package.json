@@ -1,0 +1,21 @@
+{
+  "name": "@ds/tailwind-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./base.css": "./base.css",
+    "./animations.css": "./animations.css",
+    "./postcss": "./postcss.config.mjs"
+  },
+  "files": [
+    "*.css",
+    "*.mjs"
+  ],
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.17"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.17"
+  }
+}

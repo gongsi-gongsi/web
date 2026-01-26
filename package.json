@@ -1,0 +1,24 @@
+{
+  "name": "daily-stock",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "pnpm --filter @ds/ui build && concurrently \"pnpm:dev:ui\" \"pnpm:dev:apps\"",
+    "dev:ui": "pnpm --filter @ds/ui dev",
+    "dev:apps": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo test",
+    "test:e2e": "turbo test:e2e"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.0"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

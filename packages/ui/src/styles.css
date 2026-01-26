@@ -1,0 +1,18 @@
+@import '@ds/tailwind-config/base.css';
+
+/* Storybook 배경 스타일 */
+html,
+body,
+.sb-show-main {
+  background-color: var(--background) !important;
+  color: var(--foreground);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+/* Dialog/Modal 열릴 때 body 스크롤 방지 */
+body[data-scroll-locked] {
+  overflow: hidden !important;
+  padding-right: var(--scrollbar-width, 0px) !important;
+}
