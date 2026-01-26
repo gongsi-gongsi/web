@@ -1,4 +1,4 @@
-export { prisma } from './client'
+export { prisma, closePrismaConnection } from './client'
 
 export {
   isPrismaError,
