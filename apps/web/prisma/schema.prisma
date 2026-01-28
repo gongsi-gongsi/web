@@ -7,89 +7,13 @@ datasource db {
   provider = "postgresql"
 }
 
-// ==================== Enums ====================
+// 연결 테스트용 기본 테이블
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  name      String?  @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-enum Market {
-  KOSPI
-  KOSDAQ
-}
-
-enum SyncType {
-  STOCK_LIST // 종목 목록 동기화
-  STOCK_PRICE // 시세 동기화
-  COMPANY_INFO // 기업 정보 동기화
-}
-
-enum SyncStatus {
-  PENDING
-  RUNNING
-  COMPLETED
-  FAILED
-}
-
-// ==================== Models ====================
-
-model Stock {
-  id       String  @id @default(uuid()) @db.Uuid
-  symbol   String  @unique @db.VarChar(10) // 종목 코드 (예: 005930)
-  isinCode String? @unique @map("isin_code") @db.VarChar(12) // ISIN 코드
-  crno     String? @db.VarChar(13) // 법인등록번호 (기업정보 연동용)
-  name     String  @db.VarChar(100) // 종목명 (예: 삼성전자)
-  corpName String? @map("corp_name") @db.VarChar(100) // 법인명
-  market   Market // 시장 구분
-  sector   String? @db.VarChar(100) // 업종 (표준산업분류명)
-  isActive Boolean @default(true) @map("is_active") // 상장 여부
-
-  // 기업 기본정보 (기업기본정보 API)
-  nameEn    String?   @map("name_en") @db.VarChar(200) // 법인영문명
-  ceoName   String?   @map("ceo_name") @db.VarChar(100) // 대표자명
-  address   String?   @db.Text // 기업주소
-  homepage  String?   @db.VarChar(200) // 홈페이지 URL
-  phone     String?   @db.VarChar(20) // 전화번호
-  foundedAt DateTime? @map("founded_at") // 설립일자
-
-  // 로고 (추후 구현)
-  logoUrl String? @map("logo_url") // 로고 이미지 URL
-  domain  String? @db.VarChar(100) // 기업 도메인 (Logo API 연동용)
-
-  // 시세 정보 (전일 기준)
-  prevClose        Int?      @map("prev_close") // 전일 종가
-  prevOpen         Int?      @map("prev_open") // 전일 시가
-  prevHigh         Int?      @map("prev_high") // 전일 고가
-  prevLow          Int?      @map("prev_low") // 전일 저가
-  prevVolume       BigInt?   @map("prev_volume") // 전일 거래량
-  prevTradingValue BigInt?   @map("prev_trading_value") // 전일 거래대금
-  prevChange       Int?      @map("prev_change") // 전일대비 (원)
-  prevChangeRate   Decimal?  @map("prev_change_rate") @db.Decimal(10, 2) // 등락률 (%)
-  marketCap        BigInt?   @map("market_cap") // 시가총액
-  listedShares     BigInt?   @map("listed_shares") // 상장주식수
-  priceDate        DateTime? @map("price_date") // 시세 기준일
-
-  // 메타데이터
-  syncedAt  DateTime? @map("synced_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-
-  @@index([symbol])
-  @@index([market])
-  @@index([name])
-  @@index([isActive, market])
-  @@map("stocks")
-}
-
-// 동기화 이력 테이블
-model SyncLog {
-  id           String     @id @default(uuid()) @db.Uuid
-  type         SyncType // 동기화 유형
-  status       SyncStatus // 상태
-  totalCount   Int        @default(0) @map("total_count")
-  successCount Int        @default(0) @map("success_count")
-  failCount    Int        @default(0) @map("fail_count")
-  errorMessage String?    @map("error_message") @db.Text
-  startedAt    DateTime   @default(now()) @map("started_at")
-  completedAt  DateTime?  @map("completed_at")
-
-  @@index([type, status])
-  @@index([startedAt])
-  @@map("sync_logs")
+  @@map("users")
 }
