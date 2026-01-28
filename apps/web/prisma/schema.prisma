@@ -9,11 +9,19 @@ datasource db {
 
 // 사용자
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  email     String   @unique @db.VarChar(255)
-  name      String?  @db.VarChar(100)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                    String   @id @default(uuid()) @db.Uuid
+  email                 String   @unique @db.VarChar(255)
+  name                  String?  @db.VarChar(100)
+  telegramChatId        String?  @map("telegram_chat_id") @db.VarChar(50)
+  notificationEmail     Boolean  @default(true) @map("notification_email")
+  notificationTelegram  Boolean  @default(false) @map("notification_telegram")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  watchlist      Watchlist[]
+  aiReports      AiReport[]
+  aiConversations AiConversation[]
+  notifications  Notification[]
 
   @@map("users")
 }
@@ -29,8 +37,136 @@ model Stock {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  watchlist      Watchlist[]
+  disclosures    Disclosure[]
+  financialData  FinancialData[]
+  aiReports      AiReport[]
+
   @@index([stockCode])
   @@index([corpCode])
   @@index([corpName])
   @@map("stocks")
+}
+
+// 관심 종목
+model Watchlist {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  stockId         String   @map("stock_id") @db.Uuid
+  notifyRegular   Boolean  @default(true) @map("notify_regular") // 정기보고서
+  notifyMajor     Boolean  @default(true) @map("notify_major") // 주요사항보고
+  notifyEquity    Boolean  @default(true) @map("notify_equity") // 지분공시
+  notifySecurities Boolean @default(false) @map("notify_securities") // 증권신고서
+  priority        Int      @default(0) // 우선순위
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stockId])
+  @@index([userId])
+  @@index([stockId])
+  @@map("watchlist")
+}
+
+// 공시
+model Disclosure {
+  id            String    @id @default(uuid()) @db.Uuid
+  stockId       String    @map("stock_id") @db.Uuid
+  rceptNo       String    @unique @map("rcept_no") @db.VarChar(20) // 접수번호
+  rceptDt       DateTime  @map("rcept_dt") @db.Date // 접수일자
+  reportNm      String    @map("report_nm") @db.VarChar(500) // 보고서명
+  dcmType       String?   @map("dcm_type") @db.VarChar(10) // 공시유형 (A:정기, B:주요, C:발행, D:지분, E:기타)
+  dartUrl       String?   @map("dart_url") @db.VarChar(500) // 원문 링크
+  aiSummary     String?   @map("ai_summary") @db.Text // 3줄 요약
+  aiSentiment   String?   @map("ai_sentiment") @db.VarChar(20) // 호재/악재/중립
+  aiKeyFigures  Json?     @map("ai_key_figures") // 핵심 수치
+  aiAnalysis    String?   @map("ai_analysis") @db.Text // 상세 분석
+  aiAnalyzedAt  DateTime? @map("ai_analyzed_at") // AI 분석 시각
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  stock          Stock            @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  aiConversations AiConversation[]
+  notifications  Notification[]
+
+  @@index([stockId])
+  @@index([rceptDt])
+  @@index([dcmType])
+  @@map("disclosures")
+}
+
+// 재무 데이터
+model FinancialData {
+  id               String   @id @default(uuid()) @db.Uuid
+  stockId          String   @map("stock_id") @db.Uuid
+  bsnsYear         String   @map("bsns_year") @db.VarChar(4) // 사업연도
+  reprtCode        String   @map("reprt_code") @db.VarChar(10) // 보고서코드 (11013:1분기, 11012:반기, 11014:3분기, 11011:사업)
+  revenue          BigInt?  // 매출액
+  operatingProfit  BigInt?  @map("operating_profit") // 영업이익
+  netIncome        BigInt?  @map("net_income") // 당기순이익
+  totalAssets      BigInt?  @map("total_assets") // 자산총계
+  totalLiabilities BigInt?  @map("total_liabilities") // 부채총계
+  totalEquity      BigInt?  @map("total_equity") // 자본총계
+  rawData          Json?    @map("raw_data") // 상세 데이터 (JSON)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@unique([stockId, bsnsYear, reprtCode])
+  @@index([stockId])
+  @@map("financial_data")
+}
+
+// AI 분석 리포트
+model AiReport {
+  id            String   @id @default(uuid()) @db.Uuid
+  stockId       String   @map("stock_id") @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  reportType    String   @map("report_type") @db.VarChar(20) // FULL, FINANCIAL, DIVIDEND
+  reportContent Json     @map("report_content") // 리포트 전체 내용
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stockId])
+  @@index([userId])
+  @@map("ai_reports")
+}
+
+// AI 대화
+model AiConversation {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  disclosureId String   @map("disclosure_id") @db.Uuid
+  role         String   @db.VarChar(20) // USER, ASSISTANT
+  content      String   @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  disclosure Disclosure @relation(fields: [disclosureId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([disclosureId])
+  @@map("ai_conversations")
+}
+
+// 알림 기록
+model Notification {
+  id           String    @id @default(uuid()) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  disclosureId String?   @map("disclosure_id") @db.Uuid
+  title        String    @db.VarChar(200)
+  content      String?   @db.Text
+  channel      String    @db.VarChar(20) // IN_APP, TELEGRAM, EMAIL
+  isRead       Boolean   @default(false) @map("is_read")
+  sentAt       DateTime  @default(now()) @map("sent_at")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  disclosure Disclosure? @relation(fields: [disclosureId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([disclosureId])
+  @@index([isRead])
+  @@map("notifications")
 }
