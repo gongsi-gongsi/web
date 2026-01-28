@@ -7,89 +7,198 @@ datasource db {
   provider = "postgresql"
 }
 
-// ==================== Enums ====================
-
-enum Market {
-  KOSPI
-  KOSDAQ
-}
-
-enum SyncType {
-  STOCK_LIST // 종목 목록 동기화
-  STOCK_PRICE // 시세 동기화
-  COMPANY_INFO // 기업 정보 동기화
-}
-
-enum SyncStatus {
-  PENDING
-  RUNNING
-  COMPLETED
-  FAILED
-}
-
 // ==================== Models ====================
 
+// 사용자
+model User {
+  id                     String   @id @default(uuid()) @db.Uuid
+  email                  String   @unique @db.VarChar(255)
+  nickname               String?  @db.VarChar(50)
+  telegramChatId         String?  @map("telegram_chat_id") @db.VarChar(50)
+  notificationEmail      Boolean  @default(true) @map("notification_email")
+  notificationTelegram   Boolean  @default(false) @map("notification_telegram")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  watchlist      Watchlist[]
+  aiReports      AiReport[]
+  aiConversations AiConversation[]
+  notifications  Notification[]
+
+  @@map("users")
+}
+
+// 종목 정보
 model Stock {
-  id       String  @id @default(uuid()) @db.Uuid
-  symbol   String  @unique @db.VarChar(10) // 종목 코드 (예: 005930)
-  isinCode String? @unique @map("isin_code") @db.VarChar(12) // ISIN 코드
-  crno     String? @db.VarChar(13) // 법인등록번호 (기업정보 연동용)
-  name     String  @db.VarChar(100) // 종목명 (예: 삼성전자)
-  corpName String? @map("corp_name") @db.VarChar(100) // 법인명
-  market   Market // 시장 구분
-  sector   String? @db.VarChar(100) // 업종 (표준산업분류명)
-  isActive Boolean @default(true) @map("is_active") // 상장 여부
+  id         String   @id @default(uuid()) @db.Uuid
+  stockCode  String   @unique @map("stock_code") @db.VarChar(10) // 종목코드 (005930)
+  corpCode   String   @unique @map("corp_code") @db.VarChar(10) // DART 고유번호 (8자리)
+  corpName   String   @map("corp_name") @db.VarChar(100) // 기업명
+  market     String?  @db.VarChar(20) // KOSPI, KOSDAQ, KONEX
+  sector     String?  @db.VarChar(100) // 업종
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  // 기업 기본정보 (기업기본정보 API)
-  nameEn    String?   @map("name_en") @db.VarChar(200) // 법인영문명
-  ceoName   String?   @map("ceo_name") @db.VarChar(100) // 대표자명
-  address   String?   @db.Text // 기업주소
-  homepage  String?   @db.VarChar(200) // 홈페이지 URL
-  phone     String?   @db.VarChar(20) // 전화번호
-  foundedAt DateTime? @map("founded_at") // 설립일자
+  // Relations
+  watchlist      Watchlist[]
+  disclosures    Disclosure[]
+  financialData  FinancialData[]
+  aiReports      AiReport[]
 
-  // 로고 (추후 구현)
-  logoUrl String? @map("logo_url") // 로고 이미지 URL
-  domain  String? @db.VarChar(100) // 기업 도메인 (Logo API 연동용)
-
-  // 시세 정보 (전일 기준)
-  prevClose        Int?      @map("prev_close") // 전일 종가
-  prevOpen         Int?      @map("prev_open") // 전일 시가
-  prevHigh         Int?      @map("prev_high") // 전일 고가
-  prevLow          Int?      @map("prev_low") // 전일 저가
-  prevVolume       BigInt?   @map("prev_volume") // 전일 거래량
-  prevTradingValue BigInt?   @map("prev_trading_value") // 전일 거래대금
-  prevChange       Int?      @map("prev_change") // 전일대비 (원)
-  prevChangeRate   Decimal?  @map("prev_change_rate") @db.Decimal(10, 2) // 등락률 (%)
-  marketCap        BigInt?   @map("market_cap") // 시가총액
-  listedShares     BigInt?   @map("listed_shares") // 상장주식수
-  priceDate        DateTime? @map("price_date") // 시세 기준일
-
-  // 메타데이터
-  syncedAt  DateTime? @map("synced_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-
-  @@index([symbol])
-  @@index([market])
-  @@index([name])
-  @@index([isActive, market])
+  @@index([stockCode])
+  @@index([corpCode])
+  @@index([corpName])
   @@map("stocks")
 }
 
-// 동기화 이력 테이블
-model SyncLog {
-  id           String     @id @default(uuid()) @db.Uuid
-  type         SyncType // 동기화 유형
-  status       SyncStatus // 상태
-  totalCount   Int        @default(0) @map("total_count")
-  successCount Int        @default(0) @map("success_count")
-  failCount    Int        @default(0) @map("fail_count")
-  errorMessage String?    @map("error_message") @db.Text
-  startedAt    DateTime   @default(now()) @map("started_at")
-  completedAt  DateTime?  @map("completed_at")
+// 관심 종목
+model Watchlist {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  stockId         String   @map("stock_id") @db.Uuid
 
-  @@index([type, status])
-  @@index([startedAt])
-  @@map("sync_logs")
+  // 알림 설정
+  notifyRegular    Boolean  @default(true) @map("notify_regular") // 정기보고서
+  notifyMajor      Boolean  @default(true) @map("notify_major") // 주요사항보고
+  notifyEquity     Boolean  @default(true) @map("notify_equity") // 지분공시
+  notifySecurities Boolean  @default(false) @map("notify_securities") // 증권신고서
+
+  priority        Int      @default(0) // 우선순위 (정렬용)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stockId])
+  @@index([userId])
+  @@index([stockId])
+  @@map("watchlist")
+}
+
+// 공시
+model Disclosure {
+  id           String    @id @default(uuid()) @db.Uuid
+  stockId      String    @map("stock_id") @db.Uuid
+
+  // DART 공시 정보
+  rceptNo      String    @unique @map("rcept_no") @db.VarChar(20) // 접수번호
+  rceptDt      DateTime  @map("rcept_dt") // 접수일자
+  reportNm     String    @map("report_nm") @db.VarChar(500) // 보고서명
+  dcmType      String?   @map("dcm_type") @db.VarChar(10) // 공시유형 (A:정기, B:주요, C:발행, D:지분, E:기타)
+
+  // 원문 링크
+  dartUrl      String?   @map("dart_url") @db.VarChar(500)
+
+  // AI 분석 결과
+  aiSummary    String?   @map("ai_summary") @db.Text // 3줄 요약
+  aiSentiment  String?   @map("ai_sentiment") @db.VarChar(20) // 호재/악재/중립
+  aiKeyFigures Json?     @map("ai_key_figures") // 핵심 수치
+  aiAnalysis   String?   @map("ai_analysis") @db.Text // 상세 분석
+  aiAnalyzedAt DateTime? @map("ai_analyzed_at")
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  stock          Stock            @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  notifications  Notification[]
+  aiConversations AiConversation[]
+
+  @@index([stockId])
+  @@index([rceptDt])
+  @@index([dcmType])
+  @@map("disclosures")
+}
+
+// 재무 데이터
+model FinancialData {
+  id               String   @id @default(uuid()) @db.Uuid
+  stockId          String   @map("stock_id") @db.Uuid
+
+  // 기간 정보
+  bsnsYear         String   @map("bsns_year") @db.VarChar(4) // 사업연도
+  reprtCode        String   @map("reprt_code") @db.VarChar(10) // 보고서코드 (11013:1분기, 11012:반기, 11014:3분기, 11011:사업)
+
+  // 재무 데이터
+  revenue          BigInt?  // 매출액
+  operatingProfit  BigInt?  @map("operating_profit") // 영업이익
+  netIncome        BigInt?  @map("net_income") // 당기순이익
+  totalAssets      BigInt?  @map("total_assets") // 자산총계
+  totalLiabilities BigInt?  @map("total_liabilities") // 부채총계
+  totalEquity      BigInt?  @map("total_equity") // 자본총계
+
+  // 상세 데이터 (JSON)
+  rawData          Json?    @map("raw_data")
+
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@unique([stockId, bsnsYear, reprtCode])
+  @@index([stockId])
+  @@map("financial_data")
+}
+
+// AI 분석 리포트
+model AiReport {
+  id             String   @id @default(uuid()) @db.Uuid
+  stockId        String   @map("stock_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+
+  reportType     String   @map("report_type") @db.VarChar(20) // FULL, FINANCIAL, DIVIDEND
+  reportContent  Json     @map("report_content") // 리포트 전체 내용
+
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stockId])
+  @@index([userId])
+  @@map("ai_reports")
+}
+
+// AI 대화
+model AiConversation {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  disclosureId String   @map("disclosure_id") @db.Uuid
+
+  role         String   @db.VarChar(20) // USER, ASSISTANT
+  content      String   @db.Text
+
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  disclosure Disclosure @relation(fields: [disclosureId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([disclosureId])
+  @@map("ai_conversations")
+}
+
+// 알림 기록
+model Notification {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  disclosureId String?  @map("disclosure_id") @db.Uuid
+
+  title        String   @db.VarChar(200)
+  content      String?  @db.Text
+  channel      String   @db.VarChar(20) // IN_APP, TELEGRAM, EMAIL
+  isRead       Boolean  @default(false) @map("is_read")
+  sentAt       DateTime @default(now()) @map("sent_at")
+
+  // Relations
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  disclosure Disclosure? @relation(fields: [disclosureId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([disclosureId])
+  @@index([sentAt])
+  @@map("notifications")
 }
