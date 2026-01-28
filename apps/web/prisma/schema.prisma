@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// 연결 테스트용 기본 테이블
+// 사용자
 model User {
   id        String   @id @default(uuid()) @db.Uuid
   email     String   @unique @db.VarChar(255)
@@ -16,4 +16,21 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+// 종목 정보
+model Stock {
+  id        String   @id @default(uuid()) @db.Uuid
+  stockCode String   @unique @map("stock_code") @db.VarChar(10) // 종목코드 (005930)
+  corpCode  String   @unique @map("corp_code") @db.VarChar(8) // DART 고유번호 (8자리)
+  corpName  String   @map("corp_name") @db.VarChar(100) // 기업명
+  market    String?  @db.VarChar(20) // KOSPI, KOSDAQ, KONEX
+  sector    String?  @db.VarChar(100) // 업종
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([stockCode])
+  @@index([corpCode])
+  @@index([corpName])
+  @@map("stocks")
 }
