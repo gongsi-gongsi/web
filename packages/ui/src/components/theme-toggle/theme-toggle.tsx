@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react'
 
-import { useTheme } from '../../providers/theme-provider';
-import { Button } from '../button';
+import { useTheme } from '../../providers/theme-provider'
+import { Button } from '../button'
 
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes } from 'react'
 
 // ============================================================================
 // Types
@@ -13,7 +13,7 @@ import type { ButtonHTMLAttributes } from 'react';
 
 export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** 아이콘 크기 */
-  iconSize?: number;
+  iconSize?: number
 }
 
 // ============================================================================
@@ -21,27 +21,28 @@ export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement
 // ============================================================================
 
 export const ThemeToggle = ({ iconSize = 20, className, ...props }: ThemeToggleProps) => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
 
   const toggleTheme = () => {
     if (theme === 'light') {
-      setTheme('dark');
+      setTheme('dark')
     } else if (theme === 'dark') {
-      setTheme('light');
+      setTheme('light')
     } else {
       // system 모드일 경우 light로 전환
-      setTheme('light');
+      setTheme('light')
     }
-  };
+  }
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
       aria-label="테마 전환"
       className={className}
       {...props}
+      interactive
+      onClick={toggleTheme}
     >
       <Sun
         className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
@@ -52,5 +53,5 @@ export const ThemeToggle = ({ iconSize = 20, className, ...props }: ThemeToggleP
         size={iconSize}
       />
     </Button>
-  );
-};
+  )
+}
