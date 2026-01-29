@@ -1,6 +1,6 @@
 export function DisclosureSkeleton() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 pb-2">
       {Array.from({ length: 7 }).map((_, index) => (
         <div key={index} className="rounded-xl bg-card">
           <div className="flex animate-pulse items-center gap-2 px-4 py-3">

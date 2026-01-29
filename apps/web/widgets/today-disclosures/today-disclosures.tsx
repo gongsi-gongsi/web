@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { ErrorBoundary, Suspense } from '@suspensive/react'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { useTodayDisclosures, type Market } from '@/entities/disclosure'
@@ -35,7 +36,7 @@ function TodayDisclosuresContent({ selectedMarket }: { selectedMarket: Market })
       </div>
 
       {/* 모바일 버전 */}
-      <div className="md:hidden pb-6">
+      <div className="md:hidden pb-2">
         <DisclosureCardList disclosures={disclosures} />
       </div>
     </>
@@ -64,8 +65,15 @@ export function TodayDisclosures() {
           <h2 className="text-xl font-bold">오늘의 공시</h2>
         </div>
 
-        <div className="mb-4">
-          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div className="flex-1">
+            <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+          </div>
+          <Link href="/disclosures" className="shrink-0 pb-3">
+            <Button variant="ghost" size="sm">
+              더보기 →
+            </Button>
+          </Link>
         </div>
 
         <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
@@ -78,10 +86,10 @@ export function TodayDisclosures() {
       {/* 모바일 버전 */}
       <div className="md:hidden -mx-4 bg-card">
         <div className="px-4 pb-4 pt-6">
-          <h2 className="text-xl font-bold">오늘의 공시</h2>
+          <h2 className="text-lg font-bold">오늘의 공시</h2>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
         </div>
 
@@ -90,6 +98,14 @@ export function TodayDisclosures() {
             <TodayDisclosuresContent selectedMarket={selectedMarket} />
           </Suspense>
         </ErrorBoundary>
+
+        <div className="border-t border-border">
+          <Link href="/disclosures" className="block">
+            <Button variant="ghost" size="lg" className="w-full">
+              더보기
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

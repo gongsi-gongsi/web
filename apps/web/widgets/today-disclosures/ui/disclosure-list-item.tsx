@@ -28,7 +28,7 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'group flex items-center gap-4 rounded-xl bg-background px-5 py-3',
+        'group flex items-center gap-4 rounded-xl bg-background px-2 py-3',
         'interactive-card'
       )}
     >
