@@ -348,12 +348,19 @@ pnpm add -Dw <package-name>
 ### 브랜치 구조
 
 ```
-main     (프로덕션)
-  └─ dev (개발)
+main       (프로덕션)
+  └─ develop (개발)
        ├─ feature/xxx
        ├─ fix/xxx
        └─ refactor/xxx
 ```
+
+### ⚠️ 중요: 머지 규칙
+
+**모든 PR은 반드시 `develop` 브랜치를 base로 생성하고 머지합니다.**
+
+- ✅ 올바른 예시: `feature/xxx` → `develop`
+- ❌ 잘못된 예시: `feature/xxx` → `main`
 
 ### 브랜치 네이밍
 
@@ -373,10 +380,10 @@ refactor/shared-hooks
 
 ### 워크플로우
 
-1. `dev` 브랜치에서 작업 브랜치 생성
-2. 작업 완료 후 `dev`로 PR
-3. 리뷰 및 테스트 통과 후 merge
-4. 배포 시 `dev` → `main` merge
+1. `develop` 브랜치에서 작업 브랜치 생성
+2. 작업 완료 후 `develop`으로 PR 생성
+3. 리뷰 및 테스트 통과 후 `develop`에 merge
+4. 배포 시 `develop` → `main` merge
 
 ---
 
