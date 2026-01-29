@@ -19,7 +19,7 @@ export function DisclosureTable({ disclosures }: DisclosureTableProps) {
       <table className="w-full table-fixed">
         <thead className="bg-muted">
           <tr>
-            <th className="w-[13%] px-4 py-3 text-left text-sm font-semibold">접수일자</th>
+            <th className="w-[13%] px-4 py-3 text-left text-sm font-semibold">공시 유형</th>
             <th className="w-[12%] px-4 py-3 text-left text-sm font-semibold">시장</th>
             <th className="w-[20%] px-4 py-3 text-left text-sm font-semibold">회사명</th>
             <th className="w-[55%] px-4 py-3 text-left text-sm font-semibold">공시제목</th>

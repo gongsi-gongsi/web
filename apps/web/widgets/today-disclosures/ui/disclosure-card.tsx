@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getMarketBadge, type Disclosure } from '@/entities/disclosure'
+import { getMarketBadge, getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
 import { cn } from '@ds/ui'
 
 interface DisclosureCardProps {
@@ -8,12 +8,7 @@ interface DisclosureCardProps {
 
 export function DisclosureCard({ disclosure }: DisclosureCardProps) {
   const marketBadge = getMarketBadge(disclosure.market)
-
-  // 날짜 포맷팅 (MM.DD)
-  const receivedDate = new Date(disclosure.receivedAt)
-  const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
-  const day = String(receivedDate.getDate()).padStart(2, '0')
-  const dateString = `${month}.${day}`
+  const typeBadge = getDisclosureTypeColor(disclosure.type)
 
   return (
     <Link
@@ -41,9 +36,15 @@ export function DisclosureCard({ disclosure }: DisclosureCardProps) {
         {/* 공시 제목 - 나머지 공간 */}
         <span className="flex-1 truncate text-xs">{disclosure.title}</span>
 
-        {/* 날짜 - 고정 너비 */}
-        <span className="w-10 shrink-0 text-right text-[10px] text-muted-foreground">
-          {dateString}
+        {/* 공시 유형 뱃지 */}
+        <span
+          className={cn(
+            'shrink-0 rounded px-2 py-0.5 text-[10px] font-medium',
+            typeBadge.bg,
+            typeBadge.text
+          )}
+        >
+          {typeBadge.label}
         </span>
       </div>
     </Link>

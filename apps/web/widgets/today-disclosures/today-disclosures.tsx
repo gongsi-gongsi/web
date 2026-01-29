@@ -69,7 +69,7 @@ export function TodayDisclosures() {
           <div className="flex-1">
             <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
           </div>
-          <Link href="/disclosures" className="shrink-0 pb-3">
+          <Link href="/disclosures/today" className="shrink-0 pb-3">
             <Button variant="ghost" size="sm">
               더보기 →
             </Button>
@@ -100,7 +100,7 @@ export function TodayDisclosures() {
         </ErrorBoundary>
 
         <div className="border-t border-border">
-          <Link href="/disclosures" className="block">
+          <Link href="/disclosures/today" className="block">
             <Button variant="ghost" size="lg" className="w-full">
               더보기
             </Button>

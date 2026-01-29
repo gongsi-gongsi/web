@@ -15,7 +15,7 @@ export function DisclosureCardList({ disclosures }: DisclosureCardListProps) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       {disclosures.map(disclosure => (
         <DisclosureCard key={disclosure.id} disclosure={disclosure} />
       ))}

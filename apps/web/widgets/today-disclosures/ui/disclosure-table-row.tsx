@@ -1,4 +1,5 @@
-import type { Disclosure } from '@/entities/disclosure'
+import { getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
+import { cn } from '@ds/ui'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure
@@ -13,12 +14,7 @@ const MARKET_LABELS: Record<string, string> = {
 
 export function DisclosureTableRow({ disclosure }: DisclosureTableRowProps) {
   const marketLabel = MARKET_LABELS[disclosure.market] || '-'
-
-  const receivedDate = new Date(disclosure.receivedAt)
-  const year = receivedDate.getFullYear()
-  const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
-  const day = String(receivedDate.getDate()).padStart(2, '0')
-  const dateString = `${year}.${month}.${day}`
+  const typeBadge = getDisclosureTypeColor(disclosure.type)
 
   function handleClick() {
     window.open(disclosure.reportUrl, '_blank', 'noopener,noreferrer')
@@ -30,7 +26,15 @@ export function DisclosureTableRow({ disclosure }: DisclosureTableRowProps) {
       className="cursor-pointer border-b border-border transition-colors hover:bg-accent"
     >
       <td className="px-4 py-3 text-sm text-foreground">
-        <div className="truncate">{dateString}</div>
+        <span
+          className={cn(
+            'inline-block rounded px-2 py-1 text-xs font-medium',
+            typeBadge.bg,
+            typeBadge.text
+          )}
+        >
+          {typeBadge.label}
+        </span>
       </td>
       <td className="px-4 py-3 text-sm text-foreground">
         <div className="truncate">{marketLabel}</div>
