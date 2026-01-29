@@ -8,21 +8,31 @@ if (!DART_API_KEY) {
   throw new Error('DART_API_KEY is not defined in environment variables')
 }
 
-function getCorpClsFromMarket(market: Market): string {
+/**
+ * 시장 구분을 DART API의 corp_cls 파라미터 값으로 변환합니다
+ * @param market - 시장 구분 (all | kospi | kosdaq | konex)
+ * @returns DART API corp_cls 값 (Y: 유가증권, K: 코스닥, N: 코넥스, null: 전체)
+ */
+function getCorpClsFromMarket(market: Market): string | null {
   switch (market) {
     case 'all':
-      return 'Y'
+      return null // 전체 조회 시 파라미터 생략
     case 'kospi':
-      return 'K'
+      return 'Y' // 유가증권
     case 'kosdaq':
-      return 'N'
+      return 'K' // 코스닥
     case 'konex':
-      return 'E'
+      return 'N' // 코넥스
     default:
-      return 'Y'
+      return null
   }
 }
 
+/**
+ * 오늘 날짜를 YYYYMMDD 형식의 문자열로 반환합니다
+ * @returns YYYYMMDD 형식의 날짜 문자열
+ * @remarks 테스트를 위해 하루 전 날짜를 반환하도록 설정되어 있습니다
+ */
 function getTodayDateString(): string {
   const today = new Date()
   // 하루 전 날짜로 설정 (테스트용)
@@ -46,7 +56,9 @@ export async function GET(request: NextRequest) {
     dartUrl.searchParams.append('crtfc_key', DART_API_KEY)
     dartUrl.searchParams.append('bgn_de', today)
     dartUrl.searchParams.append('end_de', today)
-    dartUrl.searchParams.append('corp_cls', corpCls)
+    if (corpCls) {
+      dartUrl.searchParams.append('corp_cls', corpCls)
+    }
     dartUrl.searchParams.append('sort', 'date')
     dartUrl.searchParams.append('sort_mth', 'desc')
     dartUrl.searchParams.append('page_count', '100')
