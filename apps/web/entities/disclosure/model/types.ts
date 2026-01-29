@@ -1,10 +1,16 @@
 export type Market = 'all' | 'kospi' | 'kosdaq' | 'konex'
 
 export type DisclosureType =
-  | 'regular' // 정기공시
-  | 'major' // 주요사항보고
-  | 'fair' // 공정공시
-  | 'other' // 기타
+  | 'A' // 정기공시
+  | 'B' // 주요사항보고
+  | 'C' // 발행공시
+  | 'D' // 지분공시
+  | 'E' // 기타공시
+  | 'F' // 외부감사관련
+  | 'G' // 펀드공시
+  | 'H' // 자산유동화
+  | 'I' // 거래소공시
+  | 'J' // 공정위공시
 
 export interface Disclosure {
   id: string // 공시 고유 ID (rcept_no)
@@ -36,6 +42,7 @@ export interface DartDisclosureItem {
   flr_nm: string // 공시제출인명
   rcept_dt: string // 접수일자 (YYYYMMDD)
   rm: string // 비고
+  pblntf_ty: string // 공시유형 (A~J)
 }
 
 export interface DartApiResponse {
