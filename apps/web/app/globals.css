@@ -1,1 +1,3 @@
-@import "@ds/ui/styles.css";
+@import 'tailwindcss';
+@import '@ds/tailwind-config/base.css';
+@import '@ds/ui/styles.css';
