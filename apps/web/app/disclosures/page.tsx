@@ -1,21 +1,7 @@
 import { Suspense } from 'react'
-import { ErrorBoundary } from '@suspensive/react'
+import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 import { DisclosureList } from './ui/disclosure-list'
 import { DisclosureListSkeleton } from './ui/disclosure-list-skeleton'
-
-function ErrorFallback({ reset }: { error: Error; reset: () => void }) {
-  return (
-    <div className="py-12 text-center">
-      <p className="mb-4 text-sm text-destructive">공시 정보를 불러오는데 실패했습니다</p>
-      <button
-        onClick={reset}
-        className="rounded-md border border-input bg-background px-4 py-2 text-sm hover:bg-accent"
-      >
-        다시 시도
-      </button>
-    </div>
-  )
-}
 
 export default function DisclosuresPage() {
   return (
@@ -26,11 +12,11 @@ export default function DisclosuresPage() {
           <p className="mt-2 text-sm text-muted-foreground">오늘 등록된 모든 공시를 확인하세요</p>
         </div>
 
-        <ErrorBoundary fallback={ErrorFallback}>
+        <ErrorBoundaryWithFallback>
           <Suspense fallback={<DisclosureListSkeleton />}>
             <DisclosureList />
           </Suspense>
-        </ErrorBoundary>
+        </ErrorBoundaryWithFallback>
       </div>
     </main>
   )

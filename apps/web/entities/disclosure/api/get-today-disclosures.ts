@@ -10,6 +10,10 @@ function getBaseUrl() {
     return window.location.origin
   }
   // 서버에서는 환경 변수 또는 기본값 사용
+  // VERCEL_URL은 Vercel 배포 시 자동 제공 (프로토콜 미포함)
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
   return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 }
 
