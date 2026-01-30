@@ -10,11 +10,11 @@ const NAV_ITEMS = [
   { label: '통계', href: '/statistics' },
 ] as const
 
-export function Header() {
+export function DesktopHeader() {
   const pathname = usePathname()
 
   return (
-    <header className="bg-background sticky top-0 z-50 w-full backdrop-blur">
+    <header className="bg-background sticky top-0 z-50 hidden w-full backdrop-blur md:block">
       <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center px-4 md:px-8">
         {/* 좌측: 로고 */}
         <div className="mr-8 flex">

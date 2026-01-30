@@ -1,4 +1,5 @@
-import { MobileHeader } from './ui/mobile-header'
+import { BackButton } from '@/shared/ui/back-button'
+import { MobileHeader } from '@/widgets/header'
 import { DisclosureList } from './ui/disclosure-list'
 
 /**
@@ -18,8 +19,8 @@ export function DisclosureListPage() {
 
   return (
     <>
-      {/* 모바일 헤더 */}
-      <MobileHeader />
+      {/* 모바일 헤더: 뒤로가기 */}
+      <MobileHeader left={<BackButton />} />
 
       {/* 모바일 버전 */}
       <div className="bg-card md:hidden">
