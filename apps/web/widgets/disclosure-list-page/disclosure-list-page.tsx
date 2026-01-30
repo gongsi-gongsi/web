@@ -29,7 +29,7 @@ export function DisclosureListPage() {
             <h1 className="text-lg font-bold">오늘의 공시</h1>
             <span className="text-xs text-muted-foreground">{todayLabel} 기준</span>
           </div>
-          <p className="mt-1 text-sm text-primary">오늘 올라온 공시 목록입니다</p>
+          <p className="mt-1 text-sm text-primary">공시 목록은 1분마다 갱신됩니다</p>
         </div>
 
         <DisclosureList />
