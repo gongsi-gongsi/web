@@ -2,10 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { formatDisclosure } from '@/entities/disclosure'
 import type { DartApiResponse, Market } from '@/entities/disclosure'
 
-const DART_API_KEY = process.env.DART_API_KEY!
-
-if (!DART_API_KEY) {
-  throw new Error('DART_API_KEY is not defined in environment variables')
+/**
+ * DART API 키를 환경변수에서 가져옵니다
+ * @returns DART API 키
+ * @throws 환경변수가 설정되지 않은 경우 에러
+ */
+function getDartApiKey(): string {
+  const apiKey = process.env.DART_API_KEY
+  if (!apiKey) {
+    throw new Error('DART_API_KEY is not defined in environment variables')
+  }
+  return apiKey
 }
 
 /**
@@ -54,7 +61,7 @@ export async function GET(request: NextRequest) {
 
     // DART API 호출
     const dartUrl = new URL('https://opendart.fss.or.kr/api/list.json')
-    dartUrl.searchParams.append('crtfc_key', DART_API_KEY)
+    dartUrl.searchParams.append('crtfc_key', getDartApiKey())
     dartUrl.searchParams.append('bgn_de', today)
     dartUrl.searchParams.append('end_de', today)
     if (corpCls) {
