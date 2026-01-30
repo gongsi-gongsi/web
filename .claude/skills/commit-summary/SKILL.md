@@ -33,19 +33,27 @@ Create a markdown file named `COMMIT_SUMMARY.md` in the project root with the fo
 
 ## 📁 변경된 파일 목록
 
+각 파일에 한 줄 설명을 포함하여, 파일만 봐도 무엇이 바뀌었는지 알 수 있도록 합니다.
+
 ### 새로 추가된 파일
 
-- `path/to/file1.ts`
-- `path/to/file2.tsx`
+| 파일                | 설명                             |
+| ------------------- | -------------------------------- |
+| `path/to/file1.ts`  | [이 파일이 하는 역할 한 줄 설명] |
+| `path/to/file2.tsx` | [이 파일이 하는 역할 한 줄 설명] |
 
 ### 수정된 파일
 
-- `path/to/file3.ts`
-- `path/to/file4.tsx`
+| 파일                | 변경 내용                                  |
+| ------------------- | ------------------------------------------ |
+| `path/to/file3.ts`  | [이 파일에서 무엇이 바뀌었는지 한 줄 설명] |
+| `path/to/file4.tsx` | [이 파일에서 무엇이 바뀌었는지 한 줄 설명] |
 
 ### 삭제된 파일
 
-- `path/to/file5.ts`
+| 파일               | 삭제 이유                  |
+| ------------------ | -------------------------- |
+| `path/to/file5.ts` | [왜 삭제했는지 한 줄 설명] |
 
 ## 🔧 상세 구현 내역
 
@@ -109,7 +117,22 @@ Create a markdown file named `COMMIT_SUMMARY.md` in the project root with the fo
 
 ```
 
-### 4. Important guidelines
+### 4. Ordering: 코드를 읽기 좋은 순서로 정리
+
+상세 구현 내역과 파일 목록은 **코드를 처음 읽는 사람이 파악하기 쉬운 순서**로 정렬합니다. 파일이 변경된 시간순이나 알파벳순이 아니라, 의존 관계와 이해 흐름을 따릅니다.
+
+**정렬 원칙 (우선순위 순):**
+
+1. **타입/인터페이스 정의** → 데이터 구조를 먼저 알아야 나머지를 이해할 수 있음
+2. **하위 레이어 (shared, entities의 lib/model)** → 기반 유틸리티, 도메인 로직
+3. **API 레이어 (route, api client)** → 데이터가 어떻게 흐르는지
+4. **훅/상태 관리** → 데이터를 어떻게 소비하는지
+5. **UI 컴포넌트 (widgets, features)** → 최종적으로 화면에 어떻게 보이는지
+6. **페이지/라우트 진입점 (app/)** → 전체를 조합하는 곳
+
+즉, **의존되는 쪽 → 의존하는 쪽** 순서로 bottom-up으로 정리합니다. 이렇게 하면 읽는 사람이 위에서부터 순서대로 읽으면서 자연스럽게 전체 구조를 파악할 수 있습니다.
+
+### 5. Important guidelines
 - Write in Korean
 - Be detailed and specific
 - Explain WHY, not just WHAT
