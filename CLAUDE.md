@@ -230,6 +230,58 @@ const getUser = (id: any) => {
 - 타입 추론 가능한 경우 타입 생략 가능
 - API 응답 등 외부 데이터는 반드시 타입 정의
 
+### 함수 주석 규칙
+
+라이브러리 함수(유틸리티, 헬퍼 함수 등)는 **JSDoc 스타일 주석**을 반드시 작성합니다.
+
+```typescript
+// ✅ 올바른 예시 - entities/*/lib, shared/lib 등
+
+/**
+ * 공시 유형 코드를 한글 라벨로 변환합니다
+ * @param type - 공시 유형 코드 (A~J)
+ * @returns 공시 유형 한글 라벨
+ * @example
+ * getDisclosureTypeLabel('A') // '정기공시'
+ * getDisclosureTypeLabel('B') // '주요사항보고'
+ */
+export function getDisclosureTypeLabel(type: DisclosureType): string {
+  // ...
+}
+
+/**
+ * 날짜를 YYYY-MM-DD 형식으로 포맷팅합니다
+ * @param date - 포맷팅할 날짜 객체
+ * @param separator - 구분자 (기본값: '-')
+ * @returns 포맷팅된 날짜 문자열
+ */
+export function formatDate(date: Date, separator = '-'): string {
+  // ...
+}
+```
+
+#### 규칙
+
+- **필수 항목**: 함수 설명, `@param`, `@returns`
+- **선택 항목**: `@example`, `@throws`, `@deprecated`
+- **함수 설명**: 함수가 무엇을 하는지 명확하게 작성
+- **@param**: 각 매개변수의 의미와 타입 설명
+- **@returns**: 반환값의 의미 설명
+- **@example**: 복잡한 함수는 사용 예시 추가
+
+#### 주석이 필요한 경우
+
+- ✅ `shared/lib`, `entities/*/lib` 등의 유틸리티 함수
+- ✅ 재사용 가능한 헬퍼 함수
+- ✅ 복잡한 비즈니스 로직 함수
+- ✅ 공개 API (export되는 함수)
+
+#### 주석이 선택적인 경우
+
+- 컴포넌트 내부의 간단한 핸들러 함수
+- 일회성 로직
+- 함수명만으로 충분히 이해 가능한 경우
+
 ---
 
 ## 🎨 UI 컴포넌트 관리
@@ -348,12 +400,19 @@ pnpm add -Dw <package-name>
 ### 브랜치 구조
 
 ```
-main     (프로덕션)
-  └─ dev (개발)
+main       (프로덕션)
+  └─ develop (개발)
        ├─ feature/xxx
        ├─ fix/xxx
        └─ refactor/xxx
 ```
+
+### ⚠️ 중요: 머지 규칙
+
+**모든 PR은 반드시 `develop` 브랜치를 base로 생성하고 머지합니다.**
+
+- ✅ 올바른 예시: `feature/xxx` → `develop`
+- ❌ 잘못된 예시: `feature/xxx` → `main`
 
 ### 브랜치 네이밍
 
@@ -373,10 +432,10 @@ refactor/shared-hooks
 
 ### 워크플로우
 
-1. `dev` 브랜치에서 작업 브랜치 생성
-2. 작업 완료 후 `dev`로 PR
-3. 리뷰 및 테스트 통과 후 merge
-4. 배포 시 `dev` → `main` merge
+1. `develop` 브랜치에서 작업 브랜치 생성
+2. 작업 완료 후 `develop`으로 PR 생성
+3. 리뷰 및 테스트 통과 후 `develop`에 merge
+4. 배포 시 `develop` → `main` merge
 
 ---
 

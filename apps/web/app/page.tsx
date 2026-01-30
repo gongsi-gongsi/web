@@ -1,26 +1,13 @@
-import { Button } from '@ds/ui';
-import { Card, CardHeader, CardTitle, CardContent } from '@ds/ui';
+import { Suspense } from 'react'
+import { TodayDisclosures } from '@/widgets/today-disclosures'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-foreground mb-8">
-          DailyStock
-        </h1>
-        <Card>
-          <CardHeader>
-            <CardTitle>환영합니다</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              AI 기반 주식 뉴스 분석 서비스입니다.
-            </p>
-            <Button variant="secondary">
-              시작하기
-            </Button>
-          </CardContent>
-        </Card>
+    <main className="min-h-screen bg-background">
+      <div className="mx-auto max-w-screen-2xl px-4 py-8 md:px-8">
+        <Suspense fallback={<div>Loading...</div>}>
+          <TodayDisclosures />
+        </Suspense>
       </div>
     </main>
   )

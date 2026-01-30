@@ -31,26 +31,27 @@ stock-flow/
 
 ## 🛠️ 기술 스택
 
-| 영역 | 기술 |
-|------|------|
-| 패키지 매니저 | pnpm |
-| 모노레포 | Turborepo |
-| 프론트엔드 | Next.js 15 (App Router) |
-| 스타일링 | Tailwind CSS v4 (no config file) |
-| UI 컴포넌트 | shadcn/ui |
-| 데이터베이스 | Supabase (PostgreSQL) |
-| 인증 | Supabase Auth |
-| 자동화 | n8n (AWS EC2) |
-| AI | Gemini API |
-| 테스트 | Vitest + Playwright |
-| 린팅 | ESLint + Prettier |
-| 배포 | Vercel |
+| 영역          | 기술                             |
+| ------------- | -------------------------------- |
+| 패키지 매니저 | pnpm                             |
+| 모노레포      | Turborepo                        |
+| 프론트엔드    | Next.js 15 (App Router)          |
+| 스타일링      | Tailwind CSS v4 (no config file) |
+| UI 컴포넌트   | shadcn/ui                        |
+| 데이터베이스  | Supabase (PostgreSQL)            |
+| 인증          | Supabase Auth                    |
+| 자동화        | n8n (AWS EC2)                    |
+| AI            | Gemini API                       |
+| 테스트        | Vitest + Playwright              |
+| 린팅          | ESLint + Prettier                |
+| 배포          | Vercel                           |
 
 ---
 
 ## 📝 사전 준비
 
 ### 필수 설치
+
 ```bash
 # Node.js 20+ 설치 확인
 node -v  # v20.x.x 이상
@@ -63,6 +64,7 @@ pnpm -v  # 8.x.x 이상
 ```
 
 ### 계정 준비
+
 - [ ] GitHub 계정
 - [ ] Vercel 계정 (GitHub 연동)
 - [ ] Supabase 계정
@@ -98,6 +100,7 @@ tree -L 2
 ### 1.3 기본 파일 수정
 
 **`package.json`**
+
 ```json
 {
   "name": "stock-flow",
@@ -123,13 +126,15 @@ tree -L 2
 ```
 
 **`pnpm-workspace.yaml`**
+
 ```yaml
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 ```
 
 **`.npmrc`**
+
 ```
 # pnpm 설정
 auto-install-peers=true
@@ -156,20 +161,18 @@ cd packages/typescript-config
 ```
 
 **`packages/typescript-config/package.json`**
+
 ```json
 {
   "name": "@repo/typescript-config",
   "version": "0.0.0",
   "private": true,
-  "files": [
-    "base.json",
-    "nextjs.json",
-    "react-library.json"
-  ]
+  "files": ["base.json", "nextjs.json", "react-library.json"]
 }
 ```
 
 **`packages/typescript-config/base.json`**
+
 ```json
 {
   "$schema": "https://json.schemastore.org/tsconfig",
@@ -190,13 +193,12 @@ cd packages/typescript-config
     "strict": true,
     "strictNullChecks": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
 ```
 
 **`packages/typescript-config/nextjs.json`**
+
 ```json
 {
   "$schema": "https://json.schemastore.org/tsconfig",
@@ -220,18 +222,13 @@ cd packages/typescript-config
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "src",
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
 ```
 
 **`packages/typescript-config/react-library.json`**
+
 ```json
 {
   "$schema": "https://json.schemastore.org/tsconfig",
@@ -256,15 +253,13 @@ cd packages/eslint-config
 ```
 
 **`packages/eslint-config/package.json`**
+
 ```json
 {
   "name": "@repo/eslint-config",
   "version": "0.0.0",
   "private": true,
-  "files": [
-    "next.js",
-    "react.js"
-  ],
+  "files": ["next.js", "react.js"],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
@@ -276,12 +271,10 @@ cd packages/eslint-config
 ```
 
 **`packages/eslint-config/next.js`**
+
 ```javascript
 module.exports = {
-  extends: [
-    'next/core-web-vitals',
-    'prettier'
-  ],
+  extends: ['next/core-web-vitals', 'prettier'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   rules: {
@@ -289,29 +282,30 @@ module.exports = {
       'error',
       {
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }
+        varsIgnorePattern: '^_',
+      },
     ],
-    '@typescript-eslint/no-explicit-any': 'warn'
-  }
+    '@typescript-eslint/no-explicit-any': 'warn',
+  },
 }
 ```
 
 **`packages/eslint-config/react.js`**
+
 ```javascript
 module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier'
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['react', '@typescript-eslint'],
   settings: {
     react: {
-      version: 'detect'
-    }
+      version: 'detect',
+    },
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -319,10 +313,10 @@ module.exports = {
       'error',
       {
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }
-    ]
-  }
+        varsIgnorePattern: '^_',
+      },
+    ],
+  },
 }
 ```
 
@@ -335,6 +329,7 @@ cd packages/prettier-config
 ```
 
 **`packages/prettier-config/package.json`**
+
 ```json
 {
   "name": "@repo/prettier-config",
@@ -348,6 +343,7 @@ cd packages/prettier-config
 ```
 
 **`packages/prettier-config/index.js`**
+
 ```javascript
 module.exports = {
   semi: false,
@@ -356,7 +352,7 @@ module.exports = {
   trailingComma: 'es5',
   printWidth: 100,
   arrowParens: 'avoid',
-  endOfLine: 'lf'
+  endOfLine: 'lf',
 }
 ```
 
@@ -367,13 +363,15 @@ cd ../..
 ```
 
 **`.prettierrc.js` (루트)**
+
 ```javascript
 module.exports = {
-  ...require('@repo/prettier-config')
+  ...require('@repo/prettier-config'),
 }
 ```
 
 **`.prettierignore` (루트)**
+
 ```
 node_modules
 .next
@@ -406,6 +404,7 @@ cd packages/ui
 ```
 
 **`packages/ui/package.json`**
+
 ```json
 {
   "name": "@repo/ui",
@@ -456,8 +455,9 @@ cd packages/ui
 ### 3.2 Tailwind CSS v4 설정
 
 **`packages/ui/src/styles.css`**
+
 ```css
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* 커스텀 CSS 변수 */
 @theme {
@@ -466,12 +466,12 @@ cd packages/ui
   --color-primary-500: #3b82f6;
   --color-primary-600: #2563eb;
   --color-primary-700: #1d4ed8;
-  
+
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-500: #6b7280;
   --color-gray-900: #111827;
-  
+
   --font-sans: ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 }
@@ -485,7 +485,12 @@ body {
   @apply bg-white text-gray-900 font-sans;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply font-bold;
 }
 ```
@@ -493,6 +498,7 @@ h1, h2, h3, h4, h5, h6 {
 ### 3.3 샘플 컴포넌트 생성
 
 **`packages/ui/src/button.tsx`**
+
 ```typescript
 import React from 'react'
 
@@ -510,19 +516,19 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
-  
+
   const variants = {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
     outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500'
   }
-  
+
   const sizes = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg'
   }
-  
+
   return (
     <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
@@ -535,6 +541,7 @@ export function Button({
 ```
 
 **`packages/ui/src/card.tsx`**
+
 ```typescript
 import React from 'react'
 
@@ -561,6 +568,7 @@ export function Card({ title, children, className = '' }: CardProps) {
 ### 3.4 Vitest 설정
 
 **`packages/ui/vitest.config.ts`**
+
 ```typescript
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
@@ -570,12 +578,13 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: './vitest.setup.ts'
-  }
+    setupFiles: './vitest.setup.ts',
+  },
 })
 ```
 
 **`packages/ui/vitest.setup.ts`**
+
 ```typescript
 import { expect, afterEach } from 'vitest'
 import { cleanup } from '@testing-library/react'
@@ -587,6 +596,7 @@ afterEach(() => {
 ```
 
 **`packages/ui/src/button.test.tsx`**
+
 ```typescript
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
@@ -609,6 +619,7 @@ describe('Button', () => {
 ### 3.5 Storybook 설정
 
 **`packages/ui/.storybook/main.ts`**
+
 ```typescript
 import type { StorybookConfig } from '@storybook/react-vite'
 
@@ -617,18 +628,19 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-interactions'
+    '@storybook/addon-interactions',
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {}
-  }
+    options: {},
+  },
 }
 
 export default config
 ```
 
 **`packages/ui/.storybook/preview.ts`**
+
 ```typescript
 import type { Preview } from '@storybook/react'
 import '../src/styles.css'
@@ -639,16 +651,17 @@ const preview: Preview = {
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/i
-      }
-    }
-  }
+        date: /Date$/i,
+      },
+    },
+  },
 }
 
 export default preview
 ```
 
 **`packages/ui/src/button.stories.tsx`**
+
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './button'
@@ -657,9 +670,9 @@ const meta = {
   title: 'Components/Button',
   component: Button,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 } satisfies Meta<typeof Button>
 
 export default meta
@@ -668,35 +681,36 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    children: 'Primary Button'
-  }
+    children: 'Primary Button',
+  },
 }
 
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    children: 'Secondary Button'
-  }
+    children: 'Secondary Button',
+  },
 }
 
 export const Outline: Story = {
   args: {
     variant: 'outline',
-    children: 'Outline Button'
-  }
+    children: 'Outline Button',
+  },
 }
 
 export const Large: Story = {
   args: {
     size: 'lg',
-    children: 'Large Button'
-  }
+    children: 'Large Button',
+  },
 }
 ```
 
 ### 3.6 TypeScript 설정
 
 **`packages/ui/tsconfig.json`**
+
 ```json
 {
   "extends": "@repo/typescript-config/react-library.json",
@@ -731,6 +745,7 @@ cd packages/database
 ```
 
 **`packages/database/package.json`**
+
 ```json
 {
   "name": "@repo/database",
@@ -760,6 +775,7 @@ cd packages/database
 ### 4.2 Supabase 클라이언트
 
 **`packages/database/src/client.ts`**
+
 ```typescript
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from './types'
@@ -775,8 +791,8 @@ export function createServerClient() {
   return createClient<Database>(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
-    }
+      persistSession: false,
+    },
   })
 }
 ```
@@ -784,14 +800,9 @@ export function createServerClient() {
 ### 4.3 타입 정의 (초기 스키마)
 
 **`packages/database/src/types.ts`**
+
 ```typescript
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export interface Database {
   public: {
@@ -909,6 +920,7 @@ export interface Database {
 ### 4.4 헬퍼 함수
 
 **`packages/database/src/queries.ts`**
+
 ```typescript
 import { supabase } from './client'
 
@@ -932,12 +944,10 @@ export async function getUniqueStocks() {
     .order('stock_code')
 
   if (error) throw error
-  
+
   // 중복 제거
-  const unique = Array.from(
-    new Map(data.map(item => [item.stock_code, item])).values()
-  )
-  
+  const unique = Array.from(new Map(data.map(item => [item.stock_code, item])).values())
+
   return unique
 }
 
@@ -972,6 +982,7 @@ export async function getStockPrice(stockCode: string) {
 ### 4.5 TypeScript 설정
 
 **`packages/database/tsconfig.json`**
+
 ```json
 {
   "extends": "@repo/typescript-config/base.json",
@@ -1014,6 +1025,7 @@ npx create-next-app@latest apps/web
 ### 5.2 package.json 수정
 
 **`apps/web/package.json`**
+
 ```json
 {
   "name": "web",
@@ -1054,9 +1066,10 @@ npx create-next-app@latest apps/web
 ### 5.3 Tailwind CSS v4 설정
 
 **`apps/web/app/globals.css`**
+
 ```css
-@import "@repo/ui/styles.css";
-@import "tailwindcss";
+@import '@repo/ui/styles.css';
+@import 'tailwindcss';
 
 /* 앱 전용 추가 스타일 */
 ```
@@ -1064,6 +1077,7 @@ npx create-next-app@latest apps/web
 ### 5.4 환경 변수 설정
 
 **`apps/web/.env.local.example`**
+
 ```env
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
@@ -1078,6 +1092,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 **`.gitignore`에 추가**
+
 ```
 .env.local
 .env*.local
@@ -1086,6 +1101,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### 5.5 Supabase Auth 설정
 
 **`apps/web/lib/supabase/client.ts`**
+
 ```typescript
 import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@repo/database/types'
@@ -1099,6 +1115,7 @@ export function createClient() {
 ```
 
 **`apps/web/lib/supabase/server.ts`**
+
 ```typescript
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
@@ -1131,6 +1148,7 @@ export async function createClient() {
 ```
 
 **`apps/web/lib/supabase/middleware.ts`**
+
 ```typescript
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
@@ -1149,9 +1167,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value)
-          )
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -1170,6 +1186,7 @@ export async function updateSession(request: NextRequest) {
 ```
 
 **`apps/web/middleware.ts`**
+
 ```typescript
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
@@ -1179,15 +1196,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
 ```
 
 ### 5.6 레이아웃 설정
 
 **`apps/web/app/layout.tsx`**
+
 ```typescript
 import type { Metadata } from 'next'
 import './globals.css'
@@ -1213,6 +1229,7 @@ export default function RootLayout({
 ### 5.7 홈페이지
 
 **`apps/web/app/page.tsx`**
+
 ```typescript
 import { Button } from '@repo/ui/button'
 import { Card } from '@repo/ui/card'
@@ -1224,7 +1241,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-gray-900 mb-8">
           StockFlow
         </h1>
-        
+
         <Card title="환영합니다">
           <p className="text-gray-700 mb-4">
             AI 기반 주식 뉴스 분석 서비스입니다.
@@ -1242,6 +1259,7 @@ export default function Home() {
 ### 5.8 API Routes 예시
 
 **`apps/web/app/api/stocks/route.ts`**
+
 ```typescript
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -1249,26 +1267,22 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET() {
   try {
     const supabase = await createClient()
-    
-    const { data: { user } } = await supabase.auth.getUser()
-    
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data, error } = await supabase
-      .from('user_stocks')
-      .select('*')
-      .eq('user_id', user.id)
+    const { data, error } = await supabase.from('user_stocks').select('*').eq('user_id', user.id)
 
     if (error) throw error
 
     return NextResponse.json({ stocks: data })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 ```
@@ -1276,6 +1290,7 @@ export async function GET() {
 ### 5.9 TypeScript 설정
 
 **`apps/web/tsconfig.json`**
+
 ```json
 {
   "extends": "@repo/typescript-config/nextjs.json",
@@ -1284,12 +1299,7 @@ export async function GET() {
       "@/*": ["./*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
 ```
@@ -1297,9 +1307,10 @@ export async function GET() {
 ### 5.10 ESLint 설정
 
 **`apps/web/.eslintrc.js`**
+
 ```javascript
 module.exports = {
-  extends: ['@repo/eslint-config/next']
+  extends: ['@repo/eslint-config/next'],
 }
 ```
 
@@ -1325,6 +1336,7 @@ pnpm dlx playwright install
 ```
 
 **`apps/web/playwright.config.ts`**
+
 ```typescript
 import { defineConfig, devices } from '@playwright/test'
 
@@ -1356,19 +1368,20 @@ export default defineConfig({
 ### 6.2 샘플 테스트
 
 **`apps/web/e2e/home.spec.ts`**
+
 ```typescript
 import { test, expect } from '@playwright/test'
 
 test('홈페이지가 정상적으로 렌더링된다', async ({ page }) => {
   await page.goto('/')
-  
+
   await expect(page.getByRole('heading', { name: 'StockFlow' })).toBeVisible()
   await expect(page.getByText('AI 기반 주식 뉴스 분석 서비스입니다.')).toBeVisible()
 })
 
 test('시작하기 버튼이 존재한다', async ({ page }) => {
   await page.goto('/')
-  
+
   await expect(page.getByRole('button', { name: '시작하기' })).toBeVisible()
 })
 ```
@@ -1386,6 +1399,7 @@ pnpm test:e2e
 ### 7.1 turbo.json 설정
 
 **루트 `turbo.json`**
+
 ```json
 {
   "$schema": "https://turbo.build/schema.json",
@@ -1451,6 +1465,7 @@ cd admin
 ```
 
 **`apps/admin/package.json`**
+
 ```json
 {
   "name": "admin",
@@ -1465,12 +1480,14 @@ cd admin
 ```
 
 **`apps/admin/README.md`**
+
 ```markdown
 # StockFlow Admin
 
 관리자 대시보드 - 추후 구현 예정
 
 ## 예정 기능
+
 - 사용자 관리
 - 종목 관리
 - 데이터 모니터링
@@ -1484,6 +1501,7 @@ cd admin
 ### 9.1 Vercel 설정
 
 **`vercel.json` (루트)**
+
 ```json
 {
   "buildCommand": "cd apps/web && pnpm build",
@@ -1497,6 +1515,7 @@ cd admin
 ### 9.2 GitHub Actions (CI/CD)
 
 **`.github/workflows/ci.yml`**
+
 ```yaml
 name: CI
 
@@ -1509,28 +1528,28 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Lint
         run: pnpm lint
-      
+
       - name: Test
         run: pnpm test
-      
+
       - name: Build
         run: pnpm build
 ```
@@ -1733,6 +1752,7 @@ supabase gen types typescript --project-id your-project-id > packages/database/s
 ## 📋 체크리스트
 
 ### 초기 설정
+
 - [ ] Node.js 20+ 설치
 - [ ] pnpm 설치
 - [ ] GitHub 레포지토리 생성
@@ -1740,6 +1760,7 @@ supabase gen types typescript --project-id your-project-id > packages/database/s
 - [ ] Vercel 계정 연결
 
 ### 프로젝트 생성
+
 - [ ] Turborepo 초기화
 - [ ] packages/typescript-config 설정
 - [ ] packages/eslint-config 설정
@@ -1750,6 +1771,7 @@ supabase gen types typescript --project-id your-project-id > packages/database/s
 - [ ] apps/admin 구조 생성
 
 ### 테스트
+
 - [ ] Vitest 테스트 통과
 - [ ] Playwright E2E 테스트 통과
 - [ ] Storybook 정상 실행
@@ -1757,6 +1779,7 @@ supabase gen types typescript --project-id your-project-id > packages/database/s
 - [ ] pnpm build 성공
 
 ### 배포
+
 - [ ] 환경 변수 설정
 - [ ] Vercel 배포 성공
 - [ ] Supabase RLS 설정

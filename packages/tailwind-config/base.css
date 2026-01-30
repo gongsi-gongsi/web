@@ -208,3 +208,47 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 }
+
+/* ============================================================================
+   커스텀 유틸리티 클래스
+   ============================================================================ */
+
+@layer utilities {
+  /* 인터랙티브 카드 효과 - 범용 */
+  .interactive-card {
+    transition:
+      transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .interactive-card:hover {
+    @apply bg-muted/50;
+  }
+
+  .interactive-card:active {
+    transform: scale(0.98);
+  }
+
+  /* 인터랙티브 리스트 아이템 - 배경색 변화만 */
+  .interactive-item {
+    transition:
+      background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .interactive-item:hover {
+    @apply bg-accent/50;
+  }
+
+  /* 인터랙티브 버튼 - 강한 피드백 */
+  .interactive-button {
+    transition:
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .interactive-button:active {
+    transform: scale(0.96);
+  }
+}
