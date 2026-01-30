@@ -101,7 +101,7 @@ export function TodayDisclosures() {
 
         <div className="border-t border-border">
           <Link href="/disclosures/today" className="block">
-            <Button variant="ghost" size="lg" className="w-full">
+            <Button variant="ghost" size="xl" className="w-full text-muted-foreground">
               더보기
             </Button>
           </Link>

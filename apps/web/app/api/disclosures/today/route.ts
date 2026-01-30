@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
 
     const response = await fetch(dartUrl.toString(), {
       next: {
-        revalidate: 30, // 30초 캐시
+        revalidate: 60, // 1분 캐시
         tags: ['disclosures', 'today', market],
       },
     })

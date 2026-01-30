@@ -41,7 +41,7 @@ export function MarketTabs({ selectedMarket, onMarketChange }: MarketTabsProps) 
           }}
           onClick={() => onMarketChange(market.value)}
           className={cn(
-            'shrink-0 cursor-pointer pb-3 text-sm font-medium transition-colors',
+            'shrink-0 cursor-pointer pb-3 text-md font-medium transition-colors',
             selectedMarket === market.value
               ? 'text-foreground'
               : 'text-muted-foreground hover:text-foreground'

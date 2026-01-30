@@ -1,1 +1,2 @@
-export { Header } from './header'
+export { Header } from './ui/header'
+export { MobileHeader } from './ui/mobile-header'

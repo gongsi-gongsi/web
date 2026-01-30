@@ -31,10 +31,10 @@ export function DisclosureCard({ disclosure }: DisclosureCardProps) {
         )}
 
         {/* 회사명 - 고정 너비 */}
-        <span className="w-20 shrink-0 truncate text-xs font-medium">{disclosure.companyName}</span>
+        <span className="w-20 shrink-0 truncate text-sm font-medium">{disclosure.companyName}</span>
 
         {/* 공시 제목 - 나머지 공간 */}
-        <span className="flex-1 truncate text-xs">{disclosure.title}</span>
+        <span className="flex-1 truncate text-sm">{disclosure.title}</span>
 
         {/* 공시 유형 뱃지 */}
         <span
