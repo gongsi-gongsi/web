@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { getTodayDisclosures } from '@/entities/disclosure'
+import { getTodayDisclosuresPaginated } from '@/entities/disclosure'
 import { getQueryClient } from '@/shared/lib/get-query-client'
 import { queries } from '@/shared/lib/query-keys'
 import { DisclosureListPage } from '@/widgets/disclosure-list-page'
@@ -15,9 +15,10 @@ export default async function DisclosuresPage({
   // 서버에서 데이터 prefetch
   const queryClient = getQueryClient()
 
-  await queryClient.prefetchQuery({
-    ...queries.disclosures.today(market),
-    queryFn: () => getTodayDisclosures(market),
+  await queryClient.prefetchInfiniteQuery({
+    ...queries.disclosures.todayInfinite(market),
+    queryFn: () => getTodayDisclosuresPaginated(market, 1, 20),
+    initialPageParam: 1,
   })
 
   return (

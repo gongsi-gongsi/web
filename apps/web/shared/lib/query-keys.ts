@@ -8,5 +8,6 @@ import type { Market } from '@/entities/disclosure'
 export const queries = createQueryKeyStore({
   disclosures: {
     today: (market: Market) => [market],
+    todayInfinite: (market: Market) => [market],
   },
 })

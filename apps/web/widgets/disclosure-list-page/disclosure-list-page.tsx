@@ -11,7 +11,7 @@ export function DisclosureListPage() {
       <div className="bg-card md:hidden">
         <div className="px-4 pb-4 pt-6">
           <h1 className="text-lg font-bold">오늘의 공시</h1>
-          <p className="mt-1 text-sm text-muted-foreground">오늘 올라온 공시 목록입니다</p>
+          <p className="mt-1 text-sm text-primary">오늘 올라온 공시 목록입니다</p>
         </div>
 
         <DisclosureList />
