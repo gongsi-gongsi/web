@@ -89,7 +89,7 @@ export function TodayDisclosures() {
           <h2 className="text-lg font-bold">오늘의 공시</h2>
         </div>
 
-        <div className="mb-2">
+        <div className="sticky top-14 z-40 mb-2 bg-card">
           <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
         </div>
 
