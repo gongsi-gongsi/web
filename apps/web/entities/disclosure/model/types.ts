@@ -1,4 +1,4 @@
-export type Market = 'all' | 'kospi' | 'kosdaq' | 'konex'
+export type Market = 'all' | 'kospi' | 'kosdaq' | 'konex' | 'etc'
 
 export type DisclosureType =
   | 'A' // 정기공시
@@ -36,7 +36,7 @@ export interface DartDisclosureItem {
   corp_code: string // 회사 고유번호
   corp_name: string // 회사명
   stock_code: string // 종목코드
-  corp_cls: string // 법인구분 (Y: 전체, K: 코스피, N: 코스닥, E: 코넥스)
+  corp_cls: string // 법인구분 (Y: 유가, K: 코스닥, N: 코넥스, E: 기타)
   report_nm: string // 보고서명
   rcept_no: string // 접수번호
   flr_nm: string // 공시제출인명
@@ -48,5 +48,18 @@ export interface DartDisclosureItem {
 export interface DartApiResponse {
   status: string // 응답 상태
   message: string // 응답 메시지
+  page_no: number // 페이지 번호
+  page_count: number // 페이지당 건수
+  total_count: number // 총 건수
+  total_page: number // 총 페이지 수
   list: DartDisclosureItem[] // 공시 목록
+}
+
+export interface PaginatedDisclosuresResponse {
+  disclosures: Disclosure[]
+  totalCount: number
+  totalPage: number
+  pageNo: number
+  pageCount: number
+  lastUpdated: string
 }

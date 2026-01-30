@@ -25,6 +25,12 @@ export function getMarketBadge(market: Market): MarketBadge | null {
         color:
           'bg-background text-orange-700 border border-orange-700 dark:text-orange-400 dark:border-orange-400',
       }
+    case 'etc':
+      return {
+        label: '기',
+        color:
+          'bg-background text-gray-700 border border-gray-700 dark:text-gray-400 dark:border-gray-400',
+      }
     case 'all':
       return null
   }

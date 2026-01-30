@@ -2,22 +2,20 @@ import type { DartDisclosureItem, Disclosure, Market, DisclosureType } from '../
 
 /**
  * DART API의 corp_cls 코드를 시장 구분으로 변환합니다
- * @param corpCls - 법인구분 코드 (K: KOSPI, N: KOSDAQ, E: KONEX, Y: 유가증권)
- * @returns 시장 구분 (kospi | kosdaq | konex)
+ * @param corpCls - 법인구분 코드 (Y: 유가, K: 코스닥, N: 코넥스, E: 기타)
+ * @returns 시장 구분 (kospi | kosdaq | konex | etc)
  */
 function getMarketFromCorpCls(corpCls: string): Market {
   switch (corpCls) {
-    case 'K':
-      return 'kospi'
-    case 'N':
-      return 'kosdaq'
-    case 'E':
-      return 'konex'
     case 'Y':
-    default:
-      // 'Y'는 요청 파라미터로만 사용되고, 개별 공시는 K/N/E 중 하나
-      // 만약 'Y'가 온다면 kospi로 기본 설정
       return 'kospi'
+    case 'K':
+      return 'kosdaq'
+    case 'N':
+      return 'konex'
+    case 'E':
+    default:
+      return 'etc'
   }
 }
 

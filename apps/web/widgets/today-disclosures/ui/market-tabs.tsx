@@ -13,7 +13,8 @@ const MARKETS: { value: Market; label: string }[] = [
   { value: 'all', label: '전체' },
   { value: 'kospi', label: '유가증권' },
   { value: 'kosdaq', label: '코스닥' },
-  { value: 'konex', label: '코스넥' },
+  { value: 'konex', label: '코넥스' },
+  { value: 'etc', label: '기타' },
 ]
 
 export function MarketTabs({ selectedMarket, onMarketChange }: MarketTabsProps) {
