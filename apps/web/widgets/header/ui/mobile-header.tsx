@@ -10,8 +10,8 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ left, center, right }: MobileHeaderProps) {
   return (
-    <div className="md:hidden">
-      <header className="bg-card sticky top-0 z-50 flex h-14 items-center px-4 backdrop-blur">
+    <div className="sticky top-0 z-50 md:hidden">
+      <header className="bg-card flex h-14 items-center px-4 backdrop-blur">
         {/* 좌측 */}
         <div className="flex min-w-0 flex-1 items-center">{left}</div>
 
