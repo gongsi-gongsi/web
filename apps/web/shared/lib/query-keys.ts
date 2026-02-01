@@ -1,5 +1,5 @@
 import { createQueryKeyStore } from '@lukemorales/query-key-factory'
-import type { Market } from '@/entities/disclosure'
+import type { Market, SearchDisclosuresParams } from '@/entities/disclosure'
 
 /**
  * TanStack Query의 쿼리 키를 중앙에서 관리하는 스토어입니다
@@ -9,5 +9,9 @@ export const queries = createQueryKeyStore({
   disclosures: {
     today: (market: Market) => [market],
     todayInfinite: (market: Market) => [market],
+    search: (params: Omit<SearchDisclosuresParams, 'pageNo' | 'pageCount'>) => [params],
+  },
+  stocks: {
+    suggest: (query: string) => [query],
   },
 })
