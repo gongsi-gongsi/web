@@ -80,3 +80,14 @@ export interface SearchDisclosuresParams {
 export interface SearchDisclosuresResponse extends PaginatedDisclosuresResponse {
   query: string
 }
+
+export interface PopularCompany {
+  rank: number
+  corpName: string
+  stockCode: string
+  searchCount: number
+}
+
+export interface PopularCompaniesResponse {
+  companies: PopularCompany[]
+}

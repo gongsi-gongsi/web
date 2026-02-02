@@ -20,7 +20,7 @@ export function SearchFilterChips({
   onFilterOpen,
 }: SearchFilterChipsProps) {
   return (
-    <div className="flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-1 md:px-0 md:pt-0">
+    <div className="bg-card sticky top-14 z-40 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-1 md:bg-background md:px-0 md:pt-0">
       <Button
         variant="outline"
         size="icon"

@@ -10,6 +10,8 @@ interface SearchAutocompleteProps {
   value: string
   onSearch: (value: string) => void
   onChange: (value: string) => void
+  onFocus?: () => void
+  onBlur?: () => void
   placeholder?: string
   autoFocus?: boolean
   className?: string
@@ -20,6 +22,8 @@ export function SearchAutocomplete({
   value,
   onSearch,
   onChange,
+  onFocus,
+  onBlur,
   placeholder = '회사명 검색',
   autoFocus = false,
   className,
@@ -67,6 +71,8 @@ export function SearchAutocomplete({
             placeholder={placeholder}
             autoFocus={autoFocus}
             autoComplete="off"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className={`pr-8 ${inputClassName || ''}`}
           />
           {inputValue && (
