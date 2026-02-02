@@ -3,6 +3,7 @@ import { cn } from '@ds/ui'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure
+  showMeta?: boolean
 }
 
 const MARKET_LABELS: Record<string, string> = {
@@ -12,7 +13,7 @@ const MARKET_LABELS: Record<string, string> = {
   all: '-',
 }
 
-export function DisclosureTableRow({ disclosure }: DisclosureTableRowProps) {
+export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowProps) {
   const marketLabel = MARKET_LABELS[disclosure.market] || '-'
   const typeBadge = getDisclosureTypeColor(disclosure.type)
 
@@ -52,6 +53,18 @@ export function DisclosureTableRow({ disclosure }: DisclosureTableRowProps) {
           {disclosure.title}
         </div>
       </td>
+      {showMeta && (
+        <>
+          <td className="px-4 py-3 text-sm text-muted-foreground">
+            <div className="truncate" title={disclosure.submitter}>
+              {disclosure.submitter}
+            </div>
+          </td>
+          <td className="px-4 py-3 text-sm text-muted-foreground">
+            {new Date(disclosure.receivedAt).toLocaleDateString('ko-KR')}
+          </td>
+        </>
+      )}
     </tr>
   )
 }

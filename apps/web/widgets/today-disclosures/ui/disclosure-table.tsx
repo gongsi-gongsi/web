@@ -1,11 +1,14 @@
+import { cn } from '@ds/ui'
+
 import { DisclosureTableRow } from './disclosure-table-row'
 import type { Disclosure } from '@/entities/disclosure'
 
 interface DisclosureTableProps {
   disclosures: Disclosure[]
+  showMeta?: boolean
 }
 
-export function DisclosureTable({ disclosures }: DisclosureTableProps) {
+export function DisclosureTable({ disclosures, showMeta }: DisclosureTableProps) {
   if (disclosures.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -22,12 +25,25 @@ export function DisclosureTable({ disclosures }: DisclosureTableProps) {
             <th className="w-[13%] px-4 py-3 text-left text-sm font-semibold">공시 유형</th>
             <th className="w-[12%] px-4 py-3 text-left text-sm font-semibold">시장</th>
             <th className="w-[20%] px-4 py-3 text-left text-sm font-semibold">회사명</th>
-            <th className="w-[55%] px-4 py-3 text-left text-sm font-semibold">공시제목</th>
+            <th
+              className={cn(
+                showMeta ? 'w-[35%]' : 'w-[55%]',
+                'px-4 py-3 text-left text-sm font-semibold'
+              )}
+            >
+              공시제목
+            </th>
+            {showMeta && (
+              <>
+                <th className="w-[10%] px-4 py-3 text-left text-sm font-semibold">제출인</th>
+                <th className="w-[10%] px-4 py-3 text-left text-sm font-semibold">접수일</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
           {disclosures.map(disclosure => (
-            <DisclosureTableRow key={disclosure.id} disclosure={disclosure} />
+            <DisclosureTableRow key={disclosure.id} disclosure={disclosure} showMeta={showMeta} />
           ))}
         </tbody>
       </table>
