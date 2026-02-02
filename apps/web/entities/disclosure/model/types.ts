@@ -63,3 +63,20 @@ export interface PaginatedDisclosuresResponse {
   pageCount: number
   lastUpdated: string
 }
+
+export type SearchPeriod = 'today' | '1w' | '1m' | '3m' | 'custom'
+
+export interface SearchDisclosuresParams {
+  q: string
+  period: SearchPeriod
+  bgnDe?: string // YYYYMMDD, period === 'custom'일 때 필수
+  endDe?: string // YYYYMMDD, period === 'custom'일 때 필수
+  market: Market
+  type: DisclosureType | 'all'
+  pageNo: number
+  pageCount: number
+}
+
+export interface SearchDisclosuresResponse extends PaginatedDisclosuresResponse {
+  query: string
+}
