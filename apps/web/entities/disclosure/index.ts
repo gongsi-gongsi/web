@@ -10,6 +10,7 @@ export { formatDisclosure } from './lib/format-disclosure'
 export { getDisclosureTypeColor } from './lib/get-disclosure-type-color'
 export { getDisclosureTypeLabel } from './lib/get-disclosure-type-label'
 export { getMarketBadge } from './lib/get-market-badge'
+export { deduplicateDisclosures } from './lib/deduplicate-disclosures'
 export type {
   Disclosure,
   Market,

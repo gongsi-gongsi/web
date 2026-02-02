@@ -11,10 +11,10 @@ interface SuggestCompaniesResponse {
 /**
  * 회사명 자동완성 API를 호출합니다
  * @param query - 검색할 회사명
- * @param limit - 최대 반환 개수 (기본값: 10)
+ * @param limit - 최대 반환 개수 (기본값: 50)
  * @returns 매칭된 회사 목록
  */
-export async function suggestCompanies(query: string, limit = 20): Promise<CompanySuggestion[]> {
+export async function suggestCompanies(query: string, limit = 50): Promise<CompanySuggestion[]> {
   const params = new URLSearchParams({ q: query, limit: String(limit) })
   const response = await fetch(`/api/stocks/suggest?${params.toString()}`)
 

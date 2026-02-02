@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { searchCorpCodes } from '@/shared/lib/dart/apis/corp-code-cache'
+import { searchCorpCodes } from '@/shared/lib/dart/apis/search-stocks'
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const q = searchParams.get('q') || ''
-    const limit = Math.min(Number(searchParams.get('limit') || '20'), 30)
+    const limit = Math.min(Number(searchParams.get('limit') || '50'), 50)
 
     if (!q.trim()) {
       return NextResponse.json({ suggestions: [] })
