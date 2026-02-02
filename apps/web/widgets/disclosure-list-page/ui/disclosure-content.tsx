@@ -2,7 +2,11 @@
 
 import { useEffect } from 'react'
 
-import { useInfiniteTodayDisclosures, type Market } from '@/entities/disclosure'
+import {
+  useInfiniteTodayDisclosures,
+  deduplicateDisclosures,
+  type Market,
+} from '@/entities/disclosure'
 import { useIntersectionObserver } from '@/shared/hooks'
 import { DisclosureTable } from '@/widgets/today-disclosures/ui/disclosure-table'
 import { DisclosureCardList } from '@/widgets/today-disclosures/ui/disclosure-card-list'
@@ -26,7 +30,7 @@ export function DisclosureContent({ selectedMarket }: DisclosureContentProps) {
     }
   }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  const disclosures = data.pages.flatMap(page => page.disclosures)
+  const disclosures = deduplicateDisclosures(data.pages.flatMap(page => page.disclosures))
 
   // 빈 목록
   if (disclosures.length === 0) {

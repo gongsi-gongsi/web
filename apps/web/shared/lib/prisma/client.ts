@@ -31,10 +31,14 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient()
-
-// 모든 환경에서 싱글톤 캐시 사용
-globalForPrisma.prisma = prisma
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop: string | symbol) {
+    if (!globalForPrisma.prisma) {
+      globalForPrisma.prisma = createPrismaClient()
+    }
+    return Reflect.get(globalForPrisma.prisma, prop)
+  },
+})
 
 // Graceful shutdown을 위한 cleanup 함수
 export async function closePrismaConnection() {

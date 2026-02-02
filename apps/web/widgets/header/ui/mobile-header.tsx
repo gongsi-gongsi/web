@@ -11,15 +11,16 @@ interface MobileHeaderProps {
 export function MobileHeader({ left, center, right }: MobileHeaderProps) {
   return (
     <div className="sticky top-0 z-50 md:hidden">
-      <header className="bg-card flex h-14 items-center px-4 backdrop-blur">
+      <header className="bg-card flex h-14 items-center gap-2 px-4 backdrop-blur">
         {/* 좌측 */}
-        <div className="flex min-w-0 flex-1 items-center">{left}</div>
+        <div className="flex shrink-0 items-center">{left}</div>
 
         {/* 중앙 */}
-        {center && <div className="flex items-center justify-center">{center}</div>}
+        {center && <div className="flex min-w-0 flex-1 items-center">{center}</div>}
 
         {/* 우측 */}
-        <div className="flex flex-1 items-center justify-end gap-1">{right}</div>
+        {!center && <div className="flex min-w-0 flex-1" />}
+        <div className="flex shrink-0 items-center gap-1">{right}</div>
       </header>
     </div>
   )

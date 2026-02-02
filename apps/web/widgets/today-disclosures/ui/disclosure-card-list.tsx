@@ -3,9 +3,10 @@ import type { Disclosure } from '@/entities/disclosure'
 
 interface DisclosureCardListProps {
   disclosures: Disclosure[]
+  showMeta?: boolean
 }
 
-export function DisclosureCardList({ disclosures }: DisclosureCardListProps) {
+export function DisclosureCardList({ disclosures, showMeta }: DisclosureCardListProps) {
   if (disclosures.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -17,7 +18,7 @@ export function DisclosureCardList({ disclosures }: DisclosureCardListProps) {
   return (
     <div className="flex flex-col">
       {disclosures.map(disclosure => (
-        <DisclosureCard key={disclosure.id} disclosure={disclosure} />
+        <DisclosureCard key={disclosure.id} disclosure={disclosure} showMeta={showMeta} />
       ))}
     </div>
   )

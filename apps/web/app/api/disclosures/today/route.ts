@@ -1,53 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { formatDisclosure } from '@/entities/disclosure'
 import type { DartApiResponse, Market } from '@/entities/disclosure'
-
-/**
- * DART API 키를 환경변수에서 가져옵니다
- * @returns DART API 키
- * @throws 환경변수가 설정되지 않은 경우 에러
- */
-function getDartApiKey(): string {
-  const apiKey = process.env.DART_API_KEY
-  if (!apiKey) {
-    throw new Error('DART_API_KEY is not defined in environment variables')
-  }
-  return apiKey
-}
-
-/**
- * 시장 구분을 DART API의 corp_cls 파라미터 값으로 변환합니다
- * @param market - 시장 구분 (all | kospi | kosdaq | konex)
- * @returns DART API corp_cls 값 (Y: 유가, K: 코스닥, N: 코넥스, null: 전체)
- */
-function getCorpClsFromMarket(market: Market): string | null {
-  switch (market) {
-    case 'all':
-      return null // 전체 조회 시 파라미터 생략
-    case 'kospi':
-      return 'Y' // 유가증권
-    case 'kosdaq':
-      return 'K' // 코스닥
-    case 'konex':
-      return 'N' // 코넥스
-    case 'etc':
-      return 'E' // 기타
-    default:
-      return null
-  }
-}
-
-/**
- * 오늘 날짜를 YYYYMMDD 형식의 문자열로 반환합니다
- * @returns YYYYMMDD 형식의 날짜 문자열 (KST 기준)
- */
-function getTodayDateString(): string {
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = String(today.getMonth() + 1).padStart(2, '0')
-  const day = String(today.getDate()).padStart(2, '0')
-  return `${year}${month}${day}`
-}
+import { getDartApiKey, getCorpClsFromMarket, formatDateToYYYYMMDD } from '@/shared/lib/dart/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -57,7 +11,7 @@ export async function GET(request: NextRequest) {
     const pageCount = searchParams.get('page_count') || '100'
 
     const corpCls = getCorpClsFromMarket(market)
-    const today = getTodayDateString()
+    const today = formatDateToYYYYMMDD(new Date())
 
     // DART API 호출
     const dartUrl = new URL('https://opendart.fss.or.kr/api/list.json')
@@ -101,8 +55,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 데이터 변환
-    const disclosures = data.list.map(formatDisclosure)
+    // 데이터 변환 (지분공시 제외 — DART 웹사이트 기본 동작과 동일)
+    const disclosures = data.list.map(item => formatDisclosure(item)).filter(d => d.type !== 'D')
 
     return NextResponse.json({
       disclosures,

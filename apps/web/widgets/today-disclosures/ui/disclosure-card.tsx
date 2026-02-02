@@ -4,9 +4,10 @@ import { cn } from '@ds/ui'
 
 interface DisclosureCardProps {
   disclosure: Disclosure
+  showMeta?: boolean
 }
 
-export function DisclosureCard({ disclosure }: DisclosureCardProps) {
+export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
   const marketBadge = getMarketBadge(disclosure.market)
   const typeBadge = getDisclosureTypeColor(disclosure.type)
 
@@ -47,6 +48,13 @@ export function DisclosureCard({ disclosure }: DisclosureCardProps) {
           {typeBadge.label}
         </span>
       </div>
+
+      {showMeta && (
+        <div className="flex items-center gap-3 px-4 pb-3 pl-11 text-xs text-muted-foreground">
+          <span>{disclosure.submitter}</span>
+          <span>{new Date(disclosure.receivedAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+      )}
     </Link>
   )
 }
