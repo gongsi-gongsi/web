@@ -13,5 +13,6 @@ export const queries = createQueryKeyStore({
   },
   stocks: {
     suggest: (query: string) => [query],
+    popular: null,
   },
 })

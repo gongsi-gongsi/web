@@ -5,7 +5,7 @@ import { Suspense, useState, useCallback, useEffect } from 'react'
 import { ErrorBoundary } from '@suspensive/react'
 
 import type { SearchPeriod, Market, DisclosureType } from '@/entities/disclosure'
-import { useSuggestCompanies } from '@/entities/disclosure'
+import { useSuggestCompanies, usePopularCompanies } from '@/entities/disclosure'
 import { useDisclosureSearchParams } from '@/features/search-disclosures'
 import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
@@ -17,6 +17,7 @@ import { SearchFilterChips } from './ui/search-filter-chips'
 import { SearchResultContent } from './ui/search-result-content'
 import { SearchResultSkeleton } from './ui/search-result-skeleton'
 import { SearchErrorFallback } from './ui/search-error-fallback'
+import { PopularCompanies, PopularCompaniesSkeleton } from './ui/popular-companies'
 
 export function DisclosureSearchPage() {
   const { params, updateParams } = useDisclosureSearchParams()
@@ -24,6 +25,7 @@ export function DisclosureSearchPage() {
   const [typingQuery, setTypingQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [isSuggestionMode, setIsSuggestionMode] = useState(false)
+  const [isInputFocused, setIsInputFocused] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,6 +46,14 @@ export function DisclosureSearchPage() {
   const handleInputChange = useCallback((value: string) => {
     setTypingQuery(value)
     setIsSuggestionMode(value.length > 0)
+  }, [])
+
+  const handleInputFocus = useCallback(() => {
+    setIsInputFocused(true)
+  }, [])
+
+  const handleInputBlur = useCallback(() => {
+    setTimeout(() => setIsInputFocused(false), 150)
   }, [])
 
   const handleSelectCompany = useCallback(
@@ -72,6 +82,7 @@ export function DisclosureSearchPage() {
 
   const showSuggestions = isSuggestionMode && typingQuery.length >= 1
   const showSuggestionResults = showSuggestions && debouncedQuery.length >= 1
+  const showPopular = isInputFocused && !showSuggestions
 
   return (
     <div className="bg-card md:bg-transparent">
@@ -83,6 +94,8 @@ export function DisclosureSearchPage() {
             value={params.q}
             onSearch={handleSearch}
             onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
             autoFocus
             className="flex-1"
             inputClassName="h-9 text-sm"
@@ -96,6 +109,8 @@ export function DisclosureSearchPage() {
           value={params.q}
           onSearch={handleSearch}
           onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
           autoFocus
           className="flex-1"
         />
@@ -113,7 +128,13 @@ export function DisclosureSearchPage() {
             <CompanySuggestionSkeleton />
           )}
         </div>
-      ) : (
+      ) : showPopular ? (
+        <ErrorBoundary fallback={SearchErrorFallback}>
+          <Suspense fallback={<PopularCompaniesSkeleton />}>
+            <PopularCompaniesResult onSelect={handleSelectCompany} />
+          </Suspense>
+        </ErrorBoundary>
+      ) : params.q ? (
         <>
           {/* 필터 바: 필터 아이콘 + 기간 칩 */}
           <SearchFilterChips
@@ -135,21 +156,21 @@ export function DisclosureSearchPage() {
           />
 
           {/* 검색 결과 */}
-          {params.q ? (
-            <ErrorBoundary fallback={SearchErrorFallback}>
-              <Suspense
-                key={`${params.q}-${params.period}-${params.market}-${params.type}`}
-                fallback={<SearchResultSkeleton />}
-              >
-                <SearchResultContent params={params} />
-              </Suspense>
-            </ErrorBoundary>
-          ) : (
-            <div className="py-12 text-center">
-              <p className="text-sm text-muted-foreground">회사명을 입력해주세요</p>
-            </div>
-          )}
+          <ErrorBoundary fallback={SearchErrorFallback}>
+            <Suspense
+              key={`${params.q}-${params.period}-${params.market}-${params.type}`}
+              fallback={<SearchResultSkeleton />}
+            >
+              <SearchResultContent params={params} />
+            </Suspense>
+          </ErrorBoundary>
         </>
+      ) : (
+        <ErrorBoundary fallback={SearchErrorFallback}>
+          <Suspense fallback={<PopularCompaniesSkeleton />}>
+            <PopularCompaniesResult onSelect={handleSelectCompany} />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </div>
   )
@@ -164,4 +185,14 @@ function SuggestionResult({ query, onSelect }: SuggestionResultProps) {
   const { data: suggestions } = useSuggestCompanies(query)
 
   return <CompanySuggestionList suggestions={suggestions} query={query} onSelect={onSelect} />
+}
+
+interface PopularCompaniesResultProps {
+  onSelect: (corpName: string) => void
+}
+
+function PopularCompaniesResult({ onSelect }: PopularCompaniesResultProps) {
+  const { data: companies } = usePopularCompanies()
+
+  return <PopularCompanies companies={companies} onSelect={onSelect} />
 }

@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { formatDisclosure } from '@/entities/disclosure'
+import { prisma } from '@/shared/lib/prisma'
 import type {
   DartApiResponse,
   Market,
@@ -140,6 +141,13 @@ export async function GET(request: NextRequest) {
 
     const corpCls = getCorpClsFromMarket(market)
     const [startDate, endDate] = getDateRange(period, bgnDe, endDe)
+
+    // 검색 로그 기록 (비동기, 실패 시 로그만 남김)
+    if (q.length <= 100) {
+      prisma.searchLog
+        .create({ data: { query: q } })
+        .catch((err: unknown) => console.error('[SearchLog] Failed to record search:', err))
+    }
 
     // 2. 단일 회사 매칭: 기존 페이지네이션 유지
     if (matchedCorps.length === 1) {

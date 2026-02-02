@@ -170,3 +170,14 @@ model Notification {
   @@index([isRead])
   @@map("notifications")
 }
+
+// 검색 로그
+model SearchLog {
+  id        Int      @id @default(autoincrement())
+  query     String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([query, createdAt])
+  @@map("search_logs")
+}
