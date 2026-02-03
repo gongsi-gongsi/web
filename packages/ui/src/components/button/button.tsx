@@ -93,31 +93,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    const commonProps = {
+      ref,
+      'data-slot': 'button' as const,
+      'data-variant': variant,
+      'data-size': size,
+      disabled: disabled || loading,
+      'aria-busy': loading || undefined,
+      className: cn(buttonVariants({ variant, size, interactive, className })),
+      ...props,
+    }
 
-    const showSpinner = loading && !asChild
+    if (asChild) {
+      return <Slot {...commonProps}>{children}</Slot>
+    }
+
+    const showSpinner = loading
 
     return (
-      <Comp
-        ref={ref}
-        data-slot="button"
-        data-variant={variant}
-        data-size={size}
-        disabled={disabled || loading}
-        aria-busy={loading || undefined}
-        className={cn(
-          buttonVariants({ variant, size, interactive, className }),
-          showSpinner && 'relative'
-        )}
-        {...props}
-      >
+      <button {...commonProps} className={cn(commonProps.className, showSpinner && 'relative')}>
         {showSpinner && (
           <span className="absolute inset-0 flex items-center justify-center">
             <LoaderCircle className="animate-spin" />
           </span>
         )}
         <span className={cn(showSpinner && 'invisible')}>{children}</span>
-      </Comp>
+      </button>
     )
   }
 )
