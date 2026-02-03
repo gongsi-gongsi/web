@@ -5,6 +5,12 @@ const PROTECTED_PATHS = ['/mypage', '/watchlist']
 
 /**
  * Supabase 세션을 갱신하고 보호 경로에 대한 접근을 제어합니다
+ *
+ * Supabase Auth는 JWT 기반 인증을 사용합니다:
+ * - access_token(JWT, 1시간 만료) + refresh_token(무기한)을 쿠키에 저장
+ * - 매 요청마다 getUser()를 호출하여 access_token 만료 시 refresh_token으로 자동 갱신
+ * - 갱신된 토큰은 setAll 콜백을 통해 응답 쿠키에 다시 설정됨
+ *
  * @param request - Next.js 미들웨어 요청 객체
  * @returns 세션이 갱신된 응답 또는 리다이렉트 응답
  */
@@ -19,6 +25,7 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
+        // access_token 갱신 시 Supabase가 호출하여 새 토큰을 쿠키에 반영
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
@@ -30,6 +37,7 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // access_token을 검증하고, 만료 시 refresh_token으로 자동 갱신
   const {
     data: { user },
   } = await supabase.auth.getUser()

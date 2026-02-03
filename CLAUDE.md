@@ -275,6 +275,7 @@ export function formatDate(date: Date, separator = '-'): string {
 - ✅ 재사용 가능한 헬퍼 함수
 - ✅ 복잡한 비즈니스 로직 함수
 - ✅ 공개 API (export되는 함수)
+- ✅ 커스텀 훅 (`use-*.ts`) - 용도, 반환값 설명 필수
 
 #### 주석이 선택적인 경우
 
