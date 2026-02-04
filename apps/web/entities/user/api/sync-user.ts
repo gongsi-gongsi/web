@@ -10,7 +10,7 @@ import { prisma } from '@/shared/lib/prisma'
  * @returns upsert된 Prisma User 레코드
  */
 export async function syncUser(supabaseUser: SupabaseUser) {
-  const email = supabaseUser.email ?? ''
+  const email = supabaseUser.email ?? null
   const name = supabaseUser.user_metadata?.full_name ?? supabaseUser.user_metadata?.name ?? null
 
   return prisma.user.upsert({
