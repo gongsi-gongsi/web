@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { LoaderCircle } from 'lucide-react'
 
 import { cn } from '../../lib/utils'
 
@@ -72,6 +73,8 @@ const buttonVariants = cva(
 interface ButtonProps extends React.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   /** 터치/클릭 시 축소 효과 활성화 */
   interactive?: boolean
+  /** 로딩 상태 (disabled + 스피너 표시) */
+  loading?: boolean
   asChild?: boolean
 }
 
@@ -82,22 +85,40 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'default',
       size = 'default',
       interactive = false,
+      loading = false,
       asChild = false,
+      disabled,
+      children,
       ...props
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    const commonProps = {
+      ref,
+      'data-slot': 'button' as const,
+      'data-variant': variant,
+      'data-size': size,
+      disabled: disabled || loading,
+      'aria-busy': loading || undefined,
+      className: cn(buttonVariants({ variant, size, interactive, className })),
+      ...props,
+    }
+
+    if (asChild) {
+      return <Slot {...commonProps}>{children}</Slot>
+    }
+
+    const showSpinner = loading
 
     return (
-      <Comp
-        ref={ref}
-        data-slot="button"
-        data-variant={variant}
-        data-size={size}
-        className={cn(buttonVariants({ variant, size, interactive, className }))}
-        {...props}
-      />
+      <button {...commonProps} className={cn(commonProps.className, showSpinner && 'relative')}>
+        {showSpinner && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <LoaderCircle className="animate-spin" />
+          </span>
+        )}
+        <span className={cn(showSpinner && 'invisible')}>{children}</span>
+      </button>
     )
   }
 )

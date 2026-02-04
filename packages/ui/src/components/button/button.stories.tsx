@@ -1,8 +1,8 @@
-import { expect, fn, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test'
 
-import { Button } from '../button';
+import { Button } from '../button'
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -78,6 +78,14 @@ import { Button } from '@split/ui';
         type: { summary: 'ReactNode' },
       },
     },
+    loading: {
+      control: 'boolean',
+      description: '로딩 상태 (disabled + 스피너 표시)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     disabled: {
       control: 'boolean',
       description: '비활성화 상태',
@@ -96,10 +104,10 @@ import { Button } from '@split/ui';
   args: {
     onClick: fn(),
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
@@ -113,7 +121,7 @@ export const Default: Story = {
       },
     },
   },
-};
+}
 
 export const Destructive: Story = {
   args: {
@@ -127,7 +135,7 @@ export const Destructive: Story = {
       },
     },
   },
-};
+}
 
 export const Outline: Story = {
   args: {
@@ -141,7 +149,7 @@ export const Outline: Story = {
       },
     },
   },
-};
+}
 
 export const Secondary: Story = {
   args: {
@@ -155,7 +163,7 @@ export const Secondary: Story = {
       },
     },
   },
-};
+}
 
 export const Ghost: Story = {
   args: {
@@ -169,7 +177,7 @@ export const Ghost: Story = {
       },
     },
   },
-};
+}
 
 export const Link: Story = {
   args: {
@@ -183,7 +191,7 @@ export const Link: Story = {
       },
     },
   },
-};
+}
 
 export const Small: Story = {
   args: {
@@ -197,7 +205,7 @@ export const Small: Story = {
       },
     },
   },
-};
+}
 
 export const Large: Story = {
   args: {
@@ -211,7 +219,7 @@ export const Large: Story = {
       },
     },
   },
-};
+}
 
 export const Disabled: Story = {
   args: {
@@ -225,7 +233,74 @@ export const Disabled: Story = {
       },
     },
   },
-};
+}
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+    children: 'Loading Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '로딩 상태의 버튼입니다. 스피너가 표시되고 버튼이 비활성화됩니다.',
+      },
+    },
+  },
+}
+
+export const LoadingVariants: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-4">
+      <Button loading variant="default">
+        Default
+      </Button>
+      <Button loading variant="destructive">
+        Destructive
+      </Button>
+      <Button loading variant="outline">
+        Outline
+      </Button>
+      <Button loading variant="secondary">
+        Secondary
+      </Button>
+      <Button loading variant="ghost">
+        Ghost
+      </Button>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '모든 variant에 로딩 상태를 적용한 예시입니다.',
+      },
+    },
+  },
+}
+
+export const LoadingSizes: Story = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <Button loading size="sm">
+        Small
+      </Button>
+      <Button loading size="default">
+        Default
+      </Button>
+      <Button loading size="lg">
+        Large
+      </Button>
+      <Button loading size="icon" variant="outline" aria-label="Loading icon" />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '모든 크기에 로딩 상태를 적용한 예시입니다. 아이콘 버튼에서도 스피너가 표시됩니다.',
+      },
+    },
+  },
+}
 
 // 인터랙션 테스트 예시
 export const WithInteraction: Story = {
@@ -234,21 +309,21 @@ export const WithInteraction: Story = {
     children: '클릭하세요',
   },
   play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button')
 
     // 버튼이 렌더링되었는지 확인
-    await expect(button).toBeInTheDocument();
+    await expect(button).toBeInTheDocument()
 
     // 클릭 테스트
-    await userEvent.click(button);
-    await expect(args.onClick).toHaveBeenCalledTimes(1);
+    await userEvent.click(button)
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
 
     // 더블 클릭 테스트
-    await userEvent.click(button);
-    await expect(args.onClick).toHaveBeenCalledTimes(2);
+    await userEvent.click(button)
+    await expect(args.onClick).toHaveBeenCalledTimes(2)
   },
-};
+}
 
 // 키보드 인터랙션 테스트
 export const KeyboardInteraction: Story = {
@@ -257,22 +332,22 @@ export const KeyboardInteraction: Story = {
     children: 'Enter/Space로 클릭',
   },
   play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button')
 
     // Tab으로 포커스
-    await userEvent.tab();
-    await expect(button).toHaveFocus();
+    await userEvent.tab()
+    await expect(button).toHaveFocus()
 
     // Enter 키로 클릭
-    await userEvent.keyboard('{Enter}');
-    await expect(args.onClick).toHaveBeenCalled();
+    await userEvent.keyboard('{Enter}')
+    await expect(args.onClick).toHaveBeenCalled()
 
     // Space 키로 클릭
-    await userEvent.keyboard(' ');
-    await expect(args.onClick).toHaveBeenCalledTimes(2);
+    await userEvent.keyboard(' ')
+    await expect(args.onClick).toHaveBeenCalledTimes(2)
   },
-};
+}
 
 export const Interactive: Story = {
   args: {
@@ -287,7 +362,7 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}
 
 export const InteractiveVariants: Story = {
   render: () => (
@@ -319,7 +394,7 @@ export const InteractiveVariants: Story = {
       },
     },
   },
-};
+}
 
 export const Playground: Story = {
   args: {
@@ -334,7 +409,7 @@ export const Playground: Story = {
       },
     },
   },
-};
+}
 
 // 아이콘 버튼 스토리
 const SearchIcon = () => (
@@ -352,7 +427,7 @@ const SearchIcon = () => (
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.3-4.3" />
   </svg>
-);
+)
 
 export const Icon: Story = {
   args: {
@@ -368,7 +443,7 @@ export const Icon: Story = {
       },
     },
   },
-};
+}
 
 export const IconSmall: Story = {
   args: {
@@ -384,7 +459,7 @@ export const IconSmall: Story = {
       },
     },
   },
-};
+}
 
 export const IconLarge: Story = {
   args: {
@@ -400,7 +475,7 @@ export const IconLarge: Story = {
       },
     },
   },
-};
+}
 
 export const IconBare: Story = {
   args: {
@@ -417,7 +492,7 @@ export const IconBare: Story = {
       },
     },
   },
-};
+}
 
 export const IconSizes: Story = {
   render: () => (
@@ -443,4 +518,4 @@ export const IconSizes: Story = {
       },
     },
   },
-};
+}

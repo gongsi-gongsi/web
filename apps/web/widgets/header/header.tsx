@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Button, cn, ThemeToggle } from '@ds/ui'
+import { cn, ThemeToggle } from '@ds/ui'
+
+import { AuthButton } from '@/widgets/auth'
 
 const NAV_ITEMS = [
   { label: '홈', href: '/' },
@@ -39,12 +41,10 @@ export function DesktopHeader() {
           ))}
         </nav>
 
-        {/* 우측: 테마 전환 + 로그인 버튼 */}
+        {/* 우측: 테마 전환 + 인증 버튼 */}
         <div className="flex items-center justify-end space-x-2">
           <ThemeToggle />
-          <Button interactive variant="default" size="sm" asChild>
-            <Link href="/login">로그인</Link>
-          </Button>
+          <AuthButton />
         </div>
       </div>
     </header>
