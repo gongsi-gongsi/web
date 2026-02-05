@@ -84,8 +84,8 @@ export function TodayDisclosures() {
       </div>
 
       {/* 모바일 버전 */}
-      <div className="md:hidden -mx-4 bg-card">
-        <div className="px-4 pb-4 pt-6">
+      <div className="md:hidden bg-card">
+        <div className="pb-4 pt-6 px-4">
           <h2 className="text-lg font-bold">오늘의 공시</h2>
         </div>
 
