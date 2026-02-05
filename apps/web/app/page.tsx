@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 
 import { MagnifyingGlassIcon, ListIcon } from '@phosphor-icons/react/dist/ssr'
@@ -33,7 +34,9 @@ export default function Home() {
         }
       />
       <div className="mx-auto max-w-screen-2xl py-8 md:px-4 lg:px-8">
-        <TodayDisclosures />
+        <Suspense>
+          <TodayDisclosures />
+        </Suspense>
       </div>
     </main>
   )

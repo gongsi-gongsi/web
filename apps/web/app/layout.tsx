@@ -5,7 +5,7 @@ import { Header } from '@/widgets/header'
 import './globals.css'
 
 const pretendard = localFont({
-  src: './fonts/PretendardVariable.woff2',
+  src: '../public/fonts/PretendardVariable.woff2',
   variable: '--font-sans',
   display: 'swap',
 })
