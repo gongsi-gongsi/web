@@ -28,7 +28,7 @@
   --secondary-foreground: oklch(0.4582 0.0315 251.94);
   --muted: oklch(0.964 0.0029 264.54);
   --muted-foreground: oklch(0.4582 0.0315 251.94);
-  --accent: oklch(0.964 0.0029 264.54);
+  --accent: oklch(0.9189 0 0);
   --accent-foreground: foreground: oklch(0 0 0);
   --destructive: oklch(0.6678 0.2172 21.65);
   --destructive-foreground: oklch(1 0 0);
@@ -54,7 +54,10 @@
   --sidebar-accent-foreground: oklch(0.6671 0.1615 245.54);
   --sidebar-border: oklch(0.9614 0.0045 214.3285);
   --sidebar-ring: oklch(0.6671 0.1615 245.54);
-  --font-sans: system-ui, sans-serif;
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 0.5rem;
@@ -127,7 +130,10 @@
   --sidebar-accent-foreground: oklch(0.6671 0.1615 245.54);
   --sidebar-border: oklch(0.3278 0.0119 232.7823);
   --sidebar-ring: oklch(0.6671 0.1615 245.54);
-  --font-sans: system-ui, sans-serif;
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 0.5rem;
@@ -222,7 +228,7 @@
   }
 
   .interactive-card:hover {
-    @apply bg-muted/50;
+    @apply bg-accent/50;
   }
 
   .interactive-card:active {
@@ -250,5 +256,39 @@
 
   .interactive-button:active {
     transform: scale(0.96);
+  }
+}
+
+/* ============================================================================
+   기본 글자 크기 설정
+   ============================================================================ */
+
+html {
+  font-size: 16px; /* 1rem = 16px (rem 계산 기준) */
+}
+
+body {
+  font-size: 16px; /* 기본 텍스트 크기 */
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   Tailwind 폰트 크기 오버라이드
+   ============================================================================ */
+
+@layer utilities {
+  .text-lg {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .text-base {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .text-sm {
+    font-size: 15px;
+    line-height: 1.5;
   }
 }
