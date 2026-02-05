@@ -54,7 +54,8 @@ export function DesktopHeader() {
         {/* Navigation - Clean and refined */}
         <nav className="flex flex-1 items-center gap-6">
           {NAV_ITEMS.map(item => {
-            const isActive = pathname === item.href
+            const isActive =
+              item.href === '/' ? pathname === item.href : pathname.startsWith(item.href)
             return (
               <Link
                 key={item.href}
