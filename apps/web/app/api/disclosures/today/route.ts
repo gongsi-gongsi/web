@@ -11,10 +11,7 @@ export async function GET(request: NextRequest) {
     const pageCount = searchParams.get('page_count') || '100'
 
     const corpCls = getCorpClsFromMarket(market)
-    // TODO: 테스트용 - 하루 이전 날짜로 조회
-    const testDate = new Date()
-    testDate.setDate(testDate.getDate() - 1)
-    const today = formatDateToYYYYMMDD(testDate)
+    const today = formatDateToYYYYMMDD(new Date())
 
     // DART API 호출
     const dartUrl = new URL('https://opendart.fss.or.kr/api/list.json')
