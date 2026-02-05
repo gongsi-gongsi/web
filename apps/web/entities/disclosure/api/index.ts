@@ -1,0 +1,7 @@
+// 클라이언트 전용 API (클라이언트 컴포넌트에서 안전하게 import 가능)
+export { getTodayDisclosures, getTodayDisclosuresPaginated } from './client'
+export { searchDisclosures } from './search-disclosures'
+export { suggestCompanies, type CompanySuggestion } from './suggest-companies'
+export { getPopularCompanies } from './get-popular-companies'
+
+// 주의: 서버 전용 API는 직접 import하지 말고, '@/entities/disclosure/server'를 사용하세요

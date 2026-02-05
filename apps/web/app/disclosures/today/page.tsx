@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { getTodayDisclosuresPaginated } from '@/entities/disclosure'
+import { getTodayDisclosuresFromDartPaginated, type Market } from '@/entities/disclosure/server'
 import { getQueryClient } from '@/shared/lib/get-query-client'
 import { queries } from '@/shared/lib/query-keys'
 import { DisclosureListPage } from '@/widgets/disclosure-list-page'
@@ -10,14 +10,14 @@ export default async function DisclosuresPage({
   searchParams: Promise<{ market?: string }>
 }) {
   const params = await searchParams
-  const market = (params.market as 'all' | 'kospi' | 'kosdaq' | 'konex') || 'all'
+  const market = (params.market as Market) || 'all'
 
-  // 서버에서 데이터 prefetch
+  // 서버에서 데이터 prefetch (서버 전용 API 사용)
   const queryClient = getQueryClient()
 
   await queryClient.prefetchInfiniteQuery({
-    ...queries.disclosures.todayInfinite(market),
-    queryFn: () => getTodayDisclosuresPaginated(market, 1, 20),
+    queryKey: queries.disclosures.todayInfinite(market).queryKey,
+    queryFn: () => getTodayDisclosuresFromDartPaginated(market, 1, 20),
     initialPageParam: 1,
   })
 

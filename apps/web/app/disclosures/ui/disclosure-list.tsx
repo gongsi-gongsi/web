@@ -1,25 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useTodayDisclosures, type Market } from '@/entities/disclosure'
 import { MarketTabs } from '@/widgets/today-disclosures/ui/market-tabs'
 import { DisclosureTable } from '@/widgets/today-disclosures/ui/disclosure-table'
 import { DisclosureCardList } from '@/widgets/today-disclosures/ui/disclosure-card-list'
 
-export function DisclosureList() {
+interface DisclosureListProps {
+  initialMarket: Market
+}
+
+export function DisclosureList({ initialMarket }: DisclosureListProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const initialMarket = (searchParams.get('market') as Market) || 'all'
   const [selectedMarket, setSelectedMarket] = useState<Market>(initialMarket)
 
+  // 서버에서 prefetch된 데이터가 있으면 즉시 반환
   const { data } = useTodayDisclosures(selectedMarket)
 
   function handleMarketChange(market: Market) {
     setSelectedMarket(market)
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('market', market)
-    router.push(`?${params.toString()}`, { scroll: false })
+    router.push(`?market=${market}`, { scroll: false })
   }
 
   return (
