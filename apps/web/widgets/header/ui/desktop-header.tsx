@@ -74,7 +74,7 @@ export function DesktopHeader() {
         {/* Right Section - Actions */}
         <div className="flex items-center gap-1">
           {/* Theme toggle */}
-          <ThemeToggle className="" />
+          <ThemeToggle />
 
           {/* Auth button */}
           <AuthButton />

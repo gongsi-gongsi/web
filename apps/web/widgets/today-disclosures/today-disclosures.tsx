@@ -5,15 +5,20 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ErrorBoundary, Suspense } from '@suspensive/react'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
+import { Button } from '@gs/ui'
 import { useTodayDisclosures, type Market } from '@/entities/disclosure'
 import { MarketTabs } from './ui/market-tabs'
 import { DisclosureCardList } from './ui/disclosure-card-list'
 import { DisclosureList } from './ui/disclosure-list'
 import { DisclosureSkeleton } from './ui/disclosure-skeleton'
 import { DisclosureTableSkeleton } from './ui/disclosure-table-skeleton'
-import { Button } from '@gs/ui'
 
-function ErrorFallback({ reset }: { error: Error; reset: () => void }) {
+interface ErrorFallbackProps {
+  error: Error
+  reset: () => void
+}
+
+function ErrorFallback({ reset, error: _error }: ErrorFallbackProps) {
   return (
     <div className="py-12 text-center">
       <p className="mb-4 text-sm text-destructive">공시 정보를 불러오는데 실패했습니다</p>
@@ -43,10 +48,17 @@ function TodayDisclosuresContent({ selectedMarket }: { selectedMarket: Market })
   )
 }
 
+const VALID_MARKETS: Market[] = ['all', 'kospi', 'kosdaq', 'konex', 'etc']
+
+function isValidMarket(value: string | null): value is Market {
+  return value !== null && VALID_MARKETS.includes(value as Market)
+}
+
 export function TodayDisclosures() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const initialMarket = (searchParams.get('market') as Market) || 'all'
+  const marketParam = searchParams.get('market')
+  const initialMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
   const [selectedMarket, setSelectedMarket] = useState<Market>(initialMarket)
   const { reset } = useQueryErrorResetBoundary()
 

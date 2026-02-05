@@ -20,10 +20,10 @@ export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement
 // Component
 // ============================================================================
 
-export const ThemeToggle = ({ iconSize = 20, className, ...props }: ThemeToggleProps) => {
+export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme()
 
-  const toggleTheme = () => {
+  function toggleTheme() {
     if (theme === 'light') {
       setTheme('dark')
     } else if (theme === 'dark') {

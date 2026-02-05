@@ -1,6 +1,6 @@
 export function DisclosureTableSkeleton() {
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col">
       {Array.from({ length: 7 }).map((_, index) => (
         <div
           key={index}

@@ -1,10 +1,18 @@
 import type { Market } from '../model/types'
 
-interface MarketBadge {
+export interface MarketBadge {
   label: string
   color: string
 }
 
+/**
+ * 시장 코드에 따른 배지 정보를 반환합니다
+ * @param market - 시장 코드 (kospi, kosdaq, konex, etc, all)
+ * @returns 시장 배지 정보 (label, color) 또는 null (all인 경우)
+ * @example
+ * getMarketBadge('kospi') // { label: '유', color: 'bg-market-kospi-bg ...' }
+ * getMarketBadge('all') // null
+ */
 export function getMarketBadge(market: Market): MarketBadge | null {
   switch (market) {
     case 'kospi':
@@ -29,5 +37,9 @@ export function getMarketBadge(market: Market): MarketBadge | null {
       }
     case 'all':
       return null
+    default: {
+      const _exhaustiveCheck: never = market
+      return _exhaustiveCheck
+    }
   }
 }
