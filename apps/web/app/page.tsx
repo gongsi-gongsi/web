@@ -12,7 +12,7 @@ export default function Home() {
       <MobileHeader
         left={
           <Link href="/" className="flex items-center">
-            <span className="text-lg font-bold">DailyStock</span>
+            <span className="text-lg font-bold">공시공시</span>
           </Link>
         }
         right={

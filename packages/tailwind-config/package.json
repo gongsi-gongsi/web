@@ -1,5 +1,5 @@
 {
-  "name": "@ds/tailwind-config",
+  "name": "@gs/tailwind-config",
   "version": "0.1.0",
   "private": true,
   "type": "module",

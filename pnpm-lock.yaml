@@ -38,10 +38,10 @@ importers:
 
   apps/admin:
     dependencies:
-      '@ds/tailwind-config':
+      '@gs/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@ds/ui':
+      '@gs/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -54,13 +54,13 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@ds/eslint-config':
+      '@gs/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@ds/prettier-config':
+      '@gs/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
-      '@ds/typescript-config':
+      '@gs/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tailwindcss/postcss':
@@ -90,10 +90,10 @@ importers:
 
   apps/web:
     dependencies:
-      '@ds/tailwind-config':
+      '@gs/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@ds/ui':
+      '@gs/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@lukemorales/query-key-factory':
@@ -148,13 +148,13 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
     devDependencies:
-      '@ds/eslint-config':
+      '@gs/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@ds/prettier-config':
+      '@gs/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
-      '@ds/typescript-config':
+      '@gs/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@playwright/test':
@@ -238,7 +238,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@ds/tailwind-config':
+      '@gs/tailwind-config':
         specifier: workspace:*
         version: link:../tailwind-config
       '@phosphor-icons/react':
@@ -296,10 +296,10 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
     devDependencies:
-      '@ds/eslint-config':
+      '@gs/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ds/typescript-config':
+      '@gs/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@storybook/addon-essentials':

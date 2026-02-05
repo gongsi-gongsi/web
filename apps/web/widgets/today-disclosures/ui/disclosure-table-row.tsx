@@ -1,5 +1,5 @@
 import { getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure

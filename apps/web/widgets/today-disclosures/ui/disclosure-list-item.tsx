@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 import type { Disclosure } from '@/entities/disclosure'
 
 interface DisclosureListItemProps {

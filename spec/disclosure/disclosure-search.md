@@ -234,7 +234,7 @@ DART 공시검색 API(`https://opendart.fss.or.kr/api/list.json`)를 활용하�
 - **진입점**: 검색바 옆 필터(⚙) 아이콘 버튼
 - **PC**: Dialog 형태로 중앙에 표시
 - **모바일**: Bottom Sheet 형태로 하단에서 올라옴
-- `@ds/ui`의 `useIsMobile` 훅으로 환경 자동 감지 (breakpoint: 768px)
+- `@gs/ui`의 `useIsMobile` 훅으로 환경 자동 감지 (breakpoint: 768px)
 - 현재 적용된 필터는 검색바 아래에 칩(Chip) 형태로 요약 표시
 - 필터 변경 후 "적용하기" 버튼 클릭 시 검색 재실행 및 모달 닫힘
 
@@ -308,7 +308,7 @@ apps/web/
 
 ### 반응형 모달 컴포넌트 (PC: Dialog / 모바일: Bottom Sheet)
 
-`@ds/ui` 패키지에 `Dialog`, `Sheet`, `useIsMobile` 훅이 이미 존재하며, `Sidebar` 컴포넌트에서 `useIsMobile`로 Sheet/비Sheet를 분기하는 패턴이 사용되고 있습니다. 이 패턴을 활용하여 **반응형 모달 공통 컴포넌트**를 `@ds/ui`에 추가합니다.
+`@gs/ui` 패키지에 `Dialog`, `Sheet`, `useIsMobile` 훅이 이미 존재하며, `Sidebar` 컴포넌트에서 `useIsMobile`로 Sheet/비Sheet를 분기하는 패턴이 사용되고 있습니다. 이 패턴을 활용하여 **반응형 모달 공통 컴포넌트**를 `@gs/ui`에 추가합니다.
 
 #### 기존 자산 확인
 
@@ -386,7 +386,7 @@ export function ResponsiveModal({
 
 ```typescript
 // widgets/disclosure-search/ui/search-filter-modal.tsx
-import { ResponsiveModal } from '@ds/ui'
+import { ResponsiveModal } from '@gs/ui'
 
 export function SearchFilterModal({ open, onOpenChange, params, onApply }: Props) {
   return (
@@ -646,7 +646,7 @@ const response = await fetch(dartUrl.toString(), {
 1. **ResponsiveModal 컴포넌트 생성**
    - `packages/ui/src/components/responsive-modal/responsive-modal.tsx` 생성
    - `useIsMobile` 훅으로 모바일 → Bottom Sheet, PC → Dialog 자동 전환
-   - `index.ts` 생성 및 `@ds/ui` 메인 export에 추가
+   - `index.ts` 생성 및 `@gs/ui` 메인 export에 추가
    - 기존 Sidebar의 Sheet/Desktop 분기 패턴 참고
 
 ### Phase 3: 검색 UI (메인 페이지 검색바)
@@ -719,7 +719,7 @@ const response = await fetch(dartUrl.toString(), {
 #### Phase 2: 반응형 모달 공통 컴포넌트
 
 - [ ] ResponsiveModal 컴포넌트 (`packages/ui/src/components/responsive-modal/responsive-modal.tsx`)
-- [ ] `@ds/ui` 메인 export에 추가
+- [ ] `@gs/ui` 메인 export에 추가
 
 #### Phase 3: 검색 UI (메인 페이지 검색바)
 

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn, ThemeToggle } from '@ds/ui'
+import { cn, ThemeToggle } from '@gs/ui'
 
 import { AuthButton } from '@/widgets/auth'
 
@@ -21,7 +21,7 @@ export function DesktopHeader() {
         {/* 좌측: 로고 */}
         <div className="mr-8 flex">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold">DailyStock</span>
+            <span className="text-xl font-bold">공시공시</span>
           </Link>
         </div>
 

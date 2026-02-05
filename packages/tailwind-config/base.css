@@ -2,7 +2,7 @@
 @import './animations.css';
 
 /* ============================================================================
-   DailyStock 테마 설정 (Tailwind v4)
+   공시공시 테마 설정 (Tailwind v4)
    - @theme inline: Tailwind 유틸리티 클래스 생성용
    - :root: 라이트모드 CSS 변수 값 정의
    - .dark: 다크모드 CSS 변수 값 정의

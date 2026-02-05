@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 
 import { XIcon } from '@phosphor-icons/react'
 
-import { Input } from '@ds/ui'
+import { Input } from '@gs/ui'
 
 interface SearchAutocompleteProps {
   value: string

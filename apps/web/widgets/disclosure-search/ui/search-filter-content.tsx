@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 
 import type { SearchPeriod, Market, DisclosureType } from '@/entities/disclosure'
 

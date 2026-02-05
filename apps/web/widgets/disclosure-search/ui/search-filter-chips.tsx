@@ -2,7 +2,7 @@
 
 import { FadersIcon } from '@phosphor-icons/react'
 
-import { cn, Button } from '@ds/ui'
+import { cn, Button } from '@gs/ui'
 
 import type { SearchPeriod } from '@/entities/disclosure'
 

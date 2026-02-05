@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { Button, ResponsiveModal } from '@ds/ui'
+import { Button, ResponsiveModal } from '@gs/ui'
 
 import type { SearchPeriod, Market, DisclosureType } from '@/entities/disclosure'
 
