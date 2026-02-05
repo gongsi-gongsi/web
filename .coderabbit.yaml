@@ -11,6 +11,10 @@ reviews:
     enabled: true
     # draft PR도 리뷰
     drafts: false
+    # 자동 리뷰할 base 브랜치 설정
+    base_branches:
+      - develop
+      - main
 
   # 리뷰 범위
   scope:
