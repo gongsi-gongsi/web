@@ -82,14 +82,18 @@
   --disclosure-type-i-fg: oklch(0.1 0 0);
   --disclosure-type-j-bg: oklch(0.65 0.2 330);
   --disclosure-type-j-fg: oklch(0.1 0 0);
-  --market-kospi-text: oklch(0.35 0.15 250);
-  --market-kospi-border: oklch(0.35 0.15 250);
-  --market-kosdaq-text: oklch(0.4 0.2 290);
-  --market-kosdaq-border: oklch(0.4 0.2 290);
-  --market-konex-text: oklch(0.45 0.2 50);
-  --market-konex-border: oklch(0.45 0.2 50);
-  --market-etc-text: oklch(0.4 0.02 260);
-  --market-etc-border: oklch(0.4 0.02 260);
+  --market-kospi-bg: oklch(0.95 0.05 250);
+  --market-kospi-text: oklch(0.35 0.2 250);
+  --market-kospi-border: oklch(0.5 0.2 250);
+  --market-kosdaq-bg: oklch(0.95 0.05 290);
+  --market-kosdaq-text: oklch(0.35 0.25 290);
+  --market-kosdaq-border: oklch(0.5 0.25 290);
+  --market-konex-bg: oklch(0.95 0.06 50);
+  --market-konex-text: oklch(0.4 0.25 50);
+  --market-konex-border: oklch(0.55 0.25 50);
+  --market-etc-bg: oklch(0.95 0.01 260);
+  --market-etc-text: oklch(0.4 0.05 260);
+  --market-etc-border: oklch(0.55 0.05 260);
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.1884 0.0128 248.5103);
   --sidebar-primary: oklch(0.6671 0.1615 245.54);
@@ -202,14 +206,18 @@
   --disclosure-type-i-fg: oklch(1 0 0);
   --disclosure-type-j-bg: oklch(0.55 0.2 330);
   --disclosure-type-j-fg: oklch(1 0 0);
-  --market-kospi-text: oklch(0.65 0.15 250);
-  --market-kospi-border: oklch(0.65 0.15 250);
-  --market-kosdaq-text: oklch(0.7 0.15 290);
-  --market-kosdaq-border: oklch(0.7 0.15 290);
-  --market-konex-text: oklch(0.7 0.15 50);
-  --market-konex-border: oklch(0.7 0.15 50);
-  --market-etc-text: oklch(0.6 0.02 260);
-  --market-etc-border: oklch(0.6 0.02 260);
+  --market-kospi-bg: oklch(0.25 0.08 250);
+  --market-kospi-text: oklch(0.7 0.2 250);
+  --market-kospi-border: oklch(0.6 0.2 250);
+  --market-kosdaq-bg: oklch(0.25 0.08 290);
+  --market-kosdaq-text: oklch(0.75 0.2 290);
+  --market-kosdaq-border: oklch(0.65 0.2 290);
+  --market-konex-bg: oklch(0.25 0.08 50);
+  --market-konex-text: oklch(0.75 0.2 50);
+  --market-konex-border: oklch(0.65 0.2 50);
+  --market-etc-bg: oklch(0.25 0.02 260);
+  --market-etc-text: oklch(0.65 0.05 260);
+  --market-etc-border: oklch(0.55 0.05 260);
   --sidebar: oklch(0.235 0 0);
   --sidebar-foreground: oklch(0.9328 0.0025 228.7857);
   --sidebar-primary: oklch(0.6671 0.1615 245.54);
@@ -311,12 +319,16 @@
   --color-disclosure-type-i-fg: var(--disclosure-type-i-fg);
   --color-disclosure-type-j-bg: var(--disclosure-type-j-bg);
   --color-disclosure-type-j-fg: var(--disclosure-type-j-fg);
+  --color-market-kospi-bg: var(--market-kospi-bg);
   --color-market-kospi-text: var(--market-kospi-text);
   --color-market-kospi-border: var(--market-kospi-border);
+  --color-market-kosdaq-bg: var(--market-kosdaq-bg);
   --color-market-kosdaq-text: var(--market-kosdaq-text);
   --color-market-kosdaq-border: var(--market-kosdaq-border);
+  --color-market-konex-bg: var(--market-konex-bg);
   --color-market-konex-text: var(--market-konex-text);
   --color-market-konex-border: var(--market-konex-border);
+  --color-market-etc-bg: var(--market-etc-bg);
   --color-market-etc-text: var(--market-etc-text);
   --color-market-etc-border: var(--market-etc-border);
   --color-sidebar: var(--sidebar);
@@ -421,6 +433,11 @@ body {
 
   .text-sm {
     font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .text-xs {
+    font-size: 14px;
     line-height: 1.5;
   }
 }
