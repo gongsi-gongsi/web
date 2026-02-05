@@ -61,8 +61,9 @@ export function TodayDisclosures() {
     <div className="w-full">
       {/* PC 버전 */}
       <div className="hidden md:block">
-        <div className="mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">오늘의 공시</h2>
+          <span className="text-sm text-muted-foreground">공시는 1분 단위로 갱신됩니다</span>
         </div>
 
         <div className="mb-4 flex items-end justify-between gap-4">
