@@ -1,19 +1,19 @@
 export function DisclosureTableSkeleton() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-0">
       {Array.from({ length: 7 }).map((_, index) => (
         <div
           key={index}
-          className="flex animate-pulse items-center gap-4 rounded-xl bg-background px-2 py-2"
+          className="flex animate-pulse items-center gap-4 rounded-xl bg-card px-2 py-2"
         >
           {/* 접수일자 */}
           <div className="w-[100px] shrink-0">
             <div className="h-4 w-20 rounded bg-muted" />
           </div>
 
-          {/* 시장 */}
+          {/* 시장 badge */}
           <div className="w-[80px] shrink-0">
-            <div className="h-4 w-16 rounded bg-muted" />
+            <div className="h-6 w-16 rounded-md bg-muted" />
           </div>
 
           {/* 회사명 */}

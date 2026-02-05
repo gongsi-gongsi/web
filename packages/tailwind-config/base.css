@@ -13,23 +13,23 @@
    ============================================================================ */
 
 :root {
-  --background: oklch(0.9654 0.0042 236.5);
-  --foreground: oklch(0 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0 0 0);
-  --gray-icon: oklch(0.7763 0.0196 243.04);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(0.99 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --gray-icon: oklch(0.55 0.015 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0 0 0);
+  --popover-foreground: oklch(0.15 0 0);
   --primary: oklch(0.6671 0.1615 245.54);
   --primary-foreground: oklch(1 0 0);
   --primary-weak: oklch(0.6671 0.1615 245.54 / 0.15);
   --primary-weak-foreground: oklch(0.6671 0.1615 245.54);
-  --secondary: oklch(0.8745 0.0111 234.84);
-  --secondary-foreground: oklch(0.4582 0.0315 251.94);
-  --muted: oklch(0.964 0.0029 264.54);
-  --muted-foreground: oklch(0.4582 0.0315 251.94);
-  --accent: oklch(0.9189 0 0);
-  --accent-foreground: oklch(0 0 0);
+  --secondary: oklch(0.96 0.005 250);
+  --secondary-foreground: oklch(0.25 0.02 250);
+  --muted: oklch(0.97 0.005 250);
+  --muted-foreground: oklch(0.45 0.015 250);
+  --accent: oklch(0.967 0.0029 264.54);
+  --accent-foreground: oklch(0.15 0 0);
   --destructive: oklch(0.6678 0.2172 21.65);
   --destructive-foreground: oklch(1 0 0);
   --destructive-weak: oklch(0.6678 0.2172 21.65 / 0.15);
@@ -46,8 +46,8 @@
   --info-foreground: oklch(1 0 0);
   --info-weak: oklch(0.6 0.15 220 / 0.15);
   --info-weak-foreground: oklch(0.6 0.15 220);
-  --border: oklch(0.8745 0.0111 234.84);
-  --input: oklch(0.9614 0.0045 214.3285);
+  --border: oklch(0.91 0.005 250);
+  --input: oklch(0.96 0.005 250);
   --ring: oklch(0.6671 0.1615 245.54);
   --chart-1: oklch(0.6671 0.1615 245.54);
   --chart-2: oklch(0.8162 0.0913 243.7635);
@@ -372,7 +372,7 @@
   }
 
   .interactive-card:hover {
-    @apply bg-accent/50;
+    @apply bg-accent;
   }
 
   .interactive-card:active {
@@ -387,7 +387,7 @@
   }
 
   .interactive-item:hover {
-    @apply bg-accent/50;
+    @apply bg-accent;
   }
 
   /* 인터랙티브 버튼 - 강한 피드백 */

@@ -66,22 +66,23 @@ export function TodayDisclosures() {
           <span className="text-sm text-muted-foreground">공시는 1분 단위로 갱신됩니다</span>
         </div>
 
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div className="flex-1">
-            <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
-          </div>
-          <Link href="/disclosures/today" className="shrink-0 pb-3">
+        <div className="mb-4">
+          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+        </div>
+
+        <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
+          <Suspense key={selectedMarket} fallback={<DisclosureTableSkeleton />}>
+            <TodayDisclosuresContent selectedMarket={selectedMarket} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <div className="mt-4 flex justify-center">
+          <Link href="/disclosures/today">
             <Button variant="ghost" size="sm">
               더보기 →
             </Button>
           </Link>
         </div>
-
-        <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
-          <Suspense fallback={<DisclosureTableSkeleton />}>
-            <TodayDisclosuresContent selectedMarket={selectedMarket} />
-          </Suspense>
-        </ErrorBoundary>
       </div>
 
       {/* 모바일 버전 */}
@@ -95,7 +96,7 @@ export function TodayDisclosures() {
         </div>
 
         <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
-          <Suspense fallback={<DisclosureSkeleton />}>
+          <Suspense key={selectedMarket} fallback={<DisclosureSkeleton />}>
             <TodayDisclosuresContent selectedMarket={selectedMarket} />
           </Suspense>
         </ErrorBoundary>
