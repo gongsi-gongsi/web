@@ -33,8 +33,8 @@ export default function Home() {
           </>
         }
       />
-      <div className="mx-auto max-w-screen-2xl px-4 py-8 md:px-8">
-        <Suspense fallback={<div>Loading...</div>}>
+      <div className="mx-auto max-w-screen-2xl py-8 md:px-4 lg:px-8">
+        <Suspense>
           <TodayDisclosures />
         </Suspense>
       </div>

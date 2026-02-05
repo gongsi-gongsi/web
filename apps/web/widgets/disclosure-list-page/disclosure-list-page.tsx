@@ -36,13 +36,13 @@ export function DisclosureListPage() {
       </div>
 
       {/* PC 버전 */}
-      <div className="mx-auto hidden max-w-screen-2xl px-8 py-8 md:block">
+      <div className="mx-auto hidden max-w-screen-2xl py-8 md:block md:px-4 lg:px-8">
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold md:text-3xl">오늘의 공시</h1>
             <span className="text-sm text-muted-foreground">{todayLabel} 기준</span>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">오늘 등록된 모든 공시를 확인하세요</p>
+          <p className="mt-2 text-sm text-primary">오늘 등록된 모든 공시를 확인하세요</p>
         </div>
 
         <DisclosureList />

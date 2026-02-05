@@ -20,10 +20,10 @@ export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement
 // Component
 // ============================================================================
 
-export const ThemeToggle = ({ iconSize = 20, className, ...props }: ThemeToggleProps) => {
+export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme()
 
-  const toggleTheme = () => {
+  function toggleTheme() {
     if (theme === 'light') {
       setTheme('dark')
     } else if (theme === 'dark') {
@@ -44,14 +44,16 @@ export const ThemeToggle = ({ iconSize = 20, className, ...props }: ThemeToggleP
       interactive
       onClick={toggleTheme}
     >
-      <Sun
-        className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
-        size={iconSize}
-      />
-      <Moon
-        className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
-        size={iconSize}
-      />
+      <span className="relative flex items-center justify-center">
+        <Sun
+          className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+          size={iconSize}
+        />
+        <Moon
+          className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+          size={iconSize}
+        />
+      </span>
     </Button>
   )
 }

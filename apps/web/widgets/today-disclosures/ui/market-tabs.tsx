@@ -32,7 +32,7 @@ export function MarketTabs({ selectedMarket, onMarketChange }: MarketTabsProps) 
   }, [selectedMarket])
 
   return (
-    <div className="relative flex gap-6 overflow-x-auto border-b border-border pl-4 md:px-2">
+    <div className="relative flex gap-6 overflow-x-auto border-b border-border pl-4 md:pl-0">
       {MARKETS.map(market => (
         <button
           key={market.value}
