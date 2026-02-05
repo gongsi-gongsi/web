@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import './mobile-header.css'
 
 interface MobileHeaderProps {
   left?: ReactNode
@@ -11,7 +12,7 @@ interface MobileHeaderProps {
 export function MobileHeader({ left, center, right }: MobileHeaderProps) {
   return (
     <div className="sticky top-0 z-50 md:hidden">
-      <header className="bg-card flex h-14 items-center gap-2 px-4 backdrop-blur">
+      <header className="header-animate bg-card flex h-14 items-center gap-2 px-4 backdrop-blur">
         {/* 좌측 */}
         <div className="flex shrink-0 items-center">{left}</div>
 
