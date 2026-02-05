@@ -1,20 +1,14 @@
 import Link from 'next/link'
 import { cn } from '@gs/ui'
 import type { Disclosure } from '@/entities/disclosure'
+import { getMarketBadge } from '@/entities/disclosure'
 
 interface DisclosureListItemProps {
   disclosure: Disclosure
 }
 
-const MARKET_LABELS: Record<string, string> = {
-  kospi: '유가증권',
-  kosdaq: '코스닥',
-  konex: '코스넥',
-  all: '-',
-}
-
 export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
-  const marketLabel = MARKET_LABELS[disclosure.market] || '-'
+  const marketBadge = getMarketBadge(disclosure.market)
 
   const receivedDate = new Date(disclosure.receivedAt)
   const year = receivedDate.getFullYear()
@@ -39,7 +33,18 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
 
       {/* 시장 */}
       <div className="w-[80px] shrink-0">
-        <span className="text-sm text-muted-foreground">{marketLabel}</span>
+        {marketBadge ? (
+          <span
+            className={cn(
+              'inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium',
+              marketBadge.color
+            )}
+          >
+            {marketBadge.label}
+          </span>
+        ) : (
+          <span className="text-sm text-muted-foreground">-</span>
+        )}
       </div>
 
       {/* 회사명 */}
