@@ -78,3 +78,42 @@ export function isValidAge(age: number) {
 export function getElement() {
   return document.getElementById('test') as HTMLDivElement
 }
+
+// ❌ Issue 9: Promise without await
+export function loadUserData(userId: string) {
+  const promise = fetch(`/api/users/${userId}`).then(res => res.json())
+  console.log('Loading user data...')
+  return promise
+}
+
+// ❌ Issue 10: 하드코딩된 값
+export function getApiUrl() {
+  return 'https://api.example.com/v1'
+}
+
+// ❌ Issue 11: 중복 코드
+export function formatUserName(firstName: string, lastName: string) {
+  if (!firstName || firstName.trim() === '') {
+    return 'Unknown'
+  }
+  if (!lastName || lastName.trim() === '') {
+    return 'Unknown'
+  }
+  return `${firstName} ${lastName}`
+}
+
+// ❌ Issue 12: 깊은 중첩
+export function processOrder(order: any) {
+  if (order) {
+    if (order.items) {
+      if (order.items.length > 0) {
+        if (order.payment) {
+          if (order.payment.status === 'paid') {
+            return 'Order processed'
+          }
+        }
+      }
+    }
+  }
+  return 'Invalid order'
+}
