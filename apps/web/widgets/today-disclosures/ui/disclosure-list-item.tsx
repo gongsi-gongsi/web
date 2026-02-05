@@ -11,6 +11,8 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
   const marketBadge = getMarketBadge(disclosure.market)
 
   const receivedDate = new Date(disclosure.receivedAt)
+  // TODO: 테스트용 - 하루 이전 날짜로 표시
+  receivedDate.setDate(receivedDate.getDate() - 1)
   const year = receivedDate.getFullYear()
   const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
   const day = String(receivedDate.getDate()).padStart(2, '0')
