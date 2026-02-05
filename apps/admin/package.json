@@ -9,16 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ds/tailwind-config": "workspace:*",
-    "@ds/ui": "workspace:*",
+    "@gs/tailwind-config": "workspace:*",
+    "@gs/ui": "workspace:*",
     "next": "^15.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@ds/eslint-config": "workspace:*",
-    "@ds/prettier-config": "workspace:*",
-    "@ds/typescript-config": "workspace:*",
+    "@gs/eslint-config": "workspace:*",
+    "@gs/prettier-config": "workspace:*",
+    "@gs/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^20",
     "@types/react": "^18",

@@ -1,8 +1,8 @@
-# DailyStock - AI 주식 뉴스 분석 서비스
+# 공시공시 (GongsiGongsi) - AI 주식 뉴스 분석 서비스
 
 ## 📋 프로젝트 개요
 
-DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비스입니다.
+공시공시는 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비스입니다.
 
 ### 주요 기능
 
@@ -46,16 +46,16 @@ DailyStock은 개인 투자자를 위한 AI 기반 주식 뉴스 분석 서비�
 ## 📁 프로젝트 구조 (Monorepo)
 
 ```
-daily-stock/
+gongsi-gongsi/
 ├── apps/
 │   ├── web/          # 사용자용 웹 애플리케이션
 │   └── admin/        # 관리자용 대시보드
 ├── packages/
-│   ├── ui/           # 공통 UI 컴포넌트 라이브러리 (@ds/ui)
-│   ├── tailwind-config/  # Tailwind 설정 (@ds/tailwind-config)
-│   ├── typescript-config/  # TypeScript 설정 (@ds/typescript-config)
-│   ├── eslint-config/      # ESLint 설정 (@ds/eslint-config)
-│   └── prettier-config/    # Prettier 설정 (@ds/prettier-config)
+│   ├── ui/           # 공통 UI 컴포넌트 라이브러리 (@gs/ui)
+│   ├── tailwind-config/  # Tailwind 설정 (@gs/tailwind-config)
+│   ├── typescript-config/  # TypeScript 설정 (@gs/typescript-config)
+│   ├── eslint-config/      # ESLint 설정 (@gs/eslint-config)
+│   └── prettier-config/    # Prettier 설정 (@gs/prettier-config)
 └── turbo.json
 ```
 
@@ -161,8 +161,8 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 
-// 3. @ds/* 패키지
-import { Button, Card } from '@ds/ui'
+// 3. @gs/* 패키지
+import { Button, Card } from '@gs/ui'
 
 // 4. 내부 절대경로 (@/)
 import { SearchStocks } from '@/features/search-stocks'
@@ -287,13 +287,13 @@ export function formatDate(date: Date, separator = '-'): string {
 
 ## 🎨 UI 컴포넌트 관리
 
-### @ds/ui 패키지 사용
+### @gs/ui 패키지 사용
 
-공통 UI 컴포넌트는 **@ds/ui 패키지에서만** 관리합니다.
+공통 UI 컴포넌트는 **@gs/ui 패키지에서만** 관리합니다.
 
 ```typescript
 // ✅ 올바른 사용
-import { Button, Card, Input } from '@ds/ui'
+import { Button, Card, Input } from '@gs/ui'
 
 // ❌ shared/ui는 사용하지 않음
 // import { Button } from '@/shared/ui/button'  // 금지
@@ -301,7 +301,7 @@ import { Button, Card, Input } from '@ds/ui'
 
 ### 컴포넌트 분류
 
-- **@ds/ui**: 범용 컴포넌트 (Button, Input, Card, Dialog 등)
+- **@gs/ui**: 범용 컴포넌트 (Button, Input, Card, Dialog 등)
 - **widgets/**: 도메인 특화 복합 컴포넌트
 - **features/**: 기능별 컴포넌트
 
@@ -388,7 +388,7 @@ pnpm format
 pnpm --filter web add <package-name>
 
 # ui 패키지에 라이브러리 추가
-pnpm --filter @ds/ui add <package-name>
+pnpm --filter @gs/ui add <package-name>
 
 # 모든 workspace에 dev 의존성 추가
 pnpm add -Dw <package-name>
@@ -551,7 +551,7 @@ AI에게 작업 요청 시:
 - "FSD 아키텍처를 따라서..."
 - "kebab-case로 파일명 작성..."
 - "index.ts로 export 해줘..."
-- "@ds/ui 컴포넌트 사용해서..."
+- "@gs/ui 컴포넌트 사용해서..."
 
 ---
 

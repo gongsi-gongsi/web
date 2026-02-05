@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@ds/eslint-config/react']
+  extends: ['@gs/eslint-config/react']
 }

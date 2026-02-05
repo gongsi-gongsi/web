@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@ds/ui'
+} from '@gs/ui'
 
 import { useSignOut } from '@/features/auth'
 

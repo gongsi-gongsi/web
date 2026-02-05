@@ -1,11 +1,11 @@
-# DailyStock
+# 공시공시 (GongsiGongsi)
 
 AI 기반 주식 뉴스 분석 서비스
 
 ## 프로젝트 구조
 
 ```
-daily-stock/
+gongsi-gongsi/
 ├── apps/
 │   ├── web/                      # 메인 서비스 (Next.js 15 + Tailwind v4)
 │   └── admin/                    # 어드민 (나중에 구현)
@@ -25,20 +25,20 @@ daily-stock/
 
 ## 기술 스택
 
-| 영역 | 기술 |
-|------|------|
-| 패키지 매니저 | pnpm |
-| 모노레포 | Turborepo |
-| 프론트엔드 | Next.js 15 (App Router) |
-| 스타일링 | Tailwind CSS v4 |
-| UI 컴포넌트 | shadcn/ui |
-| 데이터베이스 | Supabase (PostgreSQL) |
-| 인증 | Supabase Auth |
-| 자동화 | n8n (AWS EC2) |
-| AI | Gemini API |
-| 테스트 | Vitest + Playwright |
-| 린팅 | ESLint + Prettier |
-| 배포 | Vercel |
+| 영역          | 기술                    |
+| ------------- | ----------------------- |
+| 패키지 매니저 | pnpm                    |
+| 모노레포      | Turborepo               |
+| 프론트엔드    | Next.js 15 (App Router) |
+| 스타일링      | Tailwind CSS v4         |
+| UI 컴포넌트   | shadcn/ui               |
+| 데이터베이스  | Supabase (PostgreSQL)   |
+| 인증          | Supabase Auth           |
+| 자동화        | n8n (AWS EC2)           |
+| AI            | Gemini API              |
+| 테스트        | Vitest + Playwright     |
+| 린팅          | ESLint + Prettier       |
+| 배포          | Vercel                  |
 
 ## 시작하기
 

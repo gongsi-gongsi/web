@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 import type { Market } from '@/entities/disclosure'
 
 interface MarketTabsProps {

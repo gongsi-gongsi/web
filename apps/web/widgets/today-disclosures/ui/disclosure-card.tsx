@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getMarketBadge, getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 
 interface DisclosureCardProps {
   disclosure: Disclosure

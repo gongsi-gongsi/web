@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import { Button, Skeleton } from '@ds/ui'
+import { Button, Skeleton } from '@gs/ui'
 
 import { useCurrentUser } from '@/entities/user/model/use-current-user'
 

@@ -47,7 +47,7 @@ export function LoginForm() {
     <div className="flex w-full max-w-sm flex-col items-center space-y-8">
       {/* 제목 */}
       <div className="flex flex-col items-center space-y-2 text-center">
-        <h1 className="text-2xl font-bold">DailyStock 로그인</h1>
+        <h1 className="text-2xl font-bold">공시공시 로그인</h1>
         <p className="text-muted-foreground text-sm">소셜 계정으로 간편하게 로그인하세요</p>
       </div>
 

@@ -11,7 +11,7 @@ import { DisclosureCardList } from './ui/disclosure-card-list'
 import { DisclosureList } from './ui/disclosure-list'
 import { DisclosureSkeleton } from './ui/disclosure-skeleton'
 import { DisclosureTableSkeleton } from './ui/disclosure-table-skeleton'
-import { Button } from '@ds/ui'
+import { Button } from '@gs/ui'
 
 function ErrorFallback({ reset }: { error: Error; reset: () => void }) {
   return (

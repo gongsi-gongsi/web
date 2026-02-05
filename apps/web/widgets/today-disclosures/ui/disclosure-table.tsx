@@ -1,4 +1,4 @@
-import { cn } from '@ds/ui'
+import { cn } from '@gs/ui'
 
 import { DisclosureTableRow } from './disclosure-table-row'
 import type { Disclosure } from '@/entities/disclosure'

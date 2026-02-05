@@ -1,4 +1,4 @@
-# DailyStock - Cursor Rules
+# 공시공시 - Cursor Rules
 
 이 프로젝트는 AI 기반 주식 뉴스 분석 서비스입니다.
 아래 규칙을 반드시 따라주세요.
@@ -104,7 +104,7 @@ export function StockCard({ stockId, title }: StockCardProps) {
 ### Import 순서
 1. React/Next.js
 2. 외부 라이브러리
-3. @ds/* 패키지
+3. @gs/* 패키지
 4. 내부 절대경로 (@/)
 5. 상대경로
 
@@ -114,7 +114,7 @@ export function StockCard({ stockId, title }: StockCardProps) {
 ## 프로젝트 구조
 
 - FSD (Feature-Sliced Design) 아키텍처 사용
-- 공통 UI 컴포넌트는 @ds/ui 패키지에서만 관리
+- 공통 UI 컴포넌트는 @gs/ui 패키지에서만 관리
 - TanStack Query로 서버 상태 관리
 
 ## 버전 관리

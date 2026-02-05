@@ -1,11 +1,11 @@
 {
-  "name": "daily-stock",
+  "name": "gongsi-gongsi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "pnpm --filter @ds/ui build && concurrently \"pnpm:dev:ui\" \"pnpm:dev:apps\"",
-    "dev:ui": "pnpm --filter @ds/ui dev",
+    "dev": "pnpm --filter @gs/ui build && concurrently \"pnpm:dev:ui\" \"pnpm:dev:apps\"",
+    "dev:ui": "pnpm --filter @gs/ui dev",
     "dev:apps": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

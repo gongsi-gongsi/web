@@ -2,7 +2,7 @@
 
 import { CaretLeftIcon } from '@phosphor-icons/react'
 
-import { Button, cn } from '@ds/ui'
+import { Button, cn } from '@gs/ui'
 
 interface BackButtonProps {
   className?: string
