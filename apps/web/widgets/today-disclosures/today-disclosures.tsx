@@ -63,8 +63,8 @@ function TodayDisclosuresData({ selectedMarket, onMarketChange }: TodayDisclosur
       </div>
 
       {/* 모바일 버전 */}
-      <div className="md:hidden bg-card">
-        <div className="pb-4 pt-6 px-4">
+      <div className="bg-card md:hidden">
+        <div className="px-4 pb-4 pt-6">
           <h2 className="text-lg font-bold">오늘의 공시</h2>
         </div>
 
@@ -78,7 +78,7 @@ function TodayDisclosuresData({ selectedMarket, onMarketChange }: TodayDisclosur
 
         <div className="border-t border-border">
           <Link href="/disclosures/today" className="block">
-            <Button variant="ghost" size="xl" className="w-full text-muted-foreground">
+            <Button variant="ghost" size="xl" className="h-16 w-full text-muted-foreground">
               더보기
             </Button>
           </Link>
