@@ -11,8 +11,8 @@ const pretendard = localFont({
 })
 
 export const metadata: Metadata = {
-  title: '공시공시 - AI 주식 뉴스 분석',
-  description: 'AI 기반 주식 뉴스 분석 및 감성 분석 서비스',
+  title: '공시공시',
+  description: 'AI 기반 기업 공시 분석 서비스',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

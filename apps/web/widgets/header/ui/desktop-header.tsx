@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn, ThemeToggle } from '@gs/ui'
@@ -28,7 +29,22 @@ export function DesktopHeader() {
         <div className="mx-auto flex w-full max-w-[1280px] items-center">
           {/* Logo */}
           <Link href="/" className="mr-12 flex items-center">
-            <span className="text-xl font-bold">공시공시</span>
+            <Image
+              src="/images/logo-light.svg"
+              alt="공시공시"
+              width={100}
+              height={32}
+              className="h-8 w-auto dark:hidden"
+              priority
+            />
+            <Image
+              src="/images/logo-dark.svg"
+              alt="공시공시"
+              width={100}
+              height={32}
+              className="hidden h-8 w-auto dark:block"
+              priority
+            />
           </Link>
 
           {/* Navigation - Clean and refined */}

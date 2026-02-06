@@ -17,11 +17,6 @@ export default async function Home() {
     <HydrationBoundary state={dehydratedState}>
       <main className="min-h-screen bg-background">
         <MobileHeader
-          left={
-            <Link href="/" className="flex items-center">
-              <span className="text-lg font-bold">공시공시</span>
-            </Link>
-          }
           right={
             <>
               <Link
