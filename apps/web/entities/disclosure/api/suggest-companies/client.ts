@@ -1,3 +1,5 @@
+'use client'
+
 export interface CompanySuggestion {
   corpCode: string
   corpName: string
@@ -9,7 +11,7 @@ interface SuggestCompaniesResponse {
 }
 
 /**
- * 회사명 자동완성 API를 호출합니다
+ * [클라이언트 전용] API Route를 통해 회사명 자동완성을 조회합니다
  * @param query - 검색할 회사명
  * @param limit - 최대 반환 개수 (기본값: 50)
  * @returns 매칭된 회사 목록

@@ -1,8 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-
-import { searchCorpCodes } from '@/shared/lib/dart/apis/search-stocks'
+import { suggestCompaniesFromDart } from '@/entities/disclosure/server'
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,17 +9,8 @@ export async function GET(request: NextRequest) {
     const q = searchParams.get('q') || ''
     const limit = Math.min(Number(searchParams.get('limit') || '50'), 50)
 
-    if (!q.trim()) {
-      return NextResponse.json({ suggestions: [] })
-    }
-
-    const matches = await searchCorpCodes(q.trim(), limit)
-
-    const suggestions = matches.map(corp => ({
-      corpCode: corp.corpCode,
-      corpName: corp.corpName,
-      stockCode: corp.stockCode || null,
-    }))
+    // 서버 전용 API 함수 사용
+    const suggestions = await suggestCompaniesFromDart(q, limit)
 
     return NextResponse.json({ suggestions })
   } catch (error) {

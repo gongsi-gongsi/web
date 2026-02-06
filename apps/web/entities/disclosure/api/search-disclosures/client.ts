@@ -1,9 +1,10 @@
-import { getBaseUrl } from '@/shared/lib/get-base-url'
+'use client'
 
-import type { SearchDisclosuresParams, SearchDisclosuresResponse } from '../model/types'
+import { getBaseUrl } from '@/shared/lib/get-base-url'
+import type { SearchDisclosuresParams, SearchDisclosuresResponse } from '../../model/types'
 
 /**
- * 공시를 검색합니다
+ * [클라이언트 전용] API Route를 통해 공시를 검색합니다
  * @param params - 검색 파라미터 (키워드, 기간, 시장, 유형, 페이지 정보)
  * @returns 검색 결과와 페이지네이션 메타데이터
  * @throws {Error} API 호출 실패 시

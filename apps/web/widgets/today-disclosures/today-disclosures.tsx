@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ErrorBoundary, Suspense } from '@suspensive/react'
@@ -29,45 +29,14 @@ function ErrorFallback({ reset, error: _error }: ErrorFallbackProps) {
   )
 }
 
-function TodayDisclosuresContent({ selectedMarket }: { selectedMarket: Market }) {
-  const { data } = useTodayDisclosures(selectedMarket)
-  const disclosures = data.disclosures.slice(0, 7)
-
-  return (
-    <>
-      {/* PC 버전 */}
-      <div className="hidden md:block">
-        <DisclosureList disclosures={disclosures} />
-      </div>
-
-      {/* 모바일 버전 */}
-      <div className="md:hidden pb-2">
-        <DisclosureCardList disclosures={disclosures} />
-      </div>
-    </>
-  )
+interface TodayDisclosuresDataProps {
+  selectedMarket: Market
+  onMarketChange: (market: Market) => void
 }
 
-const VALID_MARKETS: Market[] = ['all', 'kospi', 'kosdaq', 'konex', 'etc']
-
-function isValidMarket(value: string | null): value is Market {
-  return value !== null && VALID_MARKETS.includes(value as Market)
-}
-
-export function TodayDisclosures() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const marketParam = searchParams.get('market')
-  const initialMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
-  const [selectedMarket, setSelectedMarket] = useState<Market>(initialMarket)
-  const { reset } = useQueryErrorResetBoundary()
-
-  function handleMarketChange(market: Market) {
-    setSelectedMarket(market)
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('market', market)
-    router.push(`?${params.toString()}`, { scroll: false })
-  }
+function TodayDisclosuresData({ selectedMarket, onMarketChange }: TodayDisclosuresDataProps) {
+  const { data } = useTodayDisclosures(selectedMarket, 7)
+  const disclosures = data.disclosures
 
   return (
     <div className="w-full">
@@ -79,14 +48,10 @@ export function TodayDisclosures() {
         </div>
 
         <div className="mb-4">
-          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+          <MarketTabs selectedMarket={selectedMarket} onMarketChange={onMarketChange} />
         </div>
 
-        <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
-          <Suspense key={selectedMarket} fallback={<DisclosureTableSkeleton />}>
-            <TodayDisclosuresContent selectedMarket={selectedMarket} />
-          </Suspense>
-        </ErrorBoundary>
+        <DisclosureList disclosures={disclosures} />
 
         <div className="mt-4 flex justify-center">
           <Link href="/disclosures/today">
@@ -104,14 +69,12 @@ export function TodayDisclosures() {
         </div>
 
         <div className="sticky top-14 z-40 mb-2 bg-card">
-          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+          <MarketTabs selectedMarket={selectedMarket} onMarketChange={onMarketChange} />
         </div>
 
-        <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
-          <Suspense key={selectedMarket} fallback={<DisclosureSkeleton />}>
-            <TodayDisclosuresContent selectedMarket={selectedMarket} />
-          </Suspense>
-        </ErrorBoundary>
+        <div className="pb-2">
+          <DisclosureCardList disclosures={disclosures} />
+        </div>
 
         <div className="border-t border-border">
           <Link href="/disclosures/today" className="block">
@@ -122,5 +85,47 @@ export function TodayDisclosures() {
         </div>
       </div>
     </div>
+  )
+}
+
+const VALID_MARKETS: Market[] = ['all', 'kospi', 'kosdaq', 'konex', 'etc']
+
+function isValidMarket(value: string | null): value is Market {
+  return value !== null && VALID_MARKETS.includes(value as Market)
+}
+
+export function TodayDisclosures() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const { reset } = useQueryErrorResetBoundary()
+
+  // URL을 Single Source of Truth로 사용
+  const marketParam = searchParams.get('market')
+  const selectedMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
+
+  function handleMarketChange(market: Market) {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('market', market)
+    router.push(`?${params.toString()}`, { scroll: false })
+  }
+
+  return (
+    <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
+      <Suspense
+        key={selectedMarket}
+        fallback={
+          <>
+            <div className="hidden md:block">
+              <DisclosureTableSkeleton />
+            </div>
+            <div className="md:hidden">
+              <DisclosureSkeleton />
+            </div>
+          </>
+        }
+      >
+        <TodayDisclosuresData selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+      </Suspense>
+    </ErrorBoundary>
   )
 }

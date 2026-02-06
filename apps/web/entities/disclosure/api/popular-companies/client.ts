@@ -1,9 +1,10 @@
-import { getBaseUrl } from '@/shared/lib/get-base-url'
+'use client'
 
-import type { PopularCompany, PopularCompaniesResponse } from '../model/types'
+import { getBaseUrl } from '@/shared/lib/get-base-url'
+import type { PopularCompany, PopularCompaniesResponse } from '../../model/types'
 
 /**
- * 인기 검색 회사 목록을 조회합니다
+ * [클라이언트 전용] API Route를 통해 인기 검색 회사 목록을 조회합니다
  * @param limit - 최대 반환 개수 (기본값: 10)
  * @returns 인기 검색 회사 목록
  */

@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { ErrorBoundary } from '@suspensive/react'
 import type { Market } from '@/entities/disclosure'
@@ -9,14 +9,21 @@ import { DisclosureContent } from './disclosure-content'
 import { DisclosureListSkeleton } from './disclosure-list-skeleton'
 import { ErrorFallback } from './error-fallback'
 
+const VALID_MARKETS: Market[] = ['all', 'kospi', 'kosdaq', 'konex', 'etc']
+
+function isValidMarket(value: string | null): value is Market {
+  return value !== null && VALID_MARKETS.includes(value as Market)
+}
+
 export function DisclosureList() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const initialMarket = (searchParams.get('market') as Market) || 'all'
-  const [selectedMarket, setSelectedMarket] = useState<Market>(initialMarket)
+
+  // URL을 Single Source of Truth로 사용
+  const marketParam = searchParams.get('market')
+  const selectedMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
 
   function handleMarketChange(market: Market) {
-    setSelectedMarket(market)
     const params = new URLSearchParams(searchParams.toString())
     params.set('market', market)
     router.replace(`?${params.toString()}`, { scroll: false })
