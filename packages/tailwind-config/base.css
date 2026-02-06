@@ -243,7 +243,7 @@
    Tailwind 테마 설정 (@theme inline)
    ============================================================================ */
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -391,38 +391,11 @@
    기본 글자 크기 설정
    ============================================================================ */
 
-html {
-  font-size: 16px; /* 1rem = 16px (rem 계산 기준) */
-}
-
 body {
-  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  font-size: 16px; /* 기본 텍스트 크기 */
-  line-height: 1.5;
-}
-
-/* ============================================================================
-   Tailwind 폰트 크기 오버라이드
-   ============================================================================ */
-
-@layer utilities {
-  .text-lg {
-    font-size: 17px;
-    line-height: 1.5;
-  }
-
-  .text-base {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-
-  .text-sm {
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  .text-xs {
-    font-size: 14px;
-    line-height: 1.5;
-  }
+  font-family:
+    var(--font-sans),
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
 }
