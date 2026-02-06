@@ -1,1 +1,3 @@
+/* 순서 변경 절대 금지 - 순서 때문에 오더링 잘못되면 브레이크포인트 작동 안함 */
+@import '@gs/ui/styles.css';
 @import '@gs/tailwind-config/base.css';
