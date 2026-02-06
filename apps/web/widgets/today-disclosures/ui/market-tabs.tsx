@@ -22,12 +22,25 @@ export function MarketTabs({ selectedMarket, onMarketChange }: MarketTabsProps) 
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
-    const activeTab = tabRefs.current[selectedMarket]
-    if (activeTab) {
-      setIndicatorStyle({
-        left: activeTab.offsetLeft,
-        width: activeTab.offsetWidth,
-      })
+    const updateIndicator = () => {
+      const activeTab = tabRefs.current[selectedMarket]
+      // offsetWidth > 0 체크로 실제로 보이는 탭만 업데이트 (CSS hidden 상태 무시)
+      if (activeTab && activeTab.offsetWidth > 0) {
+        setIndicatorStyle({
+          left: activeTab.offsetLeft,
+          width: activeTab.offsetWidth,
+        })
+      }
+    }
+
+    // 초기 indicator 위치 설정
+    updateIndicator()
+
+    // viewport 변경 시 indicator 위치 재계산 (모바일 ↔ PC 전환 대응)
+    window.addEventListener('resize', updateIndicator)
+
+    return () => {
+      window.removeEventListener('resize', updateIndicator)
     }
   }, [selectedMarket])
 
