@@ -17,7 +17,7 @@ export function DesktopHeader() {
   const pathname = usePathname()
 
   return (
-    <header className="group/header header-animate sticky top-0 z-50 hidden w-full backdrop-blur-xl backdrop-saturate-150 md:block">
+    <header className="group/header header-animate sticky top-0 z-50 hidden w-full bg-background/80 backdrop-blur-xl backdrop-saturate-150 md:block">
       {/* Subtle gradient border bottom */}
       <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-foreground/10 to-transparent" />
 

@@ -57,6 +57,9 @@
 
   /* Float */
   --animate-float: float 3s ease-in-out infinite;
+
+  /* Gradient Border */
+  --animate-gradient-border: gradient-border 3s ease infinite;
 }
 
 /* ============================================================================
@@ -380,5 +383,18 @@
   }
   50% {
     transform: translateY(-12px);
+  }
+}
+
+/* Gradient Border */
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

@@ -12,7 +12,7 @@ function Card({ className, interactive = false, ...props }: CardProps) {
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-3xl py-6',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-2xl py-6',
         'border border-border shadow-md dark:border-none dark:shadow-none',
         interactive &&
           'cursor-pointer transition-transform duration-200 ease-out active:scale-[0.98]',

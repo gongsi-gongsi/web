@@ -1,11 +1,11 @@
 'use client'
 
+import { useEffect, useState, type ButtonHTMLAttributes } from 'react'
+
 import { MoonIcon, SunIcon } from '@phosphor-icons/react'
 
 import { useTheme } from '../../providers/theme-provider'
 import { Button } from '../button'
-
-import type { ButtonHTMLAttributes } from 'react'
 
 // ============================================================================
 // Types
@@ -22,6 +22,11 @@ export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement
 
 export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   function toggleTheme() {
     if (theme === 'light') {
@@ -46,10 +51,14 @@ export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleP
       interactive
       onClick={toggleTheme}
     >
-      {isDark ? (
-        <MoonIcon size={iconSize} weight="fill" />
+      {mounted ? (
+        isDark ? (
+          <MoonIcon size={iconSize} weight="fill" />
+        ) : (
+          <SunIcon size={iconSize} weight="fill" />
+        )
       ) : (
-        <SunIcon size={iconSize} weight="fill" />
+        <span className="size-5" />
       )}
     </Button>
   )

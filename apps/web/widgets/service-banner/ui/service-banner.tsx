@@ -22,19 +22,17 @@ export function ServiceBanner() {
 
           {/* 검색바 - md 이상에서만 표시 */}
           <div className="relative hidden max-w-xl md:block">
-            {/* 글로우 효과 */}
-            <div className="absolute -inset-1 rounded-2xl bg-primary/20 blur-lg" />
-            <div className="relative">
+            <div className="relative rounded-2xl border border-white/20 bg-background shadow-xl dark:border-white/10">
               <Input
                 type="text"
                 placeholder="기업명 또는 종목 코드를 검색해보세요"
-                className="h-12 border-primary/20 bg-background pr-14 text-base shadow-lg ring-2 ring-primary/10 transition-all placeholder:text-muted-foreground/60 focus:ring-primary/30 focus-visible:ring-primary/30 focus-visible:ring-offset-0 md:h-14 md:pr-16 md:text-lg"
+                className="h-12 border-none bg-transparent pl-4 pr-14 text-base shadow-none outline-none placeholder:text-foreground/40 focus:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 md:h-14 md:pr-16 md:text-lg"
               />
               <button
-                className="absolute right-1.5 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-lg active:scale-95 md:right-2 md:size-11"
+                className="absolute right-1.5 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-lg active:scale-95 md:right-2 md:size-11"
                 aria-label="검색"
               >
-                <MagnifyingGlassIcon className="size-5 md:size-6" />
+                <MagnifyingGlassIcon className="size-5 md:size-6" weight="bold" />
               </button>
             </div>
           </div>
