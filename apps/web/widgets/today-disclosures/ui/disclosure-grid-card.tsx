@@ -2,29 +2,28 @@ import Link from 'next/link'
 import { Card } from '@gs/ui'
 import { getMarketBadge } from '@/entities/disclosure'
 import type { Disclosure } from '@/entities/disclosure'
+import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureGridCardProps {
   disclosure: Disclosure
 }
 
 export function DisclosureGridCard({ disclosure }: DisclosureGridCardProps) {
-  const receivedDate = new Date(disclosure.receivedAt)
-  const year = receivedDate.getFullYear()
-  const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
-  const day = String(receivedDate.getDate()).padStart(2, '0')
-  const dateString = `${year}.${month}.${day}`
+  const dateString = formatDate(disclosure.receivedAt)
   const marketBadge = getMarketBadge(disclosure.market)
 
   return (
     <Link href={disclosure.reportUrl} target="_blank" rel="noopener noreferrer">
-      <Card interactive className="h-full gap-3 rounded-lg p-4 transition-colors hover:bg-accent">
+      <Card interactive className="h-full gap-3 rounded-lg p-4 hover:bg-accent">
         {/* 상단: 날짜, 회사명, 종목코드, 시장 뱃지 */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-foreground">{dateString}</span>
-            <span className="text-sm text-muted-foreground">{disclosure.companyName}</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="shrink-0 text-sm font-semibold text-foreground">{dateString}</span>
+            <span className="truncate text-sm text-muted-foreground">{disclosure.companyName}</span>
             {disclosure.stockCode !== '-' && (
-              <span className="text-sm text-muted-foreground">({disclosure.stockCode})</span>
+              <span className="shrink-0 text-sm text-muted-foreground">
+                ({disclosure.stockCode})
+              </span>
             )}
           </div>
           {marketBadge && (

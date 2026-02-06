@@ -5,7 +5,7 @@ import { Input } from '@gs/ui'
 
 export function ServiceBanner() {
   return (
-    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/8 px-4 md:h-[500px] lg:px-8">
+    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/20 px-4 md:h-[500px] lg:px-8">
       <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between">
         <div className="max-w-2xl">
           {/* 작은 텍스트 */}

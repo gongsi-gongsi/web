@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@gs/ui'
 import { getMarketBadge, getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
+import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureCardProps {
   disclosure: Disclosure
@@ -52,7 +53,7 @@ export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
       {showMeta && (
         <div className="flex items-center gap-3 px-4 pb-3 pl-11 text-sm text-muted-foreground">
           <span>{disclosure.submitter}</span>
-          <span>{new Date(disclosure.receivedAt).toLocaleDateString('ko-KR')}</span>
+          <span>{formatDate(disclosure.receivedAt)}</span>
         </div>
       )}
     </Link>

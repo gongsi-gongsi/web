@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cn } from '@gs/ui'
 import type { Disclosure } from '@/entities/disclosure'
 import { getMarketBadge } from '@/entities/disclosure'
+import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureListItemProps {
   disclosure: Disclosure
@@ -9,12 +10,7 @@ interface DisclosureListItemProps {
 
 export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
   const marketBadge = getMarketBadge(disclosure.market)
-
-  const receivedDate = new Date(disclosure.receivedAt)
-  const year = receivedDate.getFullYear()
-  const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
-  const day = String(receivedDate.getDate()).padStart(2, '0')
-  const dateString = `${year}.${month}.${day}`
+  const dateString = formatDate(disclosure.receivedAt)
 
   return (
     <Link
