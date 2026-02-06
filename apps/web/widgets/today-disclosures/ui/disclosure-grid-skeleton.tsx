@@ -2,7 +2,7 @@ export function DisclosureGridSkeleton() {
   return (
     <div className="grid grid-cols-3 gap-4">
       {Array.from({ length: 6 }).map((_, index) => (
-        <div key={index} className="flex flex-col rounded-lg border border-border bg-card p-4">
+        <div key={index} className="flex flex-col rounded-lg bg-card p-4">
           {/* 상단: 날짜, 회사명, 종목코드 */}
           <div className="mb-2 flex items-center justify-between">
             <div className="flex items-center gap-2">

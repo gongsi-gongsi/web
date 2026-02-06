@@ -2,8 +2,7 @@ import { Suspense } from 'react'
 import { HydrationBoundary } from '@tanstack/react-query'
 import { prefetchTodayDisclosures, type Market } from '@/entities/disclosure/server'
 import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
-import { DisclosureList } from './ui/disclosure-list'
-import { DisclosureListSkeleton } from './ui/disclosure-list-skeleton'
+import { DisclosureList, DisclosureListSkeleton } from '@/widgets/disclosure-list-page'
 
 interface DisclosuresPageProps {
   searchParams: Promise<{ market?: string }>
@@ -27,7 +26,7 @@ export default async function DisclosuresPage({ searchParams }: DisclosuresPageP
         <HydrationBoundary state={dehydratedState}>
           <ErrorBoundaryWithFallback>
             <Suspense fallback={<DisclosureListSkeleton />}>
-              <DisclosureList initialMarket={market} />
+              <DisclosureList />
             </Suspense>
           </ErrorBoundaryWithFallback>
         </HydrationBoundary>
