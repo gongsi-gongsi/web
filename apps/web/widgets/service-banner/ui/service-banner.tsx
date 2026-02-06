@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
-import { Input } from '@gs/ui'
+import { Button, Input } from '@gs/ui'
 
 export function ServiceBanner() {
   return (
-    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/20 px-4 md:h-[500px] lg:px-8">
+    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/20 px-4 md:h-[400px] lg:px-8">
       <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between">
         <div className="max-w-2xl">
           {/* 작은 텍스트 */}
@@ -28,12 +28,14 @@ export function ServiceBanner() {
                 placeholder="기업명 또는 종목 코드를 검색해보세요"
                 className="h-12 border-none bg-transparent pl-4 pr-14 text-base shadow-none outline-none placeholder:text-foreground/40 focus:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 md:h-14 md:pr-16 md:text-lg"
               />
-              <button
-                className="absolute right-1.5 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-lg active:scale-95 md:right-2 md:size-11"
+              <Button
+                size="icon"
+                interactive
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 shadow-md transition-all  md:right-2 md:size-11"
                 aria-label="검색"
               >
                 <MagnifyingGlassIcon className="size-5 md:size-6" weight="bold" />
-              </button>
+              </Button>
             </div>
           </div>
         </div>
