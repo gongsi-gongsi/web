@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cn } from '@gs/ui'
 import type { Disclosure } from '@/entities/disclosure'
 import { getMarketBadge } from '@/entities/disclosure'
+import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureListItemProps {
   disclosure: Disclosure
@@ -9,12 +10,7 @@ interface DisclosureListItemProps {
 
 export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
   const marketBadge = getMarketBadge(disclosure.market)
-
-  const receivedDate = new Date(disclosure.receivedAt)
-  const year = receivedDate.getFullYear()
-  const month = String(receivedDate.getMonth() + 1).padStart(2, '0')
-  const day = String(receivedDate.getDate()).padStart(2, '0')
-  const dateString = `${year}.${month}.${day}`
+  const dateString = formatDate(disclosure.receivedAt)
 
   return (
     <Link
@@ -28,7 +24,7 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
     >
       {/* 접수일자 */}
       <div className="w-[100px] shrink-0">
-        <span className="text-sm text-foreground">{dateString}</span>
+        <span className="text-base text-foreground">{dateString}</span>
       </div>
 
       {/* 시장 */}
@@ -43,13 +39,13 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
             {marketBadge.label}
           </span>
         ) : (
-          <span className="text-sm text-muted-foreground">-</span>
+          <span className="text-base text-muted-foreground">-</span>
         )}
       </div>
 
       {/* 회사명 */}
       <div className="w-[140px] shrink-0">
-        <div className="truncate text-sm font-medium text-foreground">
+        <div className="truncate text-base font-medium text-foreground">
           {disclosure.companyName}
           {disclosure.stockCode !== '-' && (
             <span className="ml-1 text-xs text-muted-foreground">({disclosure.stockCode})</span>
@@ -59,7 +55,7 @@ export function DisclosureListItem({ disclosure }: DisclosureListItemProps) {
 
       {/* 공시제목 */}
       <div className="flex-1 overflow-hidden">
-        <div className="truncate text-sm text-foreground transition-colors group-hover:text-foreground">
+        <div className="truncate text-base text-foreground transition-colors group-hover:text-foreground">
           {disclosure.title}
         </div>
       </div>

@@ -27,7 +27,7 @@ import { Button } from '@split/ui';
 ## 특징
 
 - **6가지 variant**: default, destructive, outline, secondary, ghost, link
-- **7가지 size**: default, sm, lg, icon, icon-sm, icon-lg, icon-bare
+- **8가지 size**: default, sm, lg, xl, icon, icon-sm, icon-lg, icon-bare
 - **Interactive**: 클릭 시 축소 효과
 - **asChild 지원**: Slot 패턴으로 커스텀 요소 사용 가능
 - **접근성**: 키보드 네비게이션 지원
@@ -49,10 +49,12 @@ import { Button } from '@split/ui';
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg', 'icon', 'icon-sm', 'icon-lg', 'icon-bare'],
+      options: ['default', 'sm', 'lg', 'xl', 'icon', 'icon-sm', 'icon-lg', 'icon-bare'],
       description: '버튼의 크기',
       table: {
-        type: { summary: "'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg' | 'icon-bare'" },
+        type: {
+          summary: "'default' | 'sm' | 'lg' | 'xl' | 'icon' | 'icon-sm' | 'icon-lg' | 'icon-bare'",
+        },
         defaultValue: { summary: 'default' },
       },
     },
@@ -221,6 +223,20 @@ export const Large: Story = {
   },
 }
 
+export const XLarge: Story = {
+  args: {
+    size: 'xl',
+    children: 'XLarge Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '가장 큰 크기의 버튼입니다. 전체 너비 CTA나 모바일 하단 버튼에 적합합니다.',
+      },
+    },
+  },
+}
+
 export const Disabled: Story = {
   args: {
     disabled: true,
@@ -289,6 +305,9 @@ export const LoadingSizes: Story = {
       </Button>
       <Button loading size="lg">
         Large
+      </Button>
+      <Button loading size="xl">
+        XLarge
       </Button>
       <Button loading size="icon" variant="outline" aria-label="Loading icon" />
     </div>

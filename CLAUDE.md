@@ -89,6 +89,21 @@ app/
 - 전역 레이아웃 및 프로바이더
 - 메타데이터 설정
 
+> ⚠️ **중요: `app/` 폴더 안에 `ui/`, `components/` 폴더를 절대 생성하지 마세요!**
+>
+> - `app/` 레이어는 **라우팅만** 담당합니다
+> - 모든 UI 컴포넌트는 `widgets/`, `features/`, `entities/` 레이어에 위치해야 합니다
+> - 페이지 컴포넌트(`page.tsx`)는 widgets를 조합만 해야 합니다
+>
+> ```typescript
+> // ❌ 잘못된 예시
+> app / disclosures / ui / disclosure - list.tsx // app/ 안에 ui 폴더 금지!
+>
+> // ✅ 올바른 예시
+> widgets / disclosure - list / ui / disclosure - list.tsx // widgets 레이어에 위치
+> app / disclosures / page.tsx // widgets만 import해서 사용
+> ```
+
 #### 2. `widgets/` - 복합 UI 블록
 
 - 여러 features와 entities를 조합한 독립적 UI
@@ -527,6 +542,7 @@ pnpm changeset
 - ❌ `any` 타입 남발 (경고 발생)
 - ❌ PascalCase 파일명
 - ❌ shared/ui 폴더 생성
+- ❌ **app/ 폴더 안에 ui/, components/ 폴더 생성** (FSD 위반!)
 - ❌ index.ts 없이 직접 import
 - ❌ 클래스 컴포넌트 사용
 - ❌ pages 레이어 생성 (Next.js app 디렉토리 사용)

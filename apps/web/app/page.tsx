@@ -5,22 +5,18 @@ import { HydrationBoundary } from '@tanstack/react-query'
 import { MagnifyingGlassIcon, ListIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
+import { ServiceBanner } from '@/widgets/service-banner'
 import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures } from '@/entities/disclosure/server'
 
 export default async function Home() {
-  // 서버에서 데이터 prefetch (메인 페이지는 7개만 조회)
-  const dehydratedState = await prefetchTodayDisclosures('all', 7)
+  // 서버에서 데이터 prefetch (메인 페이지는 6개만 조회)
+  const dehydratedState = await prefetchTodayDisclosures('all', 6)
 
   return (
     <HydrationBoundary state={dehydratedState}>
       <main className="min-h-screen bg-background">
         <MobileHeader
-          left={
-            <Link href="/" className="flex items-center">
-              <span className="text-lg font-bold">공시공시</span>
-            </Link>
-          }
           right={
             <>
               <Link
@@ -39,11 +35,16 @@ export default async function Home() {
             </>
           }
         />
-        <div className="mx-auto max-w-screen-2xl py-8 md:px-4 lg:px-8">
-          <Suspense>
-            <TodayDisclosures />
-          </Suspense>
-        </div>
+
+        <ServiceBanner />
+
+        <section className="py-8 md:px-4 lg:px-8">
+          <div className="mx-auto max-w-[1280px]">
+            <Suspense>
+              <TodayDisclosures />
+            </Suspense>
+          </div>
+        </section>
       </main>
     </HydrationBoundary>
   )

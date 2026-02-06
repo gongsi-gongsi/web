@@ -54,6 +54,12 @@
   /* Dropdown Menu */
   --animate-dropdown-in: dropdown-in 0.15s ease-out;
   --animate-dropdown-out: dropdown-out 0.15s ease-in;
+
+  /* Float */
+  --animate-float: float 3s ease-in-out infinite;
+
+  /* Gradient Border */
+  --animate-gradient-border: gradient-border 3s ease infinite;
 }
 
 /* ============================================================================
@@ -366,5 +372,29 @@
   to {
     opacity: 0;
     transform: scale(0.95);
+  }
+}
+
+/* Float */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Gradient Border */
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

@@ -39,6 +39,11 @@ function ResponsiveModal({
 }: ResponsiveModalProps) {
   const isMobile = useIsMobile()
 
+  // 초기 로딩 중에는 렌더링하지 않음 (hydration mismatch 방지)
+  if (isMobile === undefined) {
+    return null
+  }
+
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>

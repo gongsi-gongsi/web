@@ -1,5 +1,6 @@
 import { getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
 import { cn } from '@gs/ui'
+import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure
@@ -61,7 +62,7 @@ export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowP
             </div>
           </td>
           <td className="px-4 py-3 text-sm text-muted-foreground">
-            {new Date(disclosure.receivedAt).toLocaleDateString('ko-KR')}
+            {formatDate(disclosure.receivedAt)}
           </td>
         </>
       )}

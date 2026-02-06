@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import './animations.css';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================================
    공시공시 테마 설정 (Tailwind v4)
    - @theme inline: Tailwind 유틸리티 클래스 생성용
@@ -13,9 +15,9 @@
    ============================================================================ */
 
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.9787 0.0017 247.84);
   --foreground: oklch(0.15 0 0);
-  --card: oklch(0.99 0 0);
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0 0);
   --gray-icon: oklch(0.55 0.015 250);
   --popover: oklch(1 0 0);
@@ -243,7 +245,7 @@
    Tailwind 테마 설정 (@theme inline)
    ============================================================================ */
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -328,10 +330,12 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0.5rem; /* 8px - 태그, 뱃지 */
+  --radius-md: 0.75rem; /* 12px - 버튼, 인풋 */
+  --radius-lg: 1rem; /* 16px - 카드, 모달 */
+  --radius-xl: 1.25rem; /* 20px - 큰 카드 */
+  --radius-2xl: 1.5rem; /* 24px - 배너 등 */
+  --radius-3xl: 2rem; /* 32px - 특수 요소 */
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
@@ -391,38 +395,11 @@
    기본 글자 크기 설정
    ============================================================================ */
 
-html {
-  font-size: 16px; /* 1rem = 16px (rem 계산 기준) */
-}
-
 body {
-  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  font-size: 16px; /* 기본 텍스트 크기 */
-  line-height: 1.5;
-}
-
-/* ============================================================================
-   Tailwind 폰트 크기 오버라이드
-   ============================================================================ */
-
-@layer utilities {
-  .text-lg {
-    font-size: 17px;
-    line-height: 1.5;
-  }
-
-  .text-base {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-
-  .text-sm {
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  .text-xs {
-    font-size: 14px;
-    line-height: 1.5;
-  }
+  font-family:
+    var(--font-sans),
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
 }

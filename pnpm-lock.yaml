@@ -39,58 +39,6 @@ importers:
         specifier: ^2.0.0
         version: 2.7.6
 
-  apps/admin:
-    dependencies:
-      '@gs/tailwind-config':
-        specifier: workspace:*
-        version: link:../../packages/tailwind-config
-      '@gs/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: ^15.0.0
-        version: 15.5.9(@playwright/test@1.58.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@gs/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@gs/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@gs/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@tailwindcss/postcss':
-        specifier: ^4.1.17
-        version: 4.1.18
-      '@types/node':
-        specifier: ^20
-        version: 20.19.30
-      '@types/react':
-        specifier: ^18
-        version: 18.3.27
-      '@types/react-dom':
-        specifier: ^18
-        version: 18.3.7(@types/react@18.3.27)
-      eslint:
-        specifier: ^8
-        version: 8.57.1
-      postcss:
-        specifier: ^8
-        version: 8.5.6
-      tailwindcss:
-        specifier: ^4.1.17
-        version: 4.1.18
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-
   apps/web:
     dependencies:
       '@gs/tailwind-config':

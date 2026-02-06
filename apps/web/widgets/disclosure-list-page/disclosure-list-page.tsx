@@ -1,21 +1,10 @@
 import { BackButton } from '@/shared/ui/back-button'
+import { getTodayKorean } from '@/shared/lib/date'
 import { MobileHeader } from '@/widgets/header'
 import { DisclosureList } from './ui/disclosure-list'
 
-/**
- * 오늘 날짜를 한국어 형식으로 포맷합니다
- * @returns "2026년 01월 30일" 형식의 문자열
- */
-function formatTodayKorean(): string {
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = String(today.getMonth() + 1).padStart(2, '0')
-  const day = String(today.getDate()).padStart(2, '0')
-  return `${year}년 ${month}월 ${day}일`
-}
-
 export function DisclosureListPage() {
-  const todayLabel = formatTodayKorean()
+  const todayLabel = getTodayKorean()
 
   return (
     <>
