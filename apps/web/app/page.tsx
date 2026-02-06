@@ -38,7 +38,7 @@ export default async function Home() {
 
         <ServiceBanner />
 
-        <section className="md:px-4 py-8 lg:px-8">
+        <section className="py-8 md:px-4 lg:px-8">
           <div className="mx-auto max-w-[1280px]">
             <Suspense>
               <TodayDisclosures />
