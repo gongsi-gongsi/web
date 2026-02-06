@@ -10,8 +10,8 @@ import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures } from '@/entities/disclosure/server'
 
 export default async function Home() {
-  // 서버에서 데이터 prefetch (메인 페이지는 7개만 조회)
-  const dehydratedState = await prefetchTodayDisclosures('all', 7)
+  // 서버에서 데이터 prefetch (메인 페이지는 6개만 조회)
+  const dehydratedState = await prefetchTodayDisclosures('all', 6)
 
   return (
     <HydrationBoundary state={dehydratedState}>

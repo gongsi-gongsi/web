@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib/utils'
 
 export interface CardProps extends React.ComponentProps<'div'> {
   /** 터치/클릭 시 축소 및 밝아지는 효과 활성화 */
-  interactive?: boolean;
+  interactive?: boolean
 }
 
 function Card({ className, interactive = false, ...props }: CardProps) {
@@ -13,13 +13,14 @@ function Card({ className, interactive = false, ...props }: CardProps) {
       data-slot="card"
       className={cn(
         'bg-card text-card-foreground flex flex-col gap-6 rounded-3xl py-6',
+        'border border-border shadow-md dark:border-none dark:shadow-none',
         interactive &&
-          'active:bg-card/90 cursor-pointer transition-all duration-200 ease-out active:scale-[0.98]',
+          'cursor-pointer transition-transform duration-200 ease-out active:scale-[0.98]',
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 function CardHeader({ className = '', ...props }: React.ComponentProps<'div'>) {
@@ -32,7 +33,7 @@ function CardHeader({ className = '', ...props }: React.ComponentProps<'div'>) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function CardTitle({ className = '', ...props }: React.ComponentProps<'div'>) {
@@ -42,7 +43,7 @@ function CardTitle({ className = '', ...props }: React.ComponentProps<'div'>) {
       className={cn('leading-none font-semibold', className)}
       {...props}
     />
-  );
+  )
 }
 
 function CardDescription({ className = '', ...props }: React.ComponentProps<'div'>) {
@@ -52,7 +53,7 @@ function CardDescription({ className = '', ...props }: React.ComponentProps<'div
       className={cn('text-secondary-foreground text-sm', className)}
       {...props}
     />
-  );
+  )
 }
 
 function CardAction({ className = '', ...props }: React.ComponentProps<'div'>) {
@@ -62,11 +63,11 @@ function CardAction({ className = '', ...props }: React.ComponentProps<'div'>) {
       className={cn('col-start-2 row-span-2 row-start-1 self-start justify-self-end', className)}
       {...props}
     />
-  );
+  )
 }
 
 function CardContent({ className = '', ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="card-content" className={cn('px-6', className)} {...props} />;
+  return <div data-slot="card-content" className={cn('px-6', className)} {...props} />
 }
 
 function CardFooter({ className = '', ...props }: React.ComponentProps<'div'>) {
@@ -76,7 +77,7 @@ function CardFooter({ className = '', ...props }: React.ComponentProps<'div'>) {
       className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
       {...props}
     />
-  );
+  )
 }
 
-export { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
+export { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }

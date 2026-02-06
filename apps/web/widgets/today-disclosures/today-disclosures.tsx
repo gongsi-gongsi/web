@@ -9,9 +9,9 @@ import { Button } from '@gs/ui'
 import { useTodayDisclosures, type Market } from '@/entities/disclosure'
 import { MarketTabs } from './ui/market-tabs'
 import { DisclosureCardList } from './ui/disclosure-card-list'
-import { DisclosureList } from './ui/disclosure-list'
+import { DisclosureGrid } from './ui/disclosure-grid'
 import { DisclosureSkeleton } from './ui/disclosure-skeleton'
-import { DisclosureTableSkeleton } from './ui/disclosure-table-skeleton'
+import { DisclosureGridSkeleton } from './ui/disclosure-grid-skeleton'
 
 interface ErrorFallbackProps {
   error: Error
@@ -29,62 +29,26 @@ function ErrorFallback({ reset, error: _error }: ErrorFallbackProps) {
   )
 }
 
-interface TodayDisclosuresDataProps {
+interface DisclosureListContentProps {
   selectedMarket: Market
-  onMarketChange: (market: Market) => void
 }
 
-function TodayDisclosuresData({ selectedMarket, onMarketChange }: TodayDisclosuresDataProps) {
-  const { data } = useTodayDisclosures(selectedMarket, 7)
+function DisclosureListContent({ selectedMarket }: DisclosureListContentProps) {
+  const { data } = useTodayDisclosures(selectedMarket, 6)
   const disclosures = data.disclosures
 
   return (
-    <div className="w-full">
-      {/* PC 버전 */}
+    <>
+      {/* PC 그리드 */}
       <div className="hidden md:block">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">오늘의 공시</h2>
-          <span className="text-sm text-muted-foreground">공시는 1분 단위로 갱신됩니다</span>
-        </div>
-
-        <div className="mb-4">
-          <MarketTabs selectedMarket={selectedMarket} onMarketChange={onMarketChange} />
-        </div>
-
-        <DisclosureList disclosures={disclosures} />
-
-        <div className="mt-4 flex justify-center">
-          <Link href="/disclosures/today">
-            <Button variant="ghost" size="sm">
-              더보기 →
-            </Button>
-          </Link>
-        </div>
+        <DisclosureGrid disclosures={disclosures} />
       </div>
 
-      {/* 모바일 버전 */}
-      <div className="bg-card md:hidden">
-        <div className="px-4 pb-4 pt-6">
-          <h2 className="text-lg font-bold">오늘의 공시</h2>
-        </div>
-
-        <div className="sticky top-14 z-40 mb-2 bg-card">
-          <MarketTabs selectedMarket={selectedMarket} onMarketChange={onMarketChange} />
-        </div>
-
-        <div className="pb-2">
-          <DisclosureCardList disclosures={disclosures} />
-        </div>
-
-        <div className="border-t border-border">
-          <Link href="/disclosures/today" className="block">
-            <Button variant="ghost" size="xl" className="h-16 w-full text-muted-foreground">
-              더보기
-            </Button>
-          </Link>
-        </div>
+      {/* 모바일 목록 */}
+      <div className="pb-2 md:hidden">
+        <DisclosureCardList disclosures={disclosures} />
       </div>
-    </div>
+    </>
   )
 }
 
@@ -99,7 +63,6 @@ export function TodayDisclosures() {
   const searchParams = useSearchParams()
   const { reset } = useQueryErrorResetBoundary()
 
-  // URL을 Single Source of Truth로 사용
   const marketParam = searchParams.get('market')
   const selectedMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
 
@@ -110,22 +73,73 @@ export function TodayDisclosures() {
   }
 
   return (
-    <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
-      <Suspense
-        key={selectedMarket}
-        fallback={
-          <>
-            <div className="hidden md:block">
-              <DisclosureTableSkeleton />
-            </div>
-            <div className="md:hidden">
-              <DisclosureSkeleton />
-            </div>
-          </>
-        }
-      >
-        <TodayDisclosuresData selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
-      </Suspense>
-    </ErrorBoundary>
+    <div className="w-full">
+      {/* ===== PC 버전 ===== */}
+      <div className="hidden md:block">
+        {/* PC 타이틀 */}
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold">오늘의 공시</h2>
+          <span className="text-sm text-muted-foreground">공시는 1분 단위로 갱신됩니다</span>
+        </div>
+
+        {/* PC 탭 */}
+        <div className="mb-4">
+          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+        </div>
+      </div>
+
+      {/* ===== 모바일 버전 ===== */}
+      <div className="bg-card md:hidden">
+        {/* 모바일 타이틀 */}
+        <div className="px-4 pb-4 pt-6">
+          <h2 className="text-lg font-bold">오늘의 공시</h2>
+        </div>
+
+        {/* 모바일 탭 */}
+        <div className="sticky top-14 z-40 bg-card">
+          <MarketTabs selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+        </div>
+      </div>
+
+      {/* ===== 공시 목록 (PC/모바일 공통 - Suspense) ===== */}
+      <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
+        <Suspense
+          key={selectedMarket}
+          fallback={
+            <>
+              <div className="hidden md:block">
+                <DisclosureGridSkeleton />
+              </div>
+              <div className="bg-card pb-2 pt-2 md:hidden">
+                <DisclosureSkeleton />
+              </div>
+            </>
+          }
+        >
+          <div className="bg-card pt-2 md:bg-transparent md:pt-0">
+            <DisclosureListContent selectedMarket={selectedMarket} />
+          </div>
+        </Suspense>
+      </ErrorBoundary>
+
+      {/* ===== 더보기 버튼 ===== */}
+      {/* PC 더보기 */}
+      <div className="mt-4 hidden justify-center md:flex">
+        <Link href="/disclosures/today">
+          <Button variant="ghost" size="sm">
+            더보기 →
+          </Button>
+        </Link>
+      </div>
+
+      {/* 모바일 더보기 */}
+      <div className="border-t border-border bg-card md:hidden">
+        <Link href="/disclosures/today" className="block">
+          <Button variant="ghost" size="xl" className="h-16 w-full text-muted-foreground">
+            더보기
+          </Button>
+        </Link>
+      </div>
+    </div>
   )
 }
