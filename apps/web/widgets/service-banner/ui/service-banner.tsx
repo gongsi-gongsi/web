@@ -1,11 +1,12 @@
+import Image from 'next/image'
 import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { Input } from '@gs/ui'
 
 export function ServiceBanner() {
   return (
-    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/8 px-4 md:h-[500px] lg:px-8">
-      <div className="mx-auto flex h-full max-w-[1376px] items-center">
+    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/8 px-4 md:h-[500px] lg:px-8">
+      <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between">
         <div className="max-w-2xl">
           {/* 작은 텍스트 */}
           <p className="mb-2 text-sm font-medium text-muted-foreground md:text-base">
@@ -36,6 +37,20 @@ export function ServiceBanner() {
                 <MagnifyingGlassIcon className="size-5 md:size-6" />
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* 배너 이미지 - md 이상에서만 표시 */}
+        <div className="hidden md:block">
+          <div className="animate-float">
+            <Image
+              src="/images/banner.png"
+              alt="AI 애널리스트"
+              width={500}
+              height={500}
+              className="h-auto w-[350px] lg:w-[500px]"
+              priority
+            />
           </div>
         </div>
       </div>

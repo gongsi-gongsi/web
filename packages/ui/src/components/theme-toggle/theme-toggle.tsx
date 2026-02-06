@@ -1,6 +1,6 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
+import { MoonIcon, SunIcon } from '@phosphor-icons/react'
 
 import { useTheme } from '../../providers/theme-provider'
 import { Button } from '../button'
@@ -21,7 +21,7 @@ export interface ThemeToggleProps extends ButtonHTMLAttributes<HTMLButtonElement
 // ============================================================================
 
 export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleProps) {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   function toggleTheme() {
     if (theme === 'light') {
@@ -34,6 +34,8 @@ export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleP
     }
   }
 
+  const isDark = resolvedTheme === 'dark'
+
   return (
     <Button
       variant="ghost"
@@ -44,16 +46,11 @@ export function ThemeToggle({ iconSize = 20, className, ...props }: ThemeToggleP
       interactive
       onClick={toggleTheme}
     >
-      <span className="relative flex items-center justify-center">
-        <Sun
-          className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
-          size={iconSize}
-        />
-        <Moon
-          className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
-          size={iconSize}
-        />
-      </span>
+      {isDark ? (
+        <MoonIcon size={iconSize} weight="fill" />
+      ) : (
+        <SunIcon size={iconSize} weight="fill" />
+      )}
     </Button>
   )
 }

@@ -1,1 +1,4 @@
 @import '@gs/tailwind-config/base.css';
+
+/* tailwind v4 다크모드 지원 설정 */
+@custom-variant dark (&:where(.dark, .dark *));

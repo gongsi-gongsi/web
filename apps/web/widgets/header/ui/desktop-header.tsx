@@ -25,7 +25,7 @@ export function DesktopHeader() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-linear-to-r from-primary/0 via-primary/40 to-primary/0 opacity-0 transition-opacity duration-500 group-hover/header:opacity-100" />
 
       <div className="relative flex h-16 w-full items-center px-4 lg:px-8">
-        <div className="mx-auto flex w-full max-w-[1376px] items-center">
+        <div className="mx-auto flex w-full max-w-[1280px] items-center">
           {/* Logo */}
           <Link href="/" className="mr-12 flex items-center">
             <span className="text-xl font-bold">공시공시</span>
@@ -52,7 +52,7 @@ export function DesktopHeader() {
           </nav>
 
           {/* Right Section - Actions */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {/* Theme toggle */}
             <ThemeToggle />
 

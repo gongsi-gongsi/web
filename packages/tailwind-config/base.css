@@ -348,6 +348,15 @@
    ============================================================================ */
 
 @layer utilities {
+  /* 서비스 배너 그라데이션 */
+  .bg-banner-gradient {
+    background: linear-gradient(to right, oklch(0.6671 0.1615 245.54 / 0.02), oklch(0.6671 0.1615 245.54 / 0.6));
+  }
+
+  .dark .bg-banner-gradient {
+    background: linear-gradient(to right, oklch(0.6671 0.1615 245.54 / 0.02), oklch(0.6671 0.1615 245.54 / 0.08));
+  }
+
   /* 인터랙티브 카드 효과 - 범용 */
   .interactive-card {
     transition:
