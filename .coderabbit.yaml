@@ -6,6 +6,15 @@ language: ko
 
 # 리뷰 활성화
 reviews:
+  # 프로젝트 가이드라인
+  instructions: |
+    - 이 프로젝트의 UI 패키지는 @gs/ui 입니다 (@ds/ui 아님)
+    - monorepo 패키지: @gs/ui, @gs/tailwind-config, @gs/eslint-config, @gs/typescript-config, @gs/prettier-config
+    - FSD(Feature-Sliced Design) 아키텍처를 따릅니다
+    - app/ 폴더 안에 ui/, components/ 폴더를 생성하지 않습니다
+    - 모든 UI 컴포넌트는 widgets/, features/, entities/ 레이어에 위치합니다
+    - 파일명은 kebab-case를 사용합니다
+
   # 자동 리뷰 활성화
   auto_review:
     enabled: true
