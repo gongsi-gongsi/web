@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const market = (searchParams.get('market') as Market) || 'all'
     const pageNo = searchParams.get('page_no')
     const pageCount = searchParams.get('page_count')
+    const limit = searchParams.get('limit')
 
     // 페이지네이션 파라미터가 있으면 페이지네이션 API 사용
     if (pageNo || pageCount) {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 페이지네이션 파라미터가 없으면 전체 조회 API 사용
-    const result = await getTodayDisclosuresFromDart(market)
+    const result = await getTodayDisclosuresFromDart(market, limit ? Number(limit) : undefined)
     return NextResponse.json(result)
   } catch (error) {
     console.error('Error fetching today disclosures:', error)

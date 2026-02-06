@@ -1,20 +1,22 @@
 import { getDartApiKey, getCorpClsFromMarket, formatDateToYYYYMMDD } from '@/shared/lib/dart/utils'
-import { formatDisclosure } from '../lib/format-disclosure'
+import { formatDisclosure } from '../../lib/format-disclosure'
 import type {
   Market,
   TodayDisclosuresResponse,
   PaginatedDisclosuresResponse,
   DartApiResponse,
-} from '../model/types'
+} from '../../model/types'
 
 /**
  * [서버 전용] DART API로부터 오늘의 공시 목록을 직접 조회합니다
  * @param market - 시장 구분 (all | kospi | kosdaq | konex | etc)
+ * @param limit - 조회할 최대 건수 (기본값: 100)
  * @returns 공시 목록과 메타데이터
  * @throws {Error} DART API 호출 실패 시
  */
 export async function getTodayDisclosuresFromDart(
-  market: Market = 'all'
+  market: Market = 'all',
+  limit: number = 100
 ): Promise<TodayDisclosuresResponse> {
   const corpCls = getCorpClsFromMarket(market)
   const today = formatDateToYYYYMMDD(new Date())
@@ -30,7 +32,7 @@ export async function getTodayDisclosuresFromDart(
   dartUrl.searchParams.append('sort', 'date')
   dartUrl.searchParams.append('sort_mth', 'desc')
   dartUrl.searchParams.append('page_no', '1')
-  dartUrl.searchParams.append('page_count', '100')
+  dartUrl.searchParams.append('page_count', String(limit))
 
   const response = await fetch(dartUrl.toString(), {
     next: {

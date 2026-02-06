@@ -2,16 +2,17 @@
 
 import { useSuspenseQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import { queries } from '@/shared/lib/query-keys'
-import { getTodayDisclosures, getTodayDisclosuresPaginated } from '../api/client'
-import { searchDisclosures } from '../api/search-disclosures'
-import { getPopularCompanies } from '../api/get-popular-companies'
-import { suggestCompanies } from '../api/suggest-companies'
+import { getTodayDisclosures, getTodayDisclosuresPaginated } from '../api/today-disclosures/client'
+import { searchDisclosures } from '../api/search-disclosures/client'
+import { getPopularCompanies } from '../api/popular-companies/client'
+import { suggestCompanies } from '../api/suggest-companies/client'
 import type { Market, SearchDisclosuresParams } from '../model/types'
 
 /**
  * [클라이언트 전용] 오늘의 공시 목록을 조회합니다
  * 서버에서 prefetch된 데이터가 있으면 즉시 반환되고, 없으면 클라이언트에서 fetch합니다
  * @param market - 시장 구분 (기본값: 'all')
+ * @param limit - 조회할 최대 건수 (선택적, 메인 페이지용)
  * @returns Suspense 기반 쿼리 결과
  * @example
  * ```tsx
@@ -21,10 +22,10 @@ import type { Market, SearchDisclosuresParams } from '../model/types'
  * }
  * ```
  */
-export function useTodayDisclosures(market: Market = 'all') {
+export function useTodayDisclosures(market: Market = 'all', limit?: number) {
   return useSuspenseQuery({
     queryKey: queries.disclosures.today(market).queryKey,
-    queryFn: () => getTodayDisclosures(market),
+    queryFn: () => getTodayDisclosures(market, limit),
     staleTime: 60000, // 1분간 fresh 상태 유지
     refetchInterval: 60000, // 1분마다 자동 refetch
     refetchIntervalInBackground: false, // 탭이 백그라운드면 중지

@@ -1,7 +1,7 @@
 'use client'
 
 import { getBaseUrl } from '@/shared/lib/get-base-url'
-import type { PopularCompany, PopularCompaniesResponse } from '../model/types'
+import type { PopularCompany, PopularCompaniesResponse } from '../../model/types'
 
 /**
  * [클라이언트 전용] API Route를 통해 인기 검색 회사 목록을 조회합니다

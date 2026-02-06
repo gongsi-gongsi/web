@@ -1,7 +1,7 @@
 'use client'
 
 import { getBaseUrl } from '@/shared/lib/get-base-url'
-import type { SearchDisclosuresParams, SearchDisclosuresResponse } from '../model/types'
+import type { SearchDisclosuresParams, SearchDisclosuresResponse } from '../../model/types'
 
 /**
  * [클라이언트 전용] API Route를 통해 공시를 검색합니다

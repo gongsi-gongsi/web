@@ -2,10 +2,13 @@
 // 이 파일은 서버 컴포넌트와 Route Handler에서만 import해야 합니다
 
 // 서버 전용 API 함수
-export { getTodayDisclosuresFromDart, getTodayDisclosuresFromDartPaginated } from './api/server'
-export { searchDisclosuresFromDart } from './api/search-server'
-export { getPopularCompaniesFromDB } from './api/get-popular-companies-server'
-export { suggestCompaniesFromDart } from './api/suggest-companies-server'
+export {
+  getTodayDisclosuresFromDart,
+  getTodayDisclosuresFromDartPaginated,
+} from './api/today-disclosures/server'
+export { searchDisclosuresFromDart } from './api/search-disclosures/server'
+export { getPopularCompaniesFromDB } from './api/popular-companies/server'
+export { suggestCompaniesFromDart } from './api/suggest-companies/server'
 
 // 서버 컴포넌트용 prefetch 함수
 export { prefetchTodayDisclosures } from './queries/prefetch'

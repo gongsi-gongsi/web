@@ -1,5 +1,5 @@
 import { searchCorpCodes } from '@/shared/lib/dart/apis/search-stocks'
-import type { CompanySuggestion } from './suggest-companies'
+import type { CompanySuggestion } from './client'
 
 /**
  * [서버 전용] DART API를 통해 회사명 자동완성을 조회합니다

@@ -1,4 +1,4 @@
-import { formatDisclosure } from '../lib/format-disclosure'
+import { formatDisclosure } from '../../lib/format-disclosure'
 import { prisma } from '@/shared/lib/prisma'
 import { searchCorpCodes } from '@/shared/lib/dart/apis/search-stocks'
 import { getDartApiKey, getCorpClsFromMarket, formatDateToYYYYMMDD } from '@/shared/lib/dart/utils'
@@ -9,7 +9,7 @@ import type {
   SearchDisclosuresParams,
   SearchDisclosuresResponse,
   Disclosure,
-} from '../model/types'
+} from '../../model/types'
 
 /**
  * SearchPeriod를 YYYYMMDD 형식의 시작/종료 날짜로 변환합니다

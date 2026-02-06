@@ -1,5 +1,5 @@
 import { prisma } from '@/shared/lib/prisma'
-import type { PopularCompany } from '../model/types'
+import type { PopularCompany } from '../../model/types'
 
 /**
  * [서버 전용] 최근 24시간 검색 로그를 기반으로 인기 검색 회사 목록을 조회합니다

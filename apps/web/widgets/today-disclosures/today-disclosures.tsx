@@ -30,8 +30,8 @@ function ErrorFallback({ reset, error: _error }: ErrorFallbackProps) {
 }
 
 function TodayDisclosuresContent({ selectedMarket }: { selectedMarket: Market }) {
-  const { data } = useTodayDisclosures(selectedMarket)
-  const disclosures = data.disclosures.slice(0, 7)
+  const { data } = useTodayDisclosures(selectedMarket, 7)
+  const disclosures = data.disclosures // 이미 7개만 조회하므로 slice 불필요
 
   return (
     <>
