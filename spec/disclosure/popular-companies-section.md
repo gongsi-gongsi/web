@@ -43,7 +43,7 @@
 
 ### PC 버전 (≥768px)
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │  🔥 인기 회사                                                                    │
 ├─────────────────────────────────────────────────────────────────────────────────┤
@@ -59,7 +59,7 @@
 
 ### 모바일 버전 (<768px)
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │  🔥 인기 회사                            │
 ├─────────────────────────────────────────┤
@@ -91,7 +91,7 @@
 
 ### 아키텍처 (FSD)
 
-```
+```text
 apps/web/
 ├── app/
 │   └── page.tsx                              # 메인 페이지 (인기 회사 프리패치)
@@ -101,6 +101,7 @@ apps/web/
 │       ├── index.ts
 │       ├── popular-companies-section.tsx     # 메인 위젯
 │       └── ui/
+│           ├── index.ts                      # UI 컴포넌트 배럴 export
 │           ├── popular-company-card.tsx      # 인기 회사 카드
 │           ├── popular-company-list.tsx      # 카드 리스트 (반응형)
 │           └── popular-company-skeleton.tsx  # 로딩 스켈레톤
@@ -143,24 +144,20 @@ export interface PopularCompany {
 ```typescript
 // entities/disclosure/queries/prefetch.ts (추가)
 
+const STALE_TIME_5_MIN = 5 * 60 * 1000
+
 /**
  * [서버 컴포넌트용] 인기 회사 데이터를 prefetch합니다
  * @param limit - 조회할 최대 건수 (기본값: 5)
  * @returns Dehydrated state (HydrationBoundary에 전달)
  */
 export async function prefetchPopularCompanies(limit: number = 5) {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 5 * 60 * 1000, // 5분
-      },
-    },
-  })
+  const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: queries.stocks.popular.queryKey,
+    queryKey: queries.stocks.popular(limit).queryKey,
     queryFn: () => getPopularCompaniesFromDB(limit),
-    staleTime: 5 * 60 * 1000, // 5분
+    staleTime: STALE_TIME_5_MIN,
   })
 
   return dehydrate(queryClient)
@@ -211,7 +208,7 @@ export default async function Home() {
 // entities/disclosure/queries/hooks.ts (기존)
 export function usePopularCompanies(limit = 10) {
   return useSuspenseQuery({
-    queryKey: queries.stocks.popular.queryKey,
+    queryKey: queries.stocks.popular(limit).queryKey,
     queryFn: () => getPopularCompanies(limit),
     staleTime: 5 * 60 * 1000, // 5분
   })

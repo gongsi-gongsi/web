@@ -5,8 +5,7 @@ import { ErrorBoundary } from '@suspensive/react'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { Button } from '@gs/ui'
 import { usePopularCompanies } from '@/entities/disclosure'
-import { PopularCompanyList } from './ui/popular-company-list'
-import { PopularCompanySkeleton } from './ui/popular-company-skeleton'
+import { PopularCompanyList, PopularCompanySkeleton } from './ui'
 
 interface ErrorFallbackProps {
   error: Error

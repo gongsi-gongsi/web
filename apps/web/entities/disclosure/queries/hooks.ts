@@ -124,7 +124,7 @@ export function useSearchDisclosures(
  */
 export function usePopularCompanies(limit = 10) {
   return useSuspenseQuery({
-    queryKey: queries.stocks.popular.queryKey,
+    queryKey: queries.stocks.popular(limit).queryKey,
     queryFn: () => getPopularCompanies(limit),
     staleTime: 5 * 60 * 1000, // 5분
   })
