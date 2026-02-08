@@ -11,7 +11,7 @@ export { getPopularCompaniesFromDB } from './api/popular-companies/server'
 export { suggestCompaniesFromDart } from './api/suggest-companies/server'
 
 // 서버 컴포넌트용 prefetch 함수
-export { prefetchTodayDisclosures } from './queries/prefetch'
+export { prefetchTodayDisclosures, prefetchPopularCompanies } from './queries/prefetch'
 
 // 유틸리티 함수
 export { formatDisclosure } from './lib/format-disclosure'
