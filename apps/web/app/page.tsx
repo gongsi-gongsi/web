@@ -10,6 +10,9 @@ import { PopularCompaniesSection } from '@/widgets/popular-companies-section'
 import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures, prefetchPopularCompanies } from '@/entities/disclosure/server'
 
+// 빌드 시 프리렌더링 방지 (DB 연결 필요)
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   // 병렬로 프리패치 (개별 실패 허용)
   const [todayResult, popularResult] = await Promise.allSettled([
