@@ -1,11 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
   Table,
   TableHeader,
   TableBody,
@@ -16,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
+  cn,
 } from '@gs/ui'
 import { useFinancials, getAccountLabel } from '@/entities/company'
 import type { FinancialViewMode, FinancialData, AccountKey } from '@/entities/company'
@@ -29,11 +26,6 @@ import {
   calculateDebtRatio,
 } from '../lib/format-display'
 
-interface FinancialStatementsProps {
-  corpCode: string
-  initialMode?: FinancialViewMode
-}
-
 const ACCOUNT_ROWS: AccountKey[] = [
   'revenue',
   'operatingProfit',
@@ -43,37 +35,73 @@ const ACCOUNT_ROWS: AccountKey[] = [
   'totalEquity',
 ]
 
-export function FinancialStatements({
-  corpCode,
-  initialMode = 'yearly',
-}: FinancialStatementsProps) {
-  const [mode, setMode] = useState<FinancialViewMode>(initialMode)
-  const { data } = useFinancials(corpCode, mode)
+const MODE_OPTIONS: { value: FinancialViewMode; label: string }[] = [
+  { value: 'yearly', label: '연도별' },
+  { value: 'quarterly', label: '분기별' },
+]
 
-  const handleModeChange = (value: string) => {
-    setMode(value as FinancialViewMode)
-  }
+interface SegmentControlProps {
+  value: FinancialViewMode
+  onChange: (value: FinancialViewMode) => void
+}
+
+export function SegmentControl({ value, onChange }: SegmentControlProps) {
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+
+  useEffect(() => {
+    const activeButton = buttonRefs.current[value]
+    const container = containerRef.current
+    if (activeButton && container) {
+      const containerRect = container.getBoundingClientRect()
+      const buttonRect = activeButton.getBoundingClientRect()
+      setIndicatorStyle({
+        left: buttonRect.left - containerRect.left,
+        width: buttonRect.width,
+      })
+    }
+  }, [value])
 
   return (
-    <div className="space-y-4">
-      <Tabs value={mode} onValueChange={handleModeChange}>
-        <div className="px-4 md:px-0">
-          <TabsList>
-            <TabsTrigger value="yearly">연도별</TabsTrigger>
-            <TabsTrigger value="quarterly">분기별</TabsTrigger>
-          </TabsList>
-        </div>
-
-        <TabsContent value="yearly">
-          <FinancialTable data={data.data} />
-        </TabsContent>
-
-        <TabsContent value="quarterly">
-          <FinancialTable data={data.data} />
-        </TabsContent>
-      </Tabs>
+    <div ref={containerRef} className="bg-muted relative inline-flex rounded-lg p-1">
+      {/* 슬라이딩 배경 */}
+      <div
+        className="bg-background absolute top-1 bottom-1 rounded-md shadow-sm transition-all duration-200 ease-out"
+        style={{
+          left: indicatorStyle.left,
+          width: indicatorStyle.width,
+        }}
+      />
+      {MODE_OPTIONS.map(option => (
+        <button
+          key={option.value}
+          ref={el => {
+            buttonRefs.current[option.value] = el
+          }}
+          onClick={() => onChange(option.value)}
+          className={cn(
+            'relative z-10 rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-200',
+            value === option.value
+              ? 'text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   )
+}
+
+interface FinancialTableContentProps {
+  corpCode: string
+  mode: FinancialViewMode
+}
+
+export function FinancialTableContent({ corpCode, mode }: FinancialTableContentProps) {
+  const { data } = useFinancials(corpCode, mode)
+  return <FinancialTable data={data.data} />
 }
 
 interface FinancialTableProps {
@@ -119,7 +147,7 @@ function FinancialTable({ data }: FinancialTableProps) {
         {/* 모바일: 카드 없이 */}
         <div className="md:hidden">
           <div className="mb-3 flex items-center justify-between px-4">
-            <h3 className="text-base font-semibold">주요 계정</h3>
+            <h3 className="text-base font-semibold">재무 현황</h3>
             <span className="text-muted-foreground text-sm">단위: 억원</span>
           </div>
           <div className="overflow-x-auto px-4">
@@ -132,7 +160,7 @@ function FinancialTable({ data }: FinancialTableProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>주요 계정</span>
+                <span>재무 현황</span>
                 <span className="text-muted-foreground text-sm font-normal">단위: 억원</span>
               </CardTitle>
             </CardHeader>
@@ -142,6 +170,9 @@ function FinancialTable({ data }: FinancialTableProps) {
           </Card>
         </div>
       </section>
+
+      {/* 모바일 구분선 */}
+      <div className="bg-background h-6 md:hidden" />
 
       {/* 주요 비율 */}
       <section>

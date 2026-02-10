@@ -1,5 +1,8 @@
-export { FinancialStatements } from './ui/financial-statements'
-export { FinancialStatementsSkeleton } from './ui/financial-statements-skeleton'
+export { SegmentControl, FinancialTableContent } from './ui/financial-statements'
+export {
+  FinancialTableSkeleton,
+  FinancialStatementsSkeleton,
+} from './ui/financial-statements-skeleton'
 export { FinancialSection } from './ui/financial-section'
 export {
   formatToEok,
