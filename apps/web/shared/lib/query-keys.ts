@@ -1,5 +1,6 @@
 import { createQueryKeyStore } from '@lukemorales/query-key-factory'
 import type { Market, SearchDisclosuresParams } from '@/entities/disclosure'
+import type { FinancialViewMode } from '@/entities/company'
 
 /**
  * TanStack Query의 쿼리 키를 중앙에서 관리하는 스토어입니다
@@ -14,5 +15,11 @@ export const queries = createQueryKeyStore({
   stocks: {
     suggest: (query: string) => [query],
     popular: (limit: number) => [limit],
+  },
+  company: {
+    info: (corpCode: string) => [corpCode],
+  },
+  financial: {
+    statements: (corpCode: string, mode: FinancialViewMode) => [corpCode, mode],
   },
 })
