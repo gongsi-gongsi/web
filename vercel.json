@@ -4,5 +4,11 @@
   "devCommand": "pnpm turbo dev --filter=web",
   "installCommand": "pnpm install",
   "framework": "nextjs",
-  "outputDirectory": "apps/web/.next"
+  "outputDirectory": "apps/web/.next",
+  "crons": [
+    {
+      "path": "/api/cron/cleanup-search-logs",
+      "schedule": "0 0 * * *"
+    }
+  ]
 }

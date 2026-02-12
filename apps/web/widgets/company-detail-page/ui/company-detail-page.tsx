@@ -51,7 +51,7 @@ function CompanyTabs({ activeTab, onTabChange, className }: CompanyTabsProps) {
   }, [activeTab])
 
   return (
-    <div className={cn('relative flex gap-6 border-b border-border', className)}>
+    <div className={cn('relative flex gap-6 border-b border-border bg-card', className)}>
       {TABS.map(tab => (
         <button
           key={tab.value}
@@ -164,7 +164,9 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
         </Suspense>
 
         {/* 탭 메뉴 */}
-        <CompanyTabs activeTab={activeTab} onTabChange={setActiveTab} className="px-4" />
+        <div className="sticky top-14 z-40">
+          <CompanyTabs activeTab={activeTab} onTabChange={setActiveTab} className="px-4" />
+        </div>
 
         {/* 탭 콘텐츠 */}
         <div className="py-6">
@@ -179,7 +181,13 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
         </Suspense>
 
         {/* 탭 메뉴 */}
-        <CompanyTabs activeTab={activeTab} onTabChange={setActiveTab} className="mb-6" />
+        <div className="sticky top-0 z-40">
+          <CompanyTabs
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            className="mb-6 bg-background"
+          />
+        </div>
 
         {/* 탭 콘텐츠 */}
         <TabContent activeTab={activeTab} corpCode={corpCode} />
