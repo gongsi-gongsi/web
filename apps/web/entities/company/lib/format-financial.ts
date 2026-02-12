@@ -161,6 +161,14 @@ export function formatQuarterlyFinancial(
   }
 }
 
+/** 보고서 코드별 분기 순서 (높을수록 최신) */
+const REPORT_CODE_ORDER: Record<ReportCode, number> = {
+  '11013': 1, // 1Q
+  '11012': 2, // 2Q
+  '11014': 3, // 3Q
+  '11011': 4, // 4Q (사업보고서)
+}
+
 /**
  * 여러 연도의 데이터를 병합하고 최신 N개만 반환합니다
  * @param datasets - 여러 API 호출 결과
@@ -171,10 +179,10 @@ export function mergeAndSliceYearly(datasets: FinancialData[][], limit: number):
   const merged = datasets.flat()
   const uniqueByYear = new Map<number, FinancialData>()
 
-  // 같은 연도는 최신 데이터로 덮어쓰기
+  // 같은 연도는 최신 분기 데이터로 덮어쓰기
   for (const data of merged) {
     const existing = uniqueByYear.get(data.year)
-    if (!existing || data.reportCode >= (existing.reportCode ?? '')) {
+    if (!existing || REPORT_CODE_ORDER[data.reportCode] > REPORT_CODE_ORDER[existing.reportCode]) {
       uniqueByYear.set(data.year, data)
     }
   }

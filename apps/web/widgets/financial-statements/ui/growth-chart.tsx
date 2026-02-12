@@ -62,7 +62,7 @@ interface CustomTooltipProps {
   active?: boolean
   payload?: Array<{
     name: string
-    value: number
+    value: number | null
     color: string
     dataKey: string
   }>

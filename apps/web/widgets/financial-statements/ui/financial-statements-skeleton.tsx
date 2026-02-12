@@ -12,7 +12,11 @@ import {
   CardContent,
 } from '@gs/ui'
 
-function TableSkeleton({ rows = 6 }: { rows?: number }) {
+interface TableSkeletonProps {
+  rows?: number
+}
+
+function TableSkeleton({ rows = 6 }: TableSkeletonProps) {
   return (
     <Table>
       <TableHeader>

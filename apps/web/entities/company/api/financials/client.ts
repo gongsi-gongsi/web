@@ -1,7 +1,7 @@
 'use client'
 
 import { getBaseUrl } from '@/shared/lib/get-base-url'
-import type { FinancialViewMode, FinancialStatementsResponse } from '../../model/types'
+import type { FinancialViewMode, FinancialStatementsResponse } from '../../model'
 
 /**
  * [클라이언트 전용] API Route를 통해 재무제표를 조회합니다

@@ -1,5 +1,5 @@
 import { getDartApiKey } from '@/shared/lib/dart/utils'
-import type { DartCompanyResponse, CompanyInfo } from '../../model/types'
+import type { DartCompanyResponse, CompanyInfo } from '../../model'
 
 /**
  * DART API에서 기업개황을 조회합니다

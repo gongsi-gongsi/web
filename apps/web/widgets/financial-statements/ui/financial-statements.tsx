@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useLayoutEffect, useRef } from 'react'
 import {
   Table,
   TableHeader,
@@ -56,7 +56,7 @@ export function SegmentControl({ value, onChange }: SegmentControlProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const activeButton = buttonRefs.current[value]
     const container = containerRef.current
     if (activeButton && container) {
@@ -84,6 +84,7 @@ export function SegmentControl({ value, onChange }: SegmentControlProps) {
           ref={el => {
             buttonRefs.current[option.value] = el
           }}
+          type="button"
           onClick={() => onChange(option.value)}
           className={cn(
             'relative z-10 rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-200',

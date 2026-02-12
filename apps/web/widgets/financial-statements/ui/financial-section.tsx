@@ -29,6 +29,7 @@ export function FinancialSection({ corpCode }: FinancialSectionProps) {
           <div className="py-8 text-center">
             <p className="text-muted-foreground mb-4">재무 데이터를 불러오는데 실패했습니다</p>
             <button
+              type="button"
               onClick={reset}
               className="border-input bg-background hover:bg-accent rounded-md border px-4 py-2 text-sm"
             >
@@ -82,6 +83,7 @@ export function SummarySection({ corpCode }: SummarySectionProps) {
           <div className="py-8 text-center">
             <p className="text-muted-foreground mb-4">재무 데이터를 불러오는데 실패했습니다</p>
             <button
+              type="button"
               onClick={reset}
               className="border-input bg-background hover:bg-accent rounded-md border px-4 py-2 text-sm"
             >

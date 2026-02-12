@@ -1,4 +1,4 @@
-// Types
+// Model
 export type {
   ReportCode,
   FinancialViewMode,
@@ -9,8 +9,8 @@ export type {
   FinancialStatementsResponse,
   DartCompanyResponse,
   CompanyInfo,
-} from './model/types'
-export { REPORT_CODE_INFO } from './model/types'
+} from './model'
+export { REPORT_CODE_INFO } from './model'
 
 // Lib
 export type { AccountKey } from './lib/account-mapping'
@@ -22,7 +22,7 @@ export {
 } from './lib/format-financial'
 
 // API
-export { getFinancials } from './api'
+export { getCompanyInfo, getFinancials } from './api'
 
 // Queries
 export { useFinancials, useCompanyInfo } from './queries'

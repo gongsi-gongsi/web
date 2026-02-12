@@ -11,7 +11,7 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   const { corpCode } = await params
   const { searchParams } = new URL(request.url)
-  const mode = (searchParams.get('mode') || 'yearly') as FinancialViewMode
+  const modeParam = searchParams.get('mode') || 'yearly'
 
   // 유효성 검사 - 8자리 숫자만 허용
   const corpCodeRegex = /^[0-9]{8}$/
@@ -22,12 +22,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     )
   }
 
-  if (mode !== 'yearly' && mode !== 'quarterly') {
+  if (modeParam !== 'yearly' && modeParam !== 'quarterly') {
     return NextResponse.json(
       { error: 'Invalid mode. Must be yearly or quarterly.' },
       { status: 400 }
     )
   }
+
+  const mode: FinancialViewMode = modeParam
 
   try {
     const data = await getFinancials(corpCode, mode)

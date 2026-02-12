@@ -58,6 +58,7 @@ function CompanyTabs({ activeTab, onTabChange, className }: CompanyTabsProps) {
           ref={el => {
             tabRefs.current[tab.value] = el
           }}
+          type="button"
           onClick={() => onTabChange(tab.value)}
           className={cn(
             'shrink-0 cursor-pointer pb-3 text-md font-medium transition-colors',

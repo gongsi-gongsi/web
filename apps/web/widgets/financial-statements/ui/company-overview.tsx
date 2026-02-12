@@ -29,7 +29,7 @@ function getMarketLabel(corpCls: CompanyInfo['corpCls']): string {
 /**
  * 설립일을 포맷팅합니다 (YYYYMMDD -> YYYY.MM.DD)
  */
-function formatDate(dateStr: string): string {
+function formatEstablishedDate(dateStr: string): string {
   if (!dateStr || dateStr.length !== 8) return '-'
   return `${dateStr.slice(0, 4)}.${dateStr.slice(4, 6)}.${dateStr.slice(6, 8)}`
 }
@@ -75,7 +75,7 @@ export function CompanyOverview({ corpCode }: CompanyOverviewProps) {
   const infoItems: InfoRowProps[] = [
     { label: '대표이사', value: companyInfo.ceoName || '-' },
     { label: '시장구분', value: getMarketLabel(companyInfo.corpCls) },
-    { label: '설립일', value: formatDate(companyInfo.establishedDate) },
+    { label: '설립일', value: formatEstablishedDate(companyInfo.establishedDate) },
     { label: '주소', value: companyInfo.address || '-' },
     { label: '홈페이지', value: companyInfo.homepage || '-', isLink: true },
   ]
