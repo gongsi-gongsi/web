@@ -139,8 +139,9 @@ export async function searchDisclosuresFromDart(
 
   // 검색 로그 기록 (비동기, 실패 시 로그만 남김)
   if (q.length <= 100) {
+    const corpCode = matchedCorps.length === 1 ? matchedCorps[0].corpCode : undefined
     prisma.searchLog
-      .create({ data: { query: q } })
+      .create({ data: { query: q, corpCode } })
       .catch((err: unknown) => console.error('[SearchLog] Failed to record search:', err))
   }
 

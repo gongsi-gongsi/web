@@ -175,9 +175,11 @@ model Notification {
 model SearchLog {
   id        Int      @id @default(autoincrement())
   query     String   @db.VarChar(100)
+  corpCode  String?  @map("corp_code") @db.VarChar(8)
   createdAt DateTime @default(now()) @map("created_at")
 
   @@index([createdAt])
   @@index([query, createdAt])
+  @@index([corpCode, createdAt])
   @@map("search_logs")
 }
