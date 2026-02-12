@@ -83,6 +83,7 @@ export interface SearchDisclosuresResponse extends PaginatedDisclosuresResponse 
 
 export interface PopularCompany {
   rank: number
+  corpCode: string
   corpName: string
   stockCode: string
   searchCount: number

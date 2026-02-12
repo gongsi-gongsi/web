@@ -8,7 +8,7 @@ interface PopularCompanyCardProps {
 
 export function PopularCompanyCard({ company }: PopularCompanyCardProps) {
   return (
-    <Link href={`/disclosures?q=${encodeURIComponent(company.corpName)}`}>
+    <Link href={`/companies/${company.corpCode}`}>
       <Card interactive className="flex h-full flex-col gap-2 rounded-lg p-4 hover:bg-accent">
         {/* 순위 */}
         <span className="text-lg font-bold text-muted-foreground">{company.rank}</span>

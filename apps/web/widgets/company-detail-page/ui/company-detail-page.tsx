@@ -4,19 +4,20 @@ import { Suspense, useState, useEffect, useRef } from 'react'
 import { Skeleton, cn } from '@gs/ui'
 import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
-import { FinancialSection } from '@/widgets/financial-statements'
+import { FinancialSection, SummarySection } from '@/widgets/financial-statements'
 import { useCompanyInfo } from '@/entities/company'
 
 interface CompanyDetailPageProps {
   corpCode: string
 }
 
-type TabValue = 'disclosure' | 'news' | 'summary' | 'community'
+type TabValue = 'summary' | 'financial' | 'disclosure' | 'news' | 'community'
 
 const TABS: { value: TabValue; label: string }[] = [
+  { value: 'summary', label: '요약' },
+  { value: 'financial', label: '재무제표' },
   { value: 'disclosure', label: '공시' },
   { value: 'news', label: '뉴스' },
-  { value: 'summary', label: '요약' },
   { value: 'community', label: '커뮤니티' },
 ]
 
@@ -125,12 +126,14 @@ function CompanyHeaderSkeleton() {
 
 function TabContent({ activeTab, corpCode }: { activeTab: TabValue; corpCode: string }) {
   switch (activeTab) {
-    case 'disclosure':
+    case 'summary':
+      return <SummarySection corpCode={corpCode} />
+    case 'financial':
       return <FinancialSection corpCode={corpCode} />
+    case 'disclosure':
+      return <ComingSoon title="공시" />
     case 'news':
       return <ComingSoon title="뉴스" />
-    case 'summary':
-      return <ComingSoon title="요약" />
     case 'community':
       return <ComingSoon title="커뮤니티" />
   }
@@ -145,7 +148,7 @@ function ComingSoon({ title }: { title: string }) {
 }
 
 export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
-  const [activeTab, setActiveTab] = useState<TabValue>('disclosure')
+  const [activeTab, setActiveTab] = useState<TabValue>('summary')
 
   return (
     <>
