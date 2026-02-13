@@ -191,7 +191,7 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
       <MobileHeader left={<BackButton />} />
 
       {/* 모바일 버전 */}
-      <div className="bg-card min-h-screen md:hidden">
+      <div className="bg-card min-h-screen pb-24 md:hidden">
         {/* 회사명 */}
         <Suspense fallback={<CompanyHeaderSkeleton />}>
           <CompanyHeader corpCode={corpCode} />

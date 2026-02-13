@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { HydrationBoundary } from '@tanstack/react-query'
 
-import { MagnifyingGlassIcon, ListIcon } from '@phosphor-icons/react/dist/ssr'
+import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
 import { ServiceBanner } from '@/widgets/service-banner'
@@ -31,24 +31,16 @@ export default async function Home() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-background pb-24 md:pb-0">
         <MobileHeader
           right={
-            <>
-              <Link
-                href="/search"
-                className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
-                aria-label="검색"
-              >
-                <MagnifyingGlassIcon className="size-5" />
-              </Link>
-              <button
-                className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
-                aria-label="메뉴"
-              >
-                <ListIcon className="size-5" />
-              </button>
-            </>
+            <Link
+              href="/search"
+              className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+              aria-label="검색"
+            >
+              <MagnifyingGlassIcon className="size-5" />
+            </Link>
           }
         />
 
