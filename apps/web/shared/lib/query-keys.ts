@@ -1,5 +1,10 @@
 import { createQueryKeyStore } from '@lukemorales/query-key-factory'
-import type { Market, SearchDisclosuresParams } from '@/entities/disclosure'
+import type {
+  Market,
+  SearchDisclosuresParams,
+  SearchPeriod,
+  DisclosureType,
+} from '@/entities/disclosure'
 import type { FinancialViewMode } from '@/entities/company'
 
 /**
@@ -11,6 +16,10 @@ export const queries = createQueryKeyStore({
     today: (market: Market) => [market],
     todayInfinite: (market: Market) => [market],
     search: (params: Omit<SearchDisclosuresParams, 'pageNo' | 'pageCount'>) => [params],
+    byCorpCode: (
+      corpCode: string,
+      params: { period: SearchPeriod; type: DisclosureType | 'all' }
+    ) => [corpCode, params],
   },
   stocks: {
     suggest: (query: string) => [query],

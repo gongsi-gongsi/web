@@ -1,7 +1,12 @@
 'use client'
 
 import { getBaseUrl } from '@/shared/lib/get-base-url'
-import type { SearchDisclosuresParams, SearchDisclosuresResponse } from '../../model/types'
+import type {
+  SearchDisclosuresParams,
+  SearchDisclosuresResponse,
+  CompanyDisclosuresParams,
+  PaginatedDisclosuresResponse,
+} from '../../model/types'
 
 /**
  * [클라이언트 전용] API Route를 통해 공시를 검색합니다
@@ -33,6 +38,34 @@ export async function searchDisclosures(
 
   if (!response.ok) {
     throw new Error('Failed to search disclosures')
+  }
+
+  return response.json()
+}
+
+/**
+ * [클라이언트 전용] API Route를 통해 특정 기업의 공시를 조회합니다
+ * @param params - 조회 파라미터 (corpCode, period, type, pageNo, pageCount)
+ * @returns 페이지네이션된 공시 목록
+ * @throws {Error} API 호출 실패 시
+ */
+export async function getDisclosuresByCorpCodeClient(
+  params: CompanyDisclosuresParams & { pageNo: number; pageCount: number }
+): Promise<PaginatedDisclosuresResponse> {
+  const urlParams = new URLSearchParams({
+    period: params.period ?? '3m',
+    type: params.type ?? 'all',
+    page_no: String(params.pageNo),
+    page_count: String(params.pageCount),
+  })
+
+  const baseUrl = getBaseUrl()
+  const response = await fetch(
+    `${baseUrl}/api/disclosures/company/${params.corpCode}?${urlParams.toString()}`
+  )
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch company disclosures')
   }
 
   return response.json()

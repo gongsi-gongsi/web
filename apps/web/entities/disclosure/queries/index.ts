@@ -6,6 +6,7 @@ export {
   useTodayDisclosures,
   useInfiniteTodayDisclosures,
   useSearchDisclosures,
+  useCompanyDisclosures,
   usePopularCompanies,
   useSuggestCompanies,
 } from './hooks'

@@ -3,8 +3,8 @@ import type { SearchPeriod, Market, DisclosureType } from '@/entities/disclosure
 export const PERIOD_OPTIONS: { value: SearchPeriod; label: string }[] = [
   { value: 'today', label: '오늘' },
   { value: '1w', label: '1주일' },
-  { value: '1m', label: '1개월' },
   { value: '3m', label: '3개월' },
+  { value: 'all', label: '전체' },
 ]
 
 export const MARKET_OPTIONS: { value: Market; label: string }[] = [

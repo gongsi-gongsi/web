@@ -2,10 +2,12 @@
 
 import { Suspense, useState, useEffect, useRef } from 'react'
 import { Skeleton, cn } from '@gs/ui'
+import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
 import { FinancialSection, SummarySection } from '@/widgets/financial-statements'
 import { useCompanyInfo } from '@/entities/company'
+import { CompanyDisclosureSection } from './company-disclosure-section'
 
 interface CompanyDetailPageProps {
   corpCode: string
@@ -128,16 +130,48 @@ function CompanyHeaderSkeleton() {
 function TabContent({ activeTab, corpCode }: { activeTab: TabValue; corpCode: string }) {
   switch (activeTab) {
     case 'summary':
-      return <SummarySection corpCode={corpCode} />
+      return (
+        <div className="py-6">
+          <SummarySection corpCode={corpCode} />
+        </div>
+      )
     case 'financial':
-      return <FinancialSection corpCode={corpCode} />
+      return (
+        <div className="py-6">
+          <FinancialSection corpCode={corpCode} />
+        </div>
+      )
     case 'disclosure':
-      return <ComingSoon title="공시" />
+      return (
+        <ErrorBoundaryWithFallback>
+          <Suspense fallback={<DisclosureSkeleton />}>
+            <CompanyDisclosureSection corpCode={corpCode} />
+          </Suspense>
+        </ErrorBoundaryWithFallback>
+      )
     case 'news':
-      return <ComingSoon title="뉴스" />
+      return (
+        <div className="py-6">
+          <ComingSoon title="뉴스" />
+        </div>
+      )
     case 'community':
-      return <ComingSoon title="커뮤니티" />
+      return (
+        <div className="py-6">
+          <ComingSoon title="커뮤니티" />
+        </div>
+      )
   }
+}
+
+function DisclosureSkeleton() {
+  return (
+    <div className="space-y-3 py-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Skeleton key={i} className="h-16 w-full rounded-lg" />
+      ))}
+    </div>
+  )
 }
 
 function ComingSoon({ title }: { title: string }) {
@@ -169,9 +203,7 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
         </div>
 
         {/* 탭 콘텐츠 */}
-        <div className="py-6">
-          <TabContent activeTab={activeTab} corpCode={corpCode} />
-        </div>
+        <TabContent activeTab={activeTab} corpCode={corpCode} />
       </div>
 
       {/* PC 버전 */}

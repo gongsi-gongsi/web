@@ -1,7 +1,5 @@
 import type { DartDisclosureItem, Disclosure, Market, DisclosureType } from '../model/types'
 
-const VALID_DISCLOSURE_TYPES = new Set<string>(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-
 /**
  * DART API의 corp_cls 코드를 시장 구분으로 변환합니다
  * @param corpCls - 법인구분 코드 (Y: 유가, K: 코스닥, N: 코넥스, E: 기타)
@@ -105,18 +103,11 @@ function parseDateString(dateStr: string): Date {
 /**
  * DART API 응답 데이터를 애플리케이션 공시 모델로 변환합니다
  * @param item - DART API 공시 데이터
- * @param overrideType - 검색 필터로 지정된 공시유형 (지정 시 추론 대신 사용)
  * @returns 변환된 공시 객체
  */
-export function formatDisclosure(
-  item: DartDisclosureItem,
-  overrideType?: DisclosureType
-): Disclosure {
+export function formatDisclosure(item: DartDisclosureItem): Disclosure {
   const market = getMarketFromCorpCls(item.corp_cls)
-  const type =
-    overrideType && VALID_DISCLOSURE_TYPES.has(overrideType)
-      ? overrideType
-      : inferDisclosureType(item.report_nm)
+  const type = inferDisclosureType(item.report_nm)
   const receivedAt = parseDateString(item.rcept_dt).toISOString()
   const reportUrl = `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${item.rcept_no}`
 

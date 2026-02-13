@@ -6,7 +6,10 @@ export {
   getTodayDisclosuresFromDart,
   getTodayDisclosuresFromDartPaginated,
 } from './api/today-disclosures/server'
-export { searchDisclosuresFromDart } from './api/search-disclosures/server'
+export {
+  searchDisclosuresFromDart,
+  getDisclosuresByCorpCode,
+} from './api/search-disclosures/server'
 export { getPopularCompaniesFromDB } from './api/popular-companies/server'
 export { suggestCompaniesFromDart } from './api/suggest-companies/server'
 

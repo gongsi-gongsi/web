@@ -8,12 +8,14 @@ import type {
   SearchPeriod,
   SearchDisclosuresParams,
   SearchDisclosuresResponse,
+  CompanyDisclosuresParams,
+  PaginatedDisclosuresResponse,
   Disclosure,
 } from '../../model/types'
 
 /**
  * SearchPeriod를 YYYYMMDD 형식의 시작/종료 날짜로 변환합니다
- * @param period - 검색 기간 (today | 1w | 1m | 3m | custom)
+ * @param period - 검색 기간 (today | 1w | 3m | all | custom)
  * @param bgnDe - custom 기간의 시작 날짜 (YYYYMMDD)
  * @param endDe - custom 기간의 종료 날짜 (YYYYMMDD)
  * @returns [시작 날짜, 종료 날짜] (YYYYMMDD 형식)
@@ -30,16 +32,13 @@ function getDateRange(period: SearchPeriod, bgnDe?: string, endDe?: string): [st
       weekAgo.setDate(weekAgo.getDate() - 7)
       return [formatDateToYYYYMMDD(weekAgo), endDate]
     }
-    case '1m': {
-      const monthAgo = new Date(today)
-      monthAgo.setMonth(monthAgo.getMonth() - 1)
-      return [formatDateToYYYYMMDD(monthAgo), endDate]
-    }
     case '3m': {
       const threeMonthsAgo = new Date(today)
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
       return [formatDateToYYYYMMDD(threeMonthsAgo), endDate]
     }
+    case 'all':
+      return ['19990101', endDate]
     case 'custom': {
       if (!bgnDe || !endDe) {
         throw new Error('bgnDe and endDe are required for custom period')
@@ -169,8 +168,7 @@ export async function searchDisclosuresFromDart(
       }
     }
 
-    const overrideType = type !== 'all' ? type : undefined
-    const disclosures = data.list.map(item => formatDisclosure(item, overrideType))
+    const disclosures = data.list.map(item => formatDisclosure(item))
 
     return {
       disclosures,
@@ -198,11 +196,10 @@ export async function searchDisclosuresFromDart(
     )
   )
 
-  const overrideTypeAll = type !== 'all' ? type : undefined
   const seen = new Set<string>()
   const allDisclosures: Disclosure[] = results
     .filter(data => data.status === '000')
-    .flatMap(data => data.list.map(item => formatDisclosure(item, overrideTypeAll)))
+    .flatMap(data => data.list.map(item => formatDisclosure(item)))
     .filter(d => {
       if (seen.has(d.id)) return false
       seen.add(d.id)
@@ -218,5 +215,51 @@ export async function searchDisclosuresFromDart(
     pageCount: allDisclosures.length,
     lastUpdated: new Date().toISOString(),
     query: q,
+  }
+}
+
+/**
+ * [서버 전용] corpCode로 직접 DART API를 호출하여 해당 기업의 공시를 조회합니다
+ * @param params - 조회 파라미터 (corpCode, period, type, pageNo, pageCount)
+ * @returns 페이지네이션된 공시 목록
+ * @throws {Error} API 호출 실패 시
+ */
+export async function getDisclosuresByCorpCode(
+  params: CompanyDisclosuresParams
+): Promise<PaginatedDisclosuresResponse> {
+  const { corpCode, period = '3m', type = 'all', pageNo = 1, pageCount = 100 } = params
+
+  const [startDate, endDate] = getDateRange(period)
+
+  const data = await fetchDartDisclosures({
+    corpCode,
+    startDate,
+    endDate,
+    corpCls: null,
+    type,
+    pageNo: String(pageNo),
+    pageCount: String(pageCount),
+  })
+
+  if (data.status !== '000') {
+    return {
+      disclosures: [],
+      totalCount: 0,
+      totalPage: 0,
+      pageNo,
+      pageCount,
+      lastUpdated: new Date().toISOString(),
+    }
+  }
+
+  const disclosures = data.list.map(item => formatDisclosure(item))
+
+  return {
+    disclosures,
+    totalCount: data.total_count,
+    totalPage: data.total_page,
+    pageNo: data.page_no,
+    pageCount: data.page_count,
+    lastUpdated: new Date().toISOString(),
   }
 }
