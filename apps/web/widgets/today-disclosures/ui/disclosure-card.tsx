@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { cn } from '@gs/ui'
-import { getMarketBadge, getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
+import { getMarketBadge, type Disclosure } from '@/entities/disclosure'
 import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureCardProps {
@@ -10,7 +10,6 @@ interface DisclosureCardProps {
 
 export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
   const marketBadge = getMarketBadge(disclosure.market)
-  const typeBadge = getDisclosureTypeColor(disclosure.type)
 
   return (
     <Link
@@ -37,17 +36,6 @@ export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
 
         {/* 공시 제목 - 나머지 공간 */}
         <span className="flex-1 truncate text-sm">{disclosure.title}</span>
-
-        {/* 공시 유형 뱃지 */}
-        <span
-          className={cn(
-            'shrink-0 rounded px-2 py-0.5 text-[10px] font-medium',
-            typeBadge.bg,
-            typeBadge.text
-          )}
-        >
-          {typeBadge.label}
-        </span>
       </div>
 
       {showMeta && (

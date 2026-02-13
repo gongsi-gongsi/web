@@ -64,7 +64,7 @@ export interface PaginatedDisclosuresResponse {
   lastUpdated: string
 }
 
-export type SearchPeriod = 'today' | '1w' | '1m' | '3m' | 'custom'
+export type SearchPeriod = 'today' | '1w' | '3m' | 'all' | 'custom'
 
 export interface SearchDisclosuresParams {
   q: string
@@ -79,6 +79,14 @@ export interface SearchDisclosuresParams {
 
 export interface SearchDisclosuresResponse extends PaginatedDisclosuresResponse {
   query: string
+}
+
+export interface CompanyDisclosuresParams {
+  corpCode: string
+  period?: SearchPeriod
+  type?: DisclosureType | 'all'
+  pageNo?: number
+  pageCount?: number
 }
 
 export interface PopularCompany {

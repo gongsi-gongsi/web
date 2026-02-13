@@ -5,6 +5,7 @@ export {
   useTodayDisclosures,
   useInfiniteTodayDisclosures,
   useSearchDisclosures,
+  useCompanyDisclosures,
   usePopularCompanies,
   useSuggestCompanies,
 } from './queries/hooks'
@@ -14,14 +15,13 @@ export {
   getTodayDisclosures,
   getTodayDisclosuresPaginated,
   searchDisclosures,
+  getDisclosuresByCorpCodeClient,
   getPopularCompanies,
   suggestCompanies,
   type CompanySuggestion,
 } from './api'
 
 // 유틸리티 함수 (서버/클라이언트 공통)
-export { getDisclosureTypeColor } from './lib/get-disclosure-type-color'
-export { getDisclosureTypeLabel } from './lib/get-disclosure-type-label'
 export { getMarketBadge } from './lib/get-market-badge'
 export { deduplicateDisclosures } from './lib/deduplicate-disclosures'
 
@@ -37,6 +37,7 @@ export type {
   SearchPeriod,
   SearchDisclosuresParams,
   SearchDisclosuresResponse,
+  CompanyDisclosuresParams,
   PopularCompany,
   PopularCompaniesResponse,
 } from './model/types'

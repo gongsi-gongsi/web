@@ -3,10 +3,10 @@
 import { useSuspenseQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import { queries } from '@/shared/lib/query-keys'
 import { getTodayDisclosures, getTodayDisclosuresPaginated } from '../api/today-disclosures/client'
-import { searchDisclosures } from '../api/search-disclosures/client'
+import { searchDisclosures, getDisclosuresByCorpCodeClient } from '../api/search-disclosures/client'
 import { getPopularCompanies } from '../api/popular-companies/client'
 import { suggestCompanies } from '../api/suggest-companies/client'
-import type { Market, SearchDisclosuresParams } from '../model/types'
+import type { Market, SearchDisclosuresParams, SearchPeriod, DisclosureType } from '../model/types'
 
 /**
  * [클라이언트 전용] 오늘의 공시 목록을 조회합니다
@@ -77,7 +77,7 @@ export function useInfiniteTodayDisclosures(market: Market = 'all', pageCount: n
  * function SearchResults() {
  *   const { data, fetchNextPage, hasNextPage } = useSearchDisclosures({
  *     q: '삼성전자',
- *     period: '1m',
+ *     period: '1w',
  *     market: 'all',
  *     type: 'all'
  *   })
@@ -155,5 +155,38 @@ export function useSuggestCompanies(query: string, limit = 50) {
     queryKey: queries.stocks.suggest(query).queryKey,
     queryFn: () => suggestCompanies(query, limit),
     staleTime: 5 * 60 * 1000, // 5분
+  })
+}
+
+/**
+ * [클라이언트 전용] 특정 기업의 공시 목록을 무한 스크롤로 조회합니다
+ * @param corpCode - 기업 고유 코드
+ * @param params - 조회 파라미터 (period, type)
+ * @returns Suspense Infinite Query 결과
+ */
+export function useCompanyDisclosures(
+  corpCode: string,
+  params: { period?: SearchPeriod; type?: DisclosureType | 'all' } = {}
+) {
+  const { period = '3m', type = 'all' } = params
+
+  return useSuspenseInfiniteQuery({
+    queryKey: queries.disclosures.byCorpCode(corpCode, { period, type }).queryKey,
+    queryFn: ({ pageParam = 1 }) =>
+      getDisclosuresByCorpCodeClient({
+        corpCode,
+        period,
+        type,
+        pageNo: pageParam,
+        pageCount: 100,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      if (lastPageParam >= lastPage.totalPage) {
+        return undefined
+      }
+      return lastPageParam + 1
+    },
+    staleTime: 60000,
   })
 }

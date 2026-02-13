@@ -22,12 +22,11 @@ export function DisclosureTable({ disclosures, showMeta }: DisclosureTableProps)
       <table className="w-full table-fixed">
         <thead className="bg-muted">
           <tr>
-            <th className="w-[16%] px-4 py-3 text-left text-sm font-semibold">공시 유형</th>
             <th className="w-[12%] px-4 py-3 text-left text-sm font-semibold">시장</th>
             <th className="w-[20%] px-4 py-3 text-left text-sm font-semibold">회사명</th>
             <th
               className={cn(
-                showMeta ? 'w-[32%]' : 'w-[52%]',
+                showMeta ? 'w-[48%]' : 'w-[68%]',
                 'px-4 py-3 text-left text-sm font-semibold'
               )}
             >

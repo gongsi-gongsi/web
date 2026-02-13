@@ -1,5 +1,4 @@
-import { getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
-import { cn } from '@gs/ui'
+import type { Disclosure } from '@/entities/disclosure'
 import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureTableRowProps {
@@ -16,7 +15,6 @@ const MARKET_LABELS: Record<string, string> = {
 
 export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowProps) {
   const marketLabel = MARKET_LABELS[disclosure.market] || '-'
-  const typeBadge = getDisclosureTypeColor(disclosure.type)
 
   function handleClick() {
     window.open(disclosure.reportUrl, '_blank', 'noopener,noreferrer')
@@ -27,17 +25,6 @@ export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowP
       onClick={handleClick}
       className="cursor-pointer border-b border-border transition-colors hover:bg-accent"
     >
-      <td className="px-4 py-3 text-sm text-foreground">
-        <span
-          className={cn(
-            'inline-block rounded px-2 py-1 text-xs font-medium',
-            typeBadge.bg,
-            typeBadge.text
-          )}
-        >
-          {typeBadge.label}
-        </span>
-      </td>
       <td className="px-4 py-3 text-sm text-foreground">
         <div className="truncate">{marketLabel}</div>
       </td>

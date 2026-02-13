@@ -6,21 +6,21 @@ import { cn, Button } from '@gs/ui'
 
 import type { SearchPeriod } from '@/entities/disclosure'
 
-import { PERIOD_OPTIONS } from '../lib/filter-options'
+import { PERIOD_OPTIONS } from '@/widgets/disclosure-search/lib/filter-options'
 
-interface SearchFilterChipsProps {
+interface CompanyDisclosureFilterChipsProps {
   period: SearchPeriod
   onPeriodChange: (period: SearchPeriod) => void
   onFilterOpen: () => void
 }
 
-export function SearchFilterChips({
+export function CompanyDisclosureFilterChips({
   period,
   onPeriodChange,
   onFilterOpen,
-}: SearchFilterChipsProps) {
+}: CompanyDisclosureFilterChipsProps) {
   return (
-    <div className="bg-card sticky top-14 z-40 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-3 md:bg-background md:px-0 md:pt-0">
+    <div className="bg-card sticky top-[5.75rem] z-30 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-3 md:top-[2.75rem] md:z-40 md:bg-background md:px-0 md:pt-0">
       <Button
         variant="outline"
         size="icon"

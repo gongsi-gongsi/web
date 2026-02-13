@@ -1,1 +1,1 @@
-export { DisclosureSearchPage } from './disclosure-search-page'
+export { CompanySearchPage } from './disclosure-search-page'

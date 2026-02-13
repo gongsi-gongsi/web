@@ -36,7 +36,7 @@ export default async function Home() {
           right={
             <>
               <Link
-                href="/disclosures/search"
+                href="/search"
                 className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
                 aria-label="검색"
               >
