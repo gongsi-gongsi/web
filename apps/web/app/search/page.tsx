@@ -8,7 +8,7 @@ export default function SearchPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* 모바일 버전 */}
-      <div className="pb-4 md:hidden">
+      <div className="pb-24 md:hidden">
         <Suspense>
           <CompanySearchPage />
         </Suspense>

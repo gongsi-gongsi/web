@@ -12,7 +12,7 @@ export function DisclosureListPage() {
       <MobileHeader left={<BackButton />} />
 
       {/* 모바일 버전 */}
-      <div className="bg-card md:hidden">
+      <div className="bg-card pb-24 md:hidden">
         <div className="px-4 pb-4 pt-6">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold">오늘의 공시</h1>

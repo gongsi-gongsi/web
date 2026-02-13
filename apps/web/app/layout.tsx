@@ -1,7 +1,8 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { Providers } from './providers'
 import { Header } from '@/widgets/header'
+import { BottomNav } from '@/widgets/bottom-nav'
 import './globals.css'
 
 const pretendard = localFont({
@@ -15,6 +16,10 @@ export const metadata: Metadata = {
   description: 'AI 기반 기업 공시 분석 서비스',
 }
 
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning className={pretendard.variable}>
@@ -22,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Header />
           {children}
+          <BottomNav />
         </Providers>
       </body>
     </html>
