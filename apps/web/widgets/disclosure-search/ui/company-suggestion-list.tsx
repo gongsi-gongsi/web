@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { Buildings } from '@phosphor-icons/react'
 
 import type { CompanySuggestion } from '@/entities/disclosure'
@@ -7,14 +9,9 @@ import type { CompanySuggestion } from '@/entities/disclosure'
 interface CompanySuggestionListProps {
   suggestions: CompanySuggestion[]
   query: string
-  onSelect: (corpName: string) => void
 }
 
-export function CompanySuggestionList({
-  suggestions,
-  query,
-  onSelect,
-}: CompanySuggestionListProps) {
+export function CompanySuggestionList({ suggestions, query }: CompanySuggestionListProps) {
   if (suggestions.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -24,21 +21,20 @@ export function CompanySuggestionList({
   }
 
   return (
-    <ul role="listbox">
+    <ul>
       {suggestions.map(item => (
-        <li
-          key={item.corpCode}
-          role="option"
-          aria-selected={false}
-          onClick={() => onSelect(item.corpName)}
-          className="flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 interactive-card"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Buildings className="size-5" weight="fill" />
-          </div>
-          <span className="text-sm font-medium">
-            <HighlightedName name={item.corpName} query={query} />
-          </span>
+        <li key={item.corpCode}>
+          <Link
+            href={`/companies/${item.corpCode}`}
+            className="flex items-center gap-3 rounded-xl px-4 py-3 interactive-card"
+          >
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Buildings className="size-5" weight="fill" />
+            </div>
+            <span className="text-sm font-medium">
+              <HighlightedName name={item.corpName} query={query} />
+            </span>
+          </Link>
         </li>
       ))}
     </ul>

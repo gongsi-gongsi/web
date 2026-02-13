@@ -56,15 +56,6 @@ export function DisclosureSearchPage() {
     setTimeout(() => setIsInputFocused(false), 150)
   }, [])
 
-  const handleSelectCompany = useCallback(
-    (corpName: string) => {
-      setTypingQuery(corpName)
-      setIsSuggestionMode(false)
-      updateParams({ q: corpName })
-    },
-    [updateParams]
-  )
-
   const handlePeriodChange = useCallback(
     (period: SearchPeriod) => {
       updateParams({ period })
@@ -121,7 +112,7 @@ export function DisclosureSearchPage() {
           {showSuggestionResults ? (
             <ErrorBoundary fallback={SearchErrorFallback}>
               <Suspense key={debouncedQuery} fallback={<CompanySuggestionSkeleton />}>
-                <SuggestionResult query={debouncedQuery} onSelect={handleSelectCompany} />
+                <SuggestionResult query={debouncedQuery} />
               </Suspense>
             </ErrorBoundary>
           ) : (
@@ -131,7 +122,7 @@ export function DisclosureSearchPage() {
       ) : showPopular ? (
         <ErrorBoundary fallback={SearchErrorFallback}>
           <Suspense fallback={<PopularCompaniesSkeleton />}>
-            <PopularCompaniesResult onSelect={handleSelectCompany} />
+            <PopularCompaniesResult />
           </Suspense>
         </ErrorBoundary>
       ) : params.q ? (
@@ -168,7 +159,7 @@ export function DisclosureSearchPage() {
       ) : (
         <ErrorBoundary fallback={SearchErrorFallback}>
           <Suspense fallback={<PopularCompaniesSkeleton />}>
-            <PopularCompaniesResult onSelect={handleSelectCompany} />
+            <PopularCompaniesResult />
           </Suspense>
         </ErrorBoundary>
       )}
@@ -178,21 +169,16 @@ export function DisclosureSearchPage() {
 
 interface SuggestionResultProps {
   query: string
-  onSelect: (corpName: string) => void
 }
 
-function SuggestionResult({ query, onSelect }: SuggestionResultProps) {
+function SuggestionResult({ query }: SuggestionResultProps) {
   const { data: suggestions } = useSuggestCompanies(query)
 
-  return <CompanySuggestionList suggestions={suggestions} query={query} onSelect={onSelect} />
+  return <CompanySuggestionList suggestions={suggestions} query={query} />
 }
 
-interface PopularCompaniesResultProps {
-  onSelect: (corpName: string) => void
-}
-
-function PopularCompaniesResult({ onSelect }: PopularCompaniesResultProps) {
+function PopularCompaniesResult() {
   const { data: companies } = usePopularCompanies()
 
-  return <PopularCompanies companies={companies} onSelect={onSelect} />
+  return <PopularCompanies companies={companies} />
 }
