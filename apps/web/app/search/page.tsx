@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 
 import { CompanySearchPage } from '@/widgets/disclosure-search'
 
+export const dynamic = 'force-dynamic'
+
 export default function SearchPage() {
   return (
     <main className="min-h-screen bg-background">
