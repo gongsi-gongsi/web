@@ -26,7 +26,7 @@ export function NavigationItem({ item, isActive }: NavigationItemProps) {
   }
 
   return (
-    <Link href={item.href} className="flex min-w-0 flex-1 flex-col items-center pb-6">
+    <Link href={item.href} className="flex min-w-0 flex-1 flex-col items-center pb-2">
       <motion.div
         className="flex flex-col items-center rounded-2xl px-2 py-1 hover:bg-accent"
         whileTap={buttonTapAnimation.whileTap}
