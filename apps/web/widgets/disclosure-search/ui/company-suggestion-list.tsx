@@ -21,9 +21,9 @@ export function CompanySuggestionList({ suggestions, query }: CompanySuggestionL
   }
 
   return (
-    <ul role="listbox">
+    <ul>
       {suggestions.map(item => (
-        <li key={item.corpCode} role="option" aria-selected={false}>
+        <li key={item.corpCode}>
           <Link
             href={`/companies/${item.corpCode}`}
             className="flex items-center gap-3 rounded-xl px-4 py-3 interactive-card"
