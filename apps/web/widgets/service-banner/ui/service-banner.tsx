@@ -1,11 +1,10 @@
 import Image from 'next/image'
-import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
-import { Button, Input } from '@gs/ui'
+import { BannerSearch } from './banner-search'
 
 export function ServiceBanner() {
   return (
-    <section className="relative h-[250px] w-full overflow-hidden bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/20 px-4 md:h-[400px] lg:px-8">
+    <section className="relative z-10 h-[250px] w-full bg-linear-to-r from-primary/2 to-primary/60 dark:from-primary/2 dark:to-primary/20 px-4 md:h-[400px] lg:px-8">
       <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between">
         <div className="max-w-2xl">
           {/* 작은 텍스트 */}
@@ -21,27 +20,13 @@ export function ServiceBanner() {
           </div>
 
           {/* 검색바 - md 이상에서만 표시 */}
-          <div className="relative hidden max-w-xl md:block">
-            <div className="relative rounded-2xl border border-white/20 bg-background shadow-xl dark:border-white/10">
-              <Input
-                type="text"
-                placeholder="기업명 또는 종목 코드를 검색해보세요"
-                className="h-12 border-none bg-transparent pl-4 pr-14 text-base shadow-none outline-none placeholder:text-foreground/40 focus:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 md:h-14 md:pr-16 md:text-lg"
-              />
-              <Button
-                size="icon"
-                interactive
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 shadow-md transition-all  md:right-2 md:size-11"
-                aria-label="검색"
-              >
-                <MagnifyingGlassIcon className="size-5 md:size-6" weight="bold" />
-              </Button>
-            </div>
+          <div className="hidden md:block">
+            <BannerSearch />
           </div>
         </div>
 
         {/* 배너 이미지 - md 이상에서만 표시 */}
-        <div className="hidden md:block">
+        <div className="hidden overflow-hidden md:block">
           <div className="animate-float">
             <Image
               src="/images/banner.png"
