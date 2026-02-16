@@ -1,0 +1,1 @@
+export { useCompanyNews } from './hooks'

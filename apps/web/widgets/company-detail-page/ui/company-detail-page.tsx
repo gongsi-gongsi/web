@@ -8,6 +8,7 @@ import { MobileHeader } from '@/widgets/header'
 import { FinancialSection, SummarySection } from '@/widgets/financial-statements'
 import { useCompanyInfo } from '@/entities/company'
 import { CompanyDisclosureSection } from './company-disclosure-section'
+import { CompanyNewsSection, NewsSkeleton } from './company-news-section'
 
 interface CompanyDetailPageProps {
   corpCode: string
@@ -151,9 +152,11 @@ function TabContent({ activeTab, corpCode }: { activeTab: TabValue; corpCode: st
       )
     case 'news':
       return (
-        <div className="py-6">
-          <ComingSoon title="뉴스" />
-        </div>
+        <ErrorBoundaryWithFallback>
+          <Suspense fallback={<NewsSkeleton />}>
+            <CompanyNewsSection corpCode={corpCode} />
+          </Suspense>
+        </ErrorBoundaryWithFallback>
       )
     case 'community':
       return (
