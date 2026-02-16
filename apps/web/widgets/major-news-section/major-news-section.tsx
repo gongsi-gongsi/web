@@ -44,9 +44,9 @@ export function MajorNewsSection() {
 
       {/* 모바일 버전 */}
       <div className="bg-card md:hidden">
-        <div className="px-4 pb-3 pt-5">
+        <div className="px-4 pb-4 pt-5">
           <h2 className="text-lg font-bold">주요 뉴스</h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          <p className="mt-1 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
         </div>
         <div className="pb-4">
           <ErrorBoundary fallback={ErrorFallback} onReset={reset}>

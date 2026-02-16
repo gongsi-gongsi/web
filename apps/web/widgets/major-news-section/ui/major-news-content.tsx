@@ -5,7 +5,7 @@ import { useMajorMarketNews } from '@/entities/news'
 import { MajorNewsCard } from './major-news-card'
 
 export function MajorNewsContent() {
-  const { data } = useMajorMarketNews(6)
+  const { data } = useMajorMarketNews(5)
 
   if (data.items.length === 0) {
     return (
@@ -25,8 +25,8 @@ export function MajorNewsContent() {
         ))}
       </div>
 
-      {/* PC: 2열 그리드 카드 */}
-      <div className="hidden grid-cols-2 gap-4 md:grid">
+      {/* PC: 3열 그리드 카드 */}
+      <div className="hidden grid-cols-3 gap-4 md:grid">
         {data.items.map((item, index) => (
           <MajorNewsCard key={`${item.link}-${index}`} item={item} />
         ))}
