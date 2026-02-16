@@ -1,1 +1,1 @@
-export { useCompanyNews } from './hooks'
+export { useCompanyNews, useMajorMarketNews } from './hooks'

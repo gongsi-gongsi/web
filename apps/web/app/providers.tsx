@@ -1,7 +1,7 @@
 'use client'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from '@gs/ui'
 import { getQueryClient } from '@/shared/lib/query'
 
@@ -17,7 +17,7 @@ export function Providers({ children }: ProvidersProps) {
       <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange>
         {children}
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+      {/* <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" /> */}
     </QueryClientProvider>
   )
 }
