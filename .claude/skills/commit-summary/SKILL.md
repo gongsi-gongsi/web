@@ -1,3 +1,8 @@
+---
+name: commit-summary
+description: git 변경사항을 분석하여 파일별 변경 내용, 구현 이유, 코드 예시를 포함한 상세 COMMIT_SUMMARY.md 문서를 자동 생성합니다.
+---
+
 # Commit Summary Skill
 
 커밋 전 작업 내역을 분석하고 상세한 구현 문서를 생성합니다.
