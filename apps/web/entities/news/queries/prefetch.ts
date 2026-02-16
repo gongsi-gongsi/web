@@ -26,7 +26,7 @@ export async function prefetchMajorMarketNews(limit: number = 6) {
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: queries.news.market().queryKey,
+    queryKey: queries.news.market.queryKey,
     queryFn: () => getMajorMarketNews(limit),
     staleTime: STALE_TIME_5_MIN,
   })

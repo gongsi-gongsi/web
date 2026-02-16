@@ -26,7 +26,7 @@ export function useCompanyNews(corpName: string, limit?: number) {
  */
 export function useMajorMarketNews(limit?: number) {
   return useSuspenseQuery({
-    queryKey: queries.news.market().queryKey,
+    queryKey: queries.news.market.queryKey,
     queryFn: () => getMajorMarketNews(limit),
     staleTime: 5 * 60 * 1000, // 5분
   })
