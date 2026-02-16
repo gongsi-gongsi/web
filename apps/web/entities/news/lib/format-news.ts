@@ -59,3 +59,45 @@ export function formatRelativeTime(dateString: string): string {
     day: 'numeric',
   })
 }
+
+/**
+ * 뉴스 목록에서 중복을 제거합니다 (link 기준)
+ * @param items - 뉴스 항목 배열
+ * @returns 중복이 제거된 뉴스 항목 배열
+ * @example
+ * const news = [
+ *   { title: 'A', link: 'https://example.com/1', ... },
+ *   { title: 'B', link: 'https://example.com/1', ... }, // 중복
+ *   { title: 'C', link: 'https://example.com/2', ... },
+ * ]
+ * deduplicateNews(news) // [첫 번째, 세 번째만 반환]
+ */
+export function deduplicateNews(items: NewsItem[]): NewsItem[] {
+  const seen = new Set<string>()
+  return items.filter(item => {
+    if (seen.has(item.link)) {
+      return false
+    }
+    seen.add(item.link)
+    return true
+  })
+}
+
+/**
+ * 특정 기간 내의 뉴스만 필터링합니다
+ * @param items - 뉴스 항목 배열
+ * @param hours - 현재 시점으로부터 몇 시간 이내인지 (기본값: 48시간)
+ * @returns 필터링된 뉴스 항목 배열
+ * @example
+ * filterNewsByDate(news, 24) // 최근 24시간 이내 뉴스만 반환
+ * filterNewsByDate(news) // 최근 48시간 이내 뉴스만 반환
+ */
+export function filterNewsByDate(items: NewsItem[], hours: number = 48): NewsItem[] {
+  const now = Date.now()
+  const cutoff = now - hours * 60 * 60 * 1000
+
+  return items.filter(item => {
+    const pubDate = new Date(item.pubDate).getTime()
+    return pubDate >= cutoff
+  })
+}

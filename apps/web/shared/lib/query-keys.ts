@@ -33,5 +33,6 @@ export const queries = createQueryKeyStore({
   },
   news: {
     company: (corpName: string) => [corpName],
+    market: () => [],
   },
 })
