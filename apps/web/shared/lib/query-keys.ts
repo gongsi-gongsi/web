@@ -31,4 +31,7 @@ export const queries = createQueryKeyStore({
   financial: {
     statements: (corpCode: string, mode: FinancialViewMode) => [corpCode, mode],
   },
+  news: {
+    company: (corpName: string) => [corpName],
+  },
 })
