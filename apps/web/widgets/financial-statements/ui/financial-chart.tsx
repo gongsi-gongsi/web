@@ -26,7 +26,7 @@ interface ChartDataItem {
 }
 
 function transformData(data: FinancialData[]): ChartDataItem[] {
-  return [...data].reverse().map(item => ({
+  return data.map(item => ({
     label: item.label,
     revenue: item.revenue,
     netIncome: item.netIncome,

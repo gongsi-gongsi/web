@@ -328,6 +328,17 @@ function FinancialTablesOnly({ data }: { data: FinancialData[] }) {
   )
 }
 
+function PeriodHeader({ item }: { item: FinancialData }) {
+  return (
+    <span>
+      {item.label}
+      {item.isProvisional && (
+        <span className="ml-0.5 text-[10px] font-normal text-emerald-500">(E)</span>
+      )}
+    </span>
+  )
+}
+
 function AccountTable({ data }: { data: FinancialData[] }) {
   return (
     <Table>
@@ -336,7 +347,7 @@ function AccountTable({ data }: { data: FinancialData[] }) {
           <TableHead className="w-28">항목</TableHead>
           {data.map(item => (
             <TableHead key={item.label} className="text-right">
-              {item.label}
+              <PeriodHeader item={item} />
             </TableHead>
           ))}
         </TableRow>
@@ -365,7 +376,7 @@ function RatioTable({ data }: { data: FinancialData[] }) {
           <TableHead className="w-28">지표</TableHead>
           {data.map(item => (
             <TableHead key={item.label} className="text-right">
-              {item.label}
+              <PeriodHeader item={item} />
             </TableHead>
           ))}
         </TableRow>
@@ -411,8 +422,8 @@ function generateProfitSummary(
 }
 
 function ProfitabilityCards({ data }: { data: FinancialData[] }) {
-  const latest = data[0]
-  const previous = data[1]
+  const latest = data[data.length - 1]
+  const previous = data[data.length - 2]
 
   if (!latest) {
     return <div className="text-muted-foreground py-4 text-center text-sm">데이터가 없습니다</div>
@@ -495,8 +506,8 @@ function generateGrowthSummary(
 }
 
 function GrowthCards({ data }: { data: FinancialData[] }) {
-  const latest = data[0]
-  const previous = data[1]
+  const latest = data[data.length - 1]
+  const previous = data[data.length - 2]
 
   if (!latest) {
     return <div className="text-muted-foreground py-4 text-center text-sm">데이터가 없습니다</div>

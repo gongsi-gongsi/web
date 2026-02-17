@@ -45,6 +45,17 @@ export async function downloadZipFile(endpoint: string): Promise<Buffer> {
 }
 
 /**
+ * DART document.xml API에서 공시 문서를 ZIP으로 다운로드합니다
+ * @param rceptNo - 접수번호
+ * @returns ZIP 파일 Buffer
+ */
+export async function downloadDocument(rceptNo: string): Promise<Buffer> {
+  const response = await dartFetch('document.xml', { rcept_no: rceptNo })
+  const arrayBuffer = await response.arrayBuffer()
+  return Buffer.from(arrayBuffer)
+}
+
+/**
  * JSON 응답 가져오기
  */
 export async function fetchJson<T>(

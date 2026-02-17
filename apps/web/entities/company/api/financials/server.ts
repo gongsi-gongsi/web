@@ -1,4 +1,5 @@
 import { getDartApiKey } from '@/shared/lib/dart/utils'
+
 import {
   formatYearlyFinancials,
   formatQuarterlyFinancial,
@@ -9,8 +10,27 @@ import type {
   FinancialData,
   FinancialViewMode,
   FinancialStatementsResponse,
+  Quarter,
   ReportCode,
 } from '../../model/types'
+import { getProvisionalFinancial } from './provisional'
+
+/** 분기 정렬용 순서 */
+const QUARTER_ORDER: Record<Quarter, number> = { '1Q': 1, '2Q': 2, '3Q': 3, '4Q': 4 }
+
+/**
+ * 재무 데이터를 시간순(오름차순)으로 정렬합니다
+ * @param data - 재무 데이터 배열
+ * @returns 시간순 정렬된 배열
+ */
+function sortChronological(data: FinancialData[]): FinancialData[] {
+  return data.sort((a, b) => {
+    if (a.year !== b.year) return a.year - b.year
+    const aQ = a.quarter ? QUARTER_ORDER[a.quarter] : 4
+    const bQ = b.quarter ? QUARTER_ORDER[b.quarter] : 4
+    return aQ - bQ
+  })
+}
 
 /**
  * DART API에서 단일회사 주요계정을 조회합니다
@@ -45,7 +65,7 @@ async function fetchDartFinancials(
 }
 
 /**
- * 최근 5개 분기 정보를 계산합니다
+ * 최근 8개 분기 정보를 계산합니다
  * 보고서 공시 시점: 1Q(5월), 반기(8월), 3Q(11월), 사업보고서(3월)
  * @returns 분기 정보 배열 [{year, code}, ...]
  */
@@ -85,7 +105,7 @@ function getRecentQuarters(): Array<{ year: number; code: ReportCode }> {
     reportIdx = 0 // 전년도 3Q
   }
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 8; i++) {
     const code = reportCodes[reportIdx]
     // 사업보고서는 전년도 실적이므로 year 그대로, 나머지도 해당 year의 실적
     quarters.push({ year, code })
@@ -118,6 +138,7 @@ function getLatestAnnualReportYear(): number {
 
 /**
  * [서버 전용] 연도별 재무제표를 조회합니다 (최근 5년)
+ * 정기공시 데이터가 없는 최신 연도는 4분기 잠정실적으로 보완합니다
  * @param corpCode - 기업 고유번호
  * @returns 연도별 재무 데이터
  */
@@ -141,17 +162,54 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
     datasets.push(formatYearlyFinancials(olderResponse.list, '11011'))
   }
 
-  const data = mergeAndSliceYearly(datasets, 5)
+  const data = mergeAndSliceYearly(datasets, 6)
+
+  // 잠정실적 fallback: 다음 연도 4분기 잠정실적으로 보완
+  const nextYear = latestYear + 1
+  try {
+    const provisionalData = await getProvisionalFinancial(corpCode, nextYear, '4Q', {
+      cumulative: true,
+    })
+    if (provisionalData) {
+      // 연도별 뷰에 맞게 label 변환 (25.4Q → 2025)
+      data.unshift({
+        ...provisionalData,
+        quarter: undefined,
+        label: String(nextYear),
+      })
+    }
+  } catch (error) {
+    console.error('연도별 잠정실적 fallback 실패:', error)
+  }
 
   return {
     corpCode,
     mode: 'yearly',
-    data,
+    data: sortChronological(data),
   }
 }
 
 /**
- * [서버 전용] 분기별 재무제표를 조회합니다 (최근 5분기)
+ * 가장 최신 재무 데이터의 다음 분기를 계산합니다
+ * @param latest - 가장 최신 재무 데이터
+ * @returns 다음 분기의 연도와 분기, 또는 null
+ */
+function getNextQuarter(latest: FinancialData): { year: number; quarter: Quarter } | null {
+  if (!latest.quarter) return null
+
+  const quarterOrder: Quarter[] = ['1Q', '2Q', '3Q', '4Q']
+  const currentIdx = quarterOrder.indexOf(latest.quarter)
+
+  if (currentIdx === 3) {
+    return { year: latest.year + 1, quarter: '1Q' }
+  }
+
+  return { year: latest.year, quarter: quarterOrder[currentIdx + 1] }
+}
+
+/**
+ * [서버 전용] 분기별 재무제표를 조회합니다 (최근 8분기)
+ * 정기공시 데이터가 없는 최신 분기는 잠정실적으로 보완합니다
  * @param corpCode - 기업 고유번호
  * @returns 분기별 재무 데이터
  */
@@ -179,10 +237,25 @@ export async function getQuarterlyFinancials(
     }
   })
 
+  // 잠정실적 fallback: 최신 분기가 없으면 잠정실적으로 보완
+  if (data.length > 0) {
+    const next = getNextQuarter(data[0])
+    if (next) {
+      try {
+        const provisionalData = await getProvisionalFinancial(corpCode, next.year, next.quarter)
+        if (provisionalData) {
+          data.unshift(provisionalData)
+        }
+      } catch (error) {
+        console.error('잠정실적 fallback 실패:', error)
+      }
+    }
+  }
+
   return {
     corpCode,
     mode: 'quarterly',
-    data,
+    data: sortChronological(data),
   }
 }
 

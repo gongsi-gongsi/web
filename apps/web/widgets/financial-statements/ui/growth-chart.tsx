@@ -28,7 +28,7 @@ interface ChartDataItem {
  * 재무 데이터를 차트용 데이터로 변환합니다
  */
 function transformData(data: FinancialData[]): ChartDataItem[] {
-  return [...data].reverse().map(item => ({
+  return data.map(item => ({
     label: item.label,
     operatingProfit: item.operatingProfit,
     operatingMargin: calculateOperatingMargin(item.operatingProfit, item.revenue),
