@@ -15,6 +15,23 @@ import type {
 } from '../../model/types'
 import { getProvisionalFinancial } from './provisional'
 
+/** 분기 정렬용 순서 */
+const QUARTER_ORDER: Record<Quarter, number> = { '1Q': 1, '2Q': 2, '3Q': 3, '4Q': 4 }
+
+/**
+ * 재무 데이터를 시간순(오름차순)으로 정렬합니다
+ * @param data - 재무 데이터 배열
+ * @returns 시간순 정렬된 배열
+ */
+function sortChronological(data: FinancialData[]): FinancialData[] {
+  return data.sort((a, b) => {
+    if (a.year !== b.year) return a.year - b.year
+    const aQ = a.quarter ? QUARTER_ORDER[a.quarter] : 4
+    const bQ = b.quarter ? QUARTER_ORDER[b.quarter] : 4
+    return aQ - bQ
+  })
+}
+
 /**
  * DART API에서 단일회사 주요계정을 조회합니다
  * @param corpCode - 기업 고유번호 (8자리)
@@ -168,7 +185,7 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
   return {
     corpCode,
     mode: 'yearly',
-    data: data.reverse(),
+    data: sortChronological(data),
   }
 }
 
@@ -238,7 +255,7 @@ export async function getQuarterlyFinancials(
   return {
     corpCode,
     mode: 'quarterly',
-    data: data.reverse(),
+    data: sortChronological(data),
   }
 }
 
