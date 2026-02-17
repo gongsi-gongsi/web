@@ -12,7 +12,7 @@ export type AccountKey =
   | 'totalEquity'
 
 export const ACCOUNT_MAPPING: Record<AccountKey, string[]> = {
-  revenue: ['매출액', '영업수익', '수익(매출액)', '매출'],
+  revenue: ['매출액', '영업수익', '수익(매출액)', '매출', '이자수익', '보험수익'],
   operatingProfit: ['영업이익', '영업이익(손실)'],
   netIncome: ['당기순이익', '연결당기순이익', '당기순이익(손실)', '분기순이익', '반기순이익'],
   totalAssets: ['자산총계'],
