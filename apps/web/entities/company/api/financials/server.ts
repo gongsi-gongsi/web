@@ -48,7 +48,7 @@ async function fetchDartFinancials(
 }
 
 /**
- * 최근 5개 분기 정보를 계산합니다
+ * 최근 8개 분기 정보를 계산합니다
  * 보고서 공시 시점: 1Q(5월), 반기(8월), 3Q(11월), 사업보고서(3월)
  * @returns 분기 정보 배열 [{year, code}, ...]
  */
@@ -88,7 +88,7 @@ function getRecentQuarters(): Array<{ year: number; code: ReportCode }> {
     reportIdx = 0 // 전년도 3Q
   }
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 8; i++) {
     const code = reportCodes[reportIdx]
     // 사업보고서는 전년도 실적이므로 year 그대로, 나머지도 해당 year의 실적
     quarters.push({ year, code })
@@ -191,7 +191,7 @@ function getNextQuarter(latest: FinancialData): { year: number; quarter: Quarter
 }
 
 /**
- * [서버 전용] 분기별 재무제표를 조회합니다 (최근 5분기)
+ * [서버 전용] 분기별 재무제표를 조회합니다 (최근 8분기)
  * 정기공시 데이터가 없는 최신 분기는 잠정실적으로 보완합니다
  * @param corpCode - 기업 고유번호
  * @returns 분기별 재무 데이터
@@ -238,7 +238,7 @@ export async function getQuarterlyFinancials(
   return {
     corpCode,
     mode: 'quarterly',
-    data: data.slice(0, 5),
+    data,
   }
 }
 
