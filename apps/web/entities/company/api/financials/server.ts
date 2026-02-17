@@ -121,6 +121,7 @@ function getLatestAnnualReportYear(): number {
 
 /**
  * [서버 전용] 연도별 재무제표를 조회합니다 (최근 5년)
+ * 정기공시 데이터가 없는 최신 연도는 4분기 잠정실적으로 보완합니다
  * @param corpCode - 기업 고유번호
  * @returns 연도별 재무 데이터
  */
@@ -146,10 +147,26 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
 
   const data = mergeAndSliceYearly(datasets, 5)
 
+  // 잠정실적 fallback: 다음 연도 4분기 잠정실적으로 보완
+  const nextYear = latestYear + 1
+  try {
+    const provisionalData = await getProvisionalFinancial(corpCode, nextYear, '4Q')
+    if (provisionalData) {
+      // 연도별 뷰에 맞게 label 변환 (25.4Q → 2025)
+      data.unshift({
+        ...provisionalData,
+        quarter: undefined,
+        label: String(nextYear),
+      })
+    }
+  } catch (error) {
+    console.error('연도별 잠정실적 fallback 실패:', error)
+  }
+
   return {
     corpCode,
     mode: 'yearly',
-    data,
+    data: data.slice(0, 5),
   }
 }
 
