@@ -1,4 +1,5 @@
 import { getDartApiKey } from '@/shared/lib/dart/utils'
+
 import {
   formatYearlyFinancials,
   formatQuarterlyFinancial,
@@ -9,8 +10,10 @@ import type {
   FinancialData,
   FinancialViewMode,
   FinancialStatementsResponse,
+  Quarter,
   ReportCode,
 } from '../../model/types'
+import { getProvisionalFinancial } from './provisional'
 
 /**
  * DART API에서 단일회사 주요계정을 조회합니다
@@ -151,7 +154,26 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
 }
 
 /**
+ * 가장 최신 재무 데이터의 다음 분기를 계산합니다
+ * @param latest - 가장 최신 재무 데이터
+ * @returns 다음 분기의 연도와 분기, 또는 null
+ */
+function getNextQuarter(latest: FinancialData): { year: number; quarter: Quarter } | null {
+  if (!latest.quarter) return null
+
+  const quarterOrder: Quarter[] = ['1Q', '2Q', '3Q', '4Q']
+  const currentIdx = quarterOrder.indexOf(latest.quarter)
+
+  if (currentIdx === 3) {
+    return { year: latest.year + 1, quarter: '1Q' }
+  }
+
+  return { year: latest.year, quarter: quarterOrder[currentIdx + 1] }
+}
+
+/**
  * [서버 전용] 분기별 재무제표를 조회합니다 (최근 5분기)
+ * 정기공시 데이터가 없는 최신 분기는 잠정실적으로 보완합니다
  * @param corpCode - 기업 고유번호
  * @returns 분기별 재무 데이터
  */
@@ -179,10 +201,25 @@ export async function getQuarterlyFinancials(
     }
   })
 
+  // 잠정실적 fallback: 최신 분기가 없으면 잠정실적으로 보완
+  if (data.length > 0) {
+    const next = getNextQuarter(data[0])
+    if (next) {
+      try {
+        const provisionalData = await getProvisionalFinancial(corpCode, next.year, next.quarter)
+        if (provisionalData) {
+          data.unshift(provisionalData)
+        }
+      } catch (error) {
+        console.error('잠정실적 fallback 실패:', error)
+      }
+    }
+  }
+
   return {
     corpCode,
     mode: 'quarterly',
-    data,
+    data: data.slice(0, 5),
   }
 }
 

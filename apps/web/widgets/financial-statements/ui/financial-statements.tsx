@@ -328,6 +328,17 @@ function FinancialTablesOnly({ data }: { data: FinancialData[] }) {
   )
 }
 
+function PeriodHeader({ item }: { item: FinancialData }) {
+  return (
+    <span>
+      {item.label}
+      {item.isProvisional && (
+        <span className="text-muted-foreground ml-0.5 text-[10px] font-normal">(잠정)</span>
+      )}
+    </span>
+  )
+}
+
 function AccountTable({ data }: { data: FinancialData[] }) {
   return (
     <Table>
@@ -336,7 +347,7 @@ function AccountTable({ data }: { data: FinancialData[] }) {
           <TableHead className="w-28">항목</TableHead>
           {data.map(item => (
             <TableHead key={item.label} className="text-right">
-              {item.label}
+              <PeriodHeader item={item} />
             </TableHead>
           ))}
         </TableRow>
@@ -365,7 +376,7 @@ function RatioTable({ data }: { data: FinancialData[] }) {
           <TableHead className="w-28">지표</TableHead>
           {data.map(item => (
             <TableHead key={item.label} className="text-right">
-              {item.label}
+              <PeriodHeader item={item} />
             </TableHead>
           ))}
         </TableRow>

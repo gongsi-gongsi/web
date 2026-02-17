@@ -20,6 +20,7 @@ export {
   formatQuarterlyFinancial,
   mergeAndSliceYearly,
 } from './lib/format-financial'
+export { parseProvisionalDisclosure } from './lib/parse-provisional'
 
 // API
 export { getCompanyInfo, getFinancials } from './api'

@@ -50,6 +50,7 @@ export interface FinancialData {
   totalAssets: number | null
   totalLiabilities: number | null
   totalEquity: number | null
+  isProvisional?: boolean // 잠정실적 여부
 }
 
 // API 응답 타입
