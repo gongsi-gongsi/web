@@ -333,7 +333,7 @@ function PeriodHeader({ item }: { item: FinancialData }) {
     <span>
       {item.label}
       {item.isProvisional && (
-        <span className="text-muted-foreground text-[10px] font-normal">E</span>
+        <span className="text-muted-foreground ml-0.5 text-[10px] font-normal">(E)</span>
       )}
     </span>
   )
