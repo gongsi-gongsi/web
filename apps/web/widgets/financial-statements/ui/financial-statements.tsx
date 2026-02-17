@@ -422,8 +422,8 @@ function generateProfitSummary(
 }
 
 function ProfitabilityCards({ data }: { data: FinancialData[] }) {
-  const latest = data[0]
-  const previous = data[1]
+  const latest = data[data.length - 1]
+  const previous = data[data.length - 2]
 
   if (!latest) {
     return <div className="text-muted-foreground py-4 text-center text-sm">데이터가 없습니다</div>
@@ -506,8 +506,8 @@ function generateGrowthSummary(
 }
 
 function GrowthCards({ data }: { data: FinancialData[] }) {
-  const latest = data[0]
-  const previous = data[1]
+  const latest = data[data.length - 1]
+  const previous = data[data.length - 2]
 
   if (!latest) {
     return <div className="text-muted-foreground py-4 text-center text-sm">데이터가 없습니다</div>

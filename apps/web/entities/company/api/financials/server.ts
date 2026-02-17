@@ -168,7 +168,7 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
   return {
     corpCode,
     mode: 'yearly',
-    data,
+    data: data.reverse(),
   }
 }
 
@@ -238,7 +238,7 @@ export async function getQuarterlyFinancials(
   return {
     corpCode,
     mode: 'quarterly',
-    data,
+    data: data.reverse(),
   }
 }
 
