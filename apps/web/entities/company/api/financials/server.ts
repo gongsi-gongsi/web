@@ -145,7 +145,7 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
     datasets.push(formatYearlyFinancials(olderResponse.list, '11011'))
   }
 
-  const data = mergeAndSliceYearly(datasets, 5)
+  const data = mergeAndSliceYearly(datasets, 6)
 
   // 잠정실적 fallback: 다음 연도 4분기 잠정실적으로 보완
   const nextYear = latestYear + 1
@@ -168,7 +168,7 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
   return {
     corpCode,
     mode: 'yearly',
-    data: data.slice(0, 5),
+    data,
   }
 }
 
