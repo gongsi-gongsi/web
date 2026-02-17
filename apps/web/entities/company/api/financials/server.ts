@@ -150,7 +150,9 @@ export async function getYearlyFinancials(corpCode: string): Promise<FinancialSt
   // 잠정실적 fallback: 다음 연도 4분기 잠정실적으로 보완
   const nextYear = latestYear + 1
   try {
-    const provisionalData = await getProvisionalFinancial(corpCode, nextYear, '4Q')
+    const provisionalData = await getProvisionalFinancial(corpCode, nextYear, '4Q', {
+      cumulative: true,
+    })
     if (provisionalData) {
       // 연도별 뷰에 맞게 label 변환 (25.4Q → 2025)
       data.unshift({

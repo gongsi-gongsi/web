@@ -70,9 +70,15 @@ function getUnitMultiplier(unitText: string): number {
 /**
  * 잠정실적 공시 HTML을 파싱하여 FinancialData로 변환합니다
  * @param zipBuffer - DART document.xml API로 다운로드한 ZIP 버퍼
+ * @param options - 파싱 옵션
+ * @param options.cumulative - true이면 누계실적(연간 누적)을 추출, false이면 당해실적(분기 단독)을 추출
  * @returns FinancialData (isProvisional: true) 또는 null
  */
-export function parseProvisionalDisclosure(zipBuffer: Buffer): FinancialData | null {
+export function parseProvisionalDisclosure(
+  zipBuffer: Buffer,
+  options?: { cumulative?: boolean }
+): FinancialData | null {
+  const cumulative = options?.cumulative ?? false
   const html = extractHtmlFromZip(zipBuffer)
   const root = parseHTML(html)
 
@@ -103,31 +109,44 @@ export function parseProvisionalDisclosure(zipBuffer: Buffer): FinancialData | n
   const multiplier = getUnitMultiplier(unitText)
 
   // 테이블 행 순회하며 재무 항목 추출
+  // 구조: [항목명(rowspan=2) | 당해실적 | Q4값 | ...] → [누계실적 | 연간값 | ...]
   const rows = dataTable.querySelectorAll('tr')
   const accounts: Partial<Record<AccountKey, number | null>> = {}
+  let lastAccountKey: AccountKey | null = null
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i]
     const cells = row.querySelectorAll('td')
-    if (cells.length < 3) continue
+    if (cells.length < 2) continue
 
-    // 항목명 (첫 번째 셀) - rowspan=2인 셀이 항목명
     const firstCellText = cells[0]?.text?.trim() ?? ''
 
-    // 잠정실적 표준 항목명 매핑
+    // 항목명이 있는 행 (rowspan=2, "당해실적" 포함)
     const accountKey = findProvisionalAccountKey(firstCellText)
-    if (!accountKey) continue
+    if (accountKey) {
+      lastAccountKey = accountKey
+      const secondCellText = cells[1]?.text?.trim() ?? ''
+      if (!secondCellText.includes('당해')) continue
 
-    // "당해실적" 행인지 확인 (두 번째 셀)
-    const secondCellText = cells[1]?.text?.trim() ?? ''
-    if (!secondCellText.includes('당해')) continue
+      if (!cumulative) {
+        // 분기 단독: 당해실적 값 (cells[2])
+        const valueSpan = cells[2]?.querySelector('.xforms_input')
+        const valueText = valueSpan?.text?.trim() ?? cells[2]?.text?.trim() ?? ''
+        const amount = parseAmount(valueText)
+        accounts[accountKey] = amount !== null ? amount * multiplier : null
+      }
+      continue
+    }
 
-    // 당기실적 값 (세 번째 셀의 xforms_input)
-    const valueSpan = cells[2]?.querySelector('.xforms_input')
-    const valueText = valueSpan?.text?.trim() ?? cells[2]?.text?.trim() ?? ''
-    const amount = parseAmount(valueText)
-
-    accounts[accountKey] = amount !== null ? amount * multiplier : null
+    // 누계실적 행 (항목명 없음, "누계" 포함)
+    if (cumulative && lastAccountKey && firstCellText.includes('누계')) {
+      // 누계실적 값 (cells[1] - 항목명 셀 없으므로 한 칸 앞)
+      const valueSpan = cells[1]?.querySelector('.xforms_input')
+      const valueText = valueSpan?.text?.trim() ?? cells[1]?.text?.trim() ?? ''
+      const amount = parseAmount(valueText)
+      accounts[lastAccountKey] = amount !== null ? amount * multiplier : null
+      lastAccountKey = null
+    }
   }
 
   // 최소 하나의 항목이 있어야 유효

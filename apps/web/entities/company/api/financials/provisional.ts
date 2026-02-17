@@ -27,12 +27,15 @@ function countFilledFields(data: FinancialData): number {
  * @param corpCode - 기업 고유번호
  * @param year - 사업연도
  * @param targetQuarter - 조회할 분기 (지정 시 해당 분기만 반환)
+ * @param options - 추가 옵션
+ * @param options.cumulative - true이면 누계실적(연간 누적)을 추출
  * @returns 잠정실적 FinancialData 또는 null
  */
 export async function getProvisionalFinancial(
   corpCode: string,
   year: number,
-  targetQuarter?: Quarter
+  targetQuarter?: Quarter,
+  options?: { cumulative?: boolean }
 ): Promise<FinancialData | null> {
   const disclosures = await searchProvisionalDisclosures(corpCode, year)
   if (disclosures.length === 0) return null
@@ -43,7 +46,9 @@ export async function getProvisionalFinancial(
   for (const disclosure of disclosures) {
     try {
       const zipBuffer = await downloadDocument(disclosure.rcept_no)
-      const result = parseProvisionalDisclosure(zipBuffer)
+      const result = parseProvisionalDisclosure(zipBuffer, {
+        cumulative: options?.cumulative,
+      })
 
       if (!result) continue
       if (targetQuarter && result.quarter !== targetQuarter) continue
