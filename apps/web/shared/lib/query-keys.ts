@@ -35,4 +35,7 @@ export const queries = createQueryKeyStore({
     company: (corpName: string) => [corpName],
     market: null,
   },
+  ai: {
+    companySummary: (corpCode: string) => [corpCode],
+  },
 })
