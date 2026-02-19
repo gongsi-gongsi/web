@@ -2,215 +2,242 @@
 
 ## 📋 작업 개요
 
-기업 상세 페이지의 '뉴스' 탭을 Google News RSS 기반으로 구현했습니다. 기업명으로 Google News를 검색하여 관련 뉴스 30건을 표시하며, 최신순/관련도순 정렬 토글을 제공합니다.
+기업 상세 페이지 요약 탭에 Gemini Flash 기반 AI 기업 분석 카드를 추가한다.
+재무 데이터(분기별 매출/영업이익/순이익)와 최근 뉴스 제목을 조합하여 3~4문장의 통합 요약을 생성하고, `unstable_cache`로 corpCode별 24시간 서버 캐싱하여 모든 사용자가 동일한 결과를 본다.
 
 ## 📁 변경된 파일 목록
 
 ### 새로 추가된 파일
 
-| 파일                                                               | 설명                                                    |
-| ------------------------------------------------------------------ | ------------------------------------------------------- |
-| `apps/web/entities/news/model/types.ts`                            | 뉴스 도메인 타입 정의 (NewsItem, NewsResponse)          |
-| `apps/web/entities/news/lib/format-news.ts`                        | RSS XML → NewsItem 변환 및 상대 시간 포맷팅 유틸리티    |
-| `apps/web/entities/news/api/google-news/server.ts`                 | 서버 전용 Google News RSS fetch + xml2js 파싱           |
-| `apps/web/entities/news/api/google-news/client.ts`                 | 클라이언트 전용 `/api/news` API Route 호출              |
-| `apps/web/entities/news/queries/hooks.ts`                          | `useCompanyNews` Suspense 기반 TanStack Query 훅        |
-| `apps/web/entities/news/queries/index.ts`                          | queries barrel export                                   |
-| `apps/web/entities/news/index.ts`                                  | 클라이언트용 barrel export                              |
-| `apps/web/entities/news/server.ts`                                 | 서버용 barrel export                                    |
-| `apps/web/app/api/news/route.ts`                                   | 뉴스 조회 API Route (`GET /api/news?q=기업명&limit=30`) |
-| `apps/web/widgets/company-detail-page/ui/company-news-section.tsx` | 기업 상세 뉴스 탭 UI (목록, 정렬 토글, 스켈레톤)        |
-| `spec/news/google-news-rss.md`                                     | Google News RSS 기반 뉴스 기능 명세서                   |
+| 파일                                                           | 설명                                                     |
+| -------------------------------------------------------------- | -------------------------------------------------------- |
+| `apps/web/shared/lib/gemini/client.ts`                         | Gemini API(gemini-2.5-flash-lite) 호출 클라이언트        |
+| `apps/web/shared/lib/gemini/index.ts`                          | Gemini 모듈 barrel export                                |
+| `apps/web/features/ai-company-summary/model/types.ts`          | `AiCompanySummary` 인터페이스 정의                       |
+| `apps/web/features/ai-company-summary/lib/build-prompt.ts`     | 재무+뉴스 데이터로 Gemini 프롬프트 생성                  |
+| `apps/web/features/ai-company-summary/api/generate-summary.ts` | 서버 전용 요약 생성 오케스트레이터 (unstable_cache 적용) |
+| `apps/web/features/ai-company-summary/api/client.ts`           | 클라이언트용 API Route fetch 함수                        |
+| `apps/web/features/ai-company-summary/queries/hooks.ts`        | `useAiCompanySummary` React Query 훅                     |
+| `apps/web/features/ai-company-summary/ui/ai-summary-card.tsx`  | AI 요약 카드 UI (시머 로딩 + 본문 + 면책 문구)           |
+| `apps/web/features/ai-company-summary/index.ts`                | feature barrel export                                    |
+| `apps/web/app/api/companies/[corpCode]/ai-summary/route.ts`    | AI 요약 API Route Handler                                |
 
 ### 수정된 파일
 
-| 파일                                                              | 변경 내용                                            |
-| ----------------------------------------------------------------- | ---------------------------------------------------- |
-| `apps/web/shared/lib/query-keys.ts`                               | `news.company` 쿼리 키 추가                          |
-| `apps/web/widgets/company-detail-page/ui/company-detail-page.tsx` | 뉴스 탭에서 `ComingSoon` → `CompanyNewsSection` 교체 |
+| 파일                                                             | 변경 내용                                    |
+| ---------------------------------------------------------------- | -------------------------------------------- |
+| `apps/web/shared/lib/query-keys.ts`                              | `ai.companySummary` 쿼리 키 추가             |
+| `apps/web/widgets/financial-statements/ui/financial-section.tsx` | SummarySection에 AiSummaryCard 삽입          |
+| `packages/tailwind-config/animations.css`                        | `.ai-shimmer-line` 시머 로딩 CSS 클래스 추가 |
 
 ## 🔧 상세 구현 내역
 
-### 1. 뉴스 도메인 타입 정의
+### 1. Gemini API 클라이언트
 
 #### 📄 관련 파일
 
-- `apps/web/entities/news/model/types.ts`
+- `apps/web/shared/lib/gemini/client.ts`
+- `apps/web/shared/lib/gemini/index.ts`
 
 #### 💡 구현 내용
 
-뉴스 도메인의 핵심 타입 2개를 정의했습니다.
-
-- `NewsItem`: 개별 뉴스 항목 (제목, 링크, 게시일, 매체명, 매체URL)
-- `NewsResponse`: 뉴스 API 응답 (items 배열, 검색 쿼리, 조회 시간)
+Google Gemini REST API를 직접 호출하는 범용 클라이언트. `generateContent(prompt)` 함수 하나로 텍스트 생성을 수행한다.
 
 #### 🎯 구현 이유
 
-- FSD 패턴에서 entity의 model 레이어에 타입을 배치하여 도메인 모델 명확화
-- 서버/클라이언트 양쪽에서 동일한 타입을 공유하기 위함
+- **모델 선택**: `gemini-2.5-flash-lite`를 사용. 무료 티어 기준 ~1,000 RPD로 rate limit이 넉넉하고, thinking 모드가 아니라 응답 파싱이 단순함
+- **temperature 0.3**: 사실 기반 분석이므로 창의성보다 일관성을 우선
+- **SDK 미사용**: `@google/generative-ai` SDK 대신 직접 fetch. 의존성 최소화 및 Next.js fetch 캐싱과의 호환성 확보
 
 #### 📝 주요 변경 사항
 
-- `NewsItem.pubDate`는 ISO 8601 문자열로 통일 (RSS의 RFC 2822 → ISO 변환)
-- `source`와 `sourceUrl`을 분리하여 매체명 표시와 링크를 독립적으로 활용
+- `GEMINI_API_KEY` 환경변수 필수 검증
+- 응답에서 `candidates[0].content.parts[0].text` 추출
+- 에러 시 상세 에러 바디 포함한 메시지 throw
 
----
-
-### 2. RSS 파싱 및 포맷팅 유틸리티
+### 2. 타입 정의
 
 #### 📄 관련 파일
 
-- `apps/web/entities/news/lib/format-news.ts`
+- `apps/web/features/ai-company-summary/model/types.ts`
 
 #### 💡 구현 내용
-
-Google News RSS XML을 `NewsItem`으로 변환하는 유틸리티와 상대 시간 포맷팅 함수를 구현했습니다.
-
-#### 🎯 구현 이유
-
-- Google News RSS title에 `" - 매체명"` 접미사가 포함되어 있어 제거 로직 필요
-- 뉴스 목록에서 "5분 전", "2시간 전" 등 상대 시간 표시를 위한 포맷팅 함수 필요
-
-#### 📝 주요 변경 사항
-
-- `stripSourceFromTitle()`: `lastIndexOf(' - ')`로 제목에서 매체명 접미사 제거
-- `formatNewsItem()`: xml2js 파싱 결과의 배열 구조(`title[0]`, `link[0]` 등)를 평탄화
-- `formatRelativeTime()`: 방금 전 → 분 → 시간 → 일 → 날짜 순으로 단계적 표시
-
-#### 🔍 코드 예시
 
 ```typescript
-// Google News RSS 제목: "삼성전자 주가 급등 - 한국경제"
-// → stripSourceFromTitle() 결과: "삼성전자 주가 급등"
-
-function stripSourceFromTitle(rawTitle: string): string {
-  const lastDash = rawTitle.lastIndexOf(' - ')
-  if (lastDash === -1) return rawTitle
-  return rawTitle.slice(0, lastDash)
+export interface AiCompanySummary {
+  summary: string // 통합 요약 (재무 + 이슈 + 전망)
+  generatedAt: string // 생성 시각 (ISO 8601)
 }
 ```
 
----
+#### 🎯 구현 이유
 
-### 3. 서버/클라이언트 API 레이어
+초기에는 `financial`, `issues`, `outlook` 3개 필드로 설계했으나, 읽을 내용이 많아 가독성이 떨어져 하나의 `summary` 필드로 통합. 3~4문장의 자연스러운 문단 형태가 사용자 경험에 더 적합하다.
+
+### 3. 프롬프트 빌더
 
 #### 📄 관련 파일
 
-- `apps/web/entities/news/api/google-news/server.ts`
-- `apps/web/entities/news/api/google-news/client.ts`
-- `apps/web/app/api/news/route.ts`
+- `apps/web/features/ai-company-summary/lib/build-prompt.ts`
 
 #### 💡 구현 내용
 
-서버에서 Google News RSS를 fetch하고, 클라이언트에서는 API Route를 통해 접근하는 구조입니다.
+재무 데이터와 뉴스 제목을 구조화된 프롬프트로 변환한다.
 
 #### 🎯 구현 이유
 
-- **서버 전용 fetch**: Google News RSS는 CORS 정책으로 클라이언트 직접 호출 불가
-- **Next.js fetch 캐싱**: `revalidate: 300` (5분)으로 과도한 RSS 요청 방지 (IP 차단 방지)
-- **서버/클라이언트 분리**: 기존 disclosure entity 패턴을 따름
-
-#### 📝 주요 변경 사항
-
-- `getGoogleNews()`: URL 객체의 `searchParams.append()`로 한글 쿼리 자동 인코딩
-- `getNewsByCorpName()`: `getBaseUrl()` 유틸리티로 SSR/CSR 환경 모두 대응
-- API Route: `q` (필수), `limit` (선택, 기본 10) 파라미터 처리
+- **재무 포맷팅**: 원 단위를 억 원으로 변환하고, 전기 대비 성장률을 계산하여 Gemini가 숫자를 올바르게 해석하도록 함
+- **JSON 출력 강제**: 프롬프트에서 "반드시 JSON 형식으로만 응답" 지시하여 파싱 안정성 확보
+- **잠정실적 표시**: `isProvisional` 플래그가 있는 분기는 `(잠정)` 표시로 정확도 전달
 
 #### 🔍 코드 예시
 
 ```typescript
-// 서버: Google News RSS fetch (5분 캐싱)
-const response = await fetch(rssUrl.toString(), {
-  next: {
-    revalidate: 300,
-    tags: ['news', query],
-  },
-})
+function formatToEok(value: number | null): string {
+  if (value === null) return '데이터 없음'
+  const eok = Math.round(value / 100_000_000)
+  return `${eok.toLocaleString('ko-KR')}억`
+}
 ```
 
----
-
-### 4. TanStack Query 훅
+### 4. 서버 요약 생성 + 캐싱
 
 #### 📄 관련 파일
 
-- `apps/web/entities/news/queries/hooks.ts`
+- `apps/web/features/ai-company-summary/api/generate-summary.ts`
+- `apps/web/app/api/companies/[corpCode]/ai-summary/route.ts`
+
+#### 💡 구현 내용
+
+기업 정보 → 재무/뉴스 병렬 조회 → 프롬프트 빌드 → Gemini 호출 → JSON 파싱의 파이프라인을 실행한다. `unstable_cache`로 감싸서 corpCode별 24시간 서버 캐싱을 적용.
+
+#### 🎯 구현 이유
+
+- **`unstable_cache` 사용**: CDN 유무와 관계없이 Next.js 서버 레벨에서 캐싱. 모든 사용자가 동일한 요약을 보고, Gemini 호출은 기업당 하루 1회로 제한
+- **병렬 조회**: `Promise.all`로 재무 데이터와 뉴스를 동시 fetch하여 응답 시간 단축
+- **JSON 파싱 방어**: Gemini가 마크다운 코드블록(` ```json `)으로 감싸거나 순수 JSON으로 응답하는 두 경우 모두 처리
+- **에러 격리**: 재무/뉴스 조회 실패 시 `.catch(() => null)`로 부분 데이터로도 요약 생성 가능
+
+#### 🔍 코드 예시
+
+```typescript
+// unstable_cache로 감싸서 corpCode별 서버 캐싱
+export const generateCompanySummary = unstable_cache(
+  _generateCompanySummary,
+  ['ai-company-summary'],
+  { revalidate: 86400 } // 24시간
+)
+```
+
+#### 📝 주요 변경 사항
+
+- Route Handler는 유효성 검사(8자리 숫자) + `generateCompanySummary` 호출만 담당
+- `Cache-Control` 헤더 제거 — 서버 캐시(`unstable_cache`)가 이미 처리하므로 CDN 캐시 헤더 불필요
+
+### 5. 클라이언트 데이터 레이어
+
+#### 📄 관련 파일
+
+- `apps/web/features/ai-company-summary/api/client.ts`
+- `apps/web/features/ai-company-summary/queries/hooks.ts`
 - `apps/web/shared/lib/query-keys.ts`
 
 #### 💡 구현 내용
 
-Suspense 기반의 `useCompanyNews` 훅과 중앙 쿼리 키 스토어에 `news.company` 키를 추가했습니다.
+클라이언트에서 API Route를 호출하는 fetch 함수와 React Query 훅.
 
 #### 🎯 구현 이유
 
-- `useSuspenseQuery`를 사용하여 `Suspense` + `ErrorBoundary` 패턴과 통합
-- `staleTime: 5분`으로 서버 캐싱(5분)과 동기화
-- `@lukemorales/query-key-factory`의 기존 패턴을 따름
+- **`useQuery` 사용 (not `useSuspenseQuery`)**: SSR 시 Gemini가 매번 다른 텍스트를 생성하여 hydration mismatch가 발생. 클라이언트 마운트 후에만 fetch하도록 `useQuery`를 사용하여 문제 해결
+- **`staleTime: 24시간`**: 서버 캐시와 동일한 주기. 같은 세션 내에서 탭 이동 시 재요청 방지
+- **`retry: false`**: Gemini 실패 시 재시도하지 않음. rate limit 소모 방지
 
-#### 📝 주요 변경 사항
-
-- `useCompanyNews(corpName, limit)`: 기업명 기반 뉴스 조회 훅
-- `queries.news.company(corpName)`: 타입 안전한 쿼리 키
-
----
-
-### 5. 기업 상세 뉴스 탭 UI
+### 6. UI 카드 컴포넌트
 
 #### 📄 관련 파일
 
-- `apps/web/widgets/company-detail-page/ui/company-news-section.tsx`
-- `apps/web/widgets/company-detail-page/ui/company-detail-page.tsx`
+- `apps/web/features/ai-company-summary/ui/ai-summary-card.tsx`
 
 #### 💡 구현 내용
 
-기업 상세 페이지 뉴스 탭의 전체 UI를 구현했습니다.
+모바일/PC 반응형 AI 요약 카드. 로딩 중에는 타이틀("AI 기업 분석" + Beta 배지)을 유지하고 본문만 시머 애니메이션 표시, 에러 시 카드 자체를 숨긴다.
 
 #### 🎯 구현 이유
 
-- 기존 "뉴스 기능 준비중입니다" placeholder를 실제 뉴스 목록으로 교체
-- 공시 카드 스타일(`interactive-card`, `rounded-xl`)을 뉴스에도 적용하여 UI 일관성 확보
-- 최신순(기본) / 관련도순 토글로 사용자 선택권 제공
+- **타이틀 항상 노출**: 로딩 중에도 "AI 기업 분석" 타이틀을 보여줘서 사용자가 무엇이 로딩되는지 인지할 수 있도록 함
+- **에러 시 `return null`**: AI 기능 실패가 기존 콘텐츠(재무제표, 차트)에 영향을 주지 않도록 graceful degradation
+- **수동 날짜 포맷**: `toLocaleDateString()` 대신 직접 `YYYY.MM.DD HH:mm` 포맷 — 서버/클라이언트 로케일 차이로 인한 hydration mismatch 방지
+- **모바일/PC 분리 렌더링**: 모바일은 패딩만, PC는 `Card` 컴포넌트 사용
 
-#### 📝 주요 변경 사항
+### 7. 시머 로딩 애니메이션
 
-- `SortToggle`: 최신순 ↔ 관련도순 토글 버튼 (CaretDownIcon 포함)
-- `NewsListItem`: `interactive-card` 클래스 적용 (hover: bg-accent, active: scale 0.98)
-- `NewsContent`: `useMemo`로 정렬 결과 메모이제이션 (최신순은 `pubDate` 내림차순 정렬)
-- `NewsSkeleton`: 카드 스타일 매칭 스켈레톤
-- `CompanyNewsSection`: `corpCode` → `corpName` 변환 후 뉴스 조회
-- `company-detail-page.tsx`: `case 'news'`에서 `ErrorBoundary` + `Suspense`로 감싸서 연결
+#### 📄 관련 파일
+
+- `packages/tailwind-config/animations.css`
+
+#### 💡 구현 내용
+
+`.ai-shimmer-line` CSS 클래스로 좌→우 그라데이션 시머 효과 구현. 다크 모드 대응 포함.
+
+#### 🎯 구현 이유
+
+- **하드코딩 컬러 사용**: Tailwind v4에서 CSS 변수(`hsl(var(--muted))`)가 gradient arbitrary value에서 동작하지 않는 제한이 있어, `#e5e7eb` / `#1f2937` 등 hex 값을 직접 사용
+- **기존 `skeleton` 키프레임 재활용**: 동일한 `background-position` 애니메이션이므로 별도 키프레임 생성 대신 기존 것을 공유하여 중복 방지
 
 #### 🔍 코드 예시
 
-```typescript
-// 클라이언트 측 정렬 (관련도순은 RSS 원본 순서 유지)
-const sortedItems = useMemo(() => {
-  if (sortOrder === 'relevance') return data.items
-  return [...data.items].sort(
-    (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-  )
-}, [data.items, sortOrder])
+```css
+.ai-shimmer-line {
+  border-radius: 0.375rem;
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  background-size: 200% 100%;
+  animation: skeleton 1.8s ease-in-out infinite;
+}
+
+.dark .ai-shimmer-line {
+  background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+}
 ```
 
-## 🎨 UI/UX 변경사항
+### 8. SummarySection 통합
 
-- **뉴스 카드 디자인**: `rounded-xl bg-card interactive-card hover:bg-accent` — 공시 카드와 동일한 인터랙션 패턴
-- **제목**: 한 줄 `truncate` 처리 (ellipsis)
-- **메타 정보**: `{상대시간} · {매체명}` 형태
-- **정렬 토글**: 상단에 "최신순 ∨" / "관련도순 ∨" 텍스트 버튼
-- **빈 목록**: NewspaperIcon + "관련 뉴스가 없습니다" 메시지
-- **로딩**: 5개 카드 형태 스켈레톤
+#### 📄 관련 파일
+
+- `apps/web/widgets/financial-statements/ui/financial-section.tsx`
+
+#### 💡 구현 내용
+
+기존 `SummarySection`의 CompanyOverview와 SegmentControl 사이에 `AiSummaryCard`를 삽입.
+
+#### 🎯 구현 이유
+
+- **Suspense/ErrorBoundary 미사용**: `useQuery`가 클라이언트 전용이고, 컴포넌트 내부에서 `isError` 시 `null` 반환하므로 별도 에러 바운더리 불필요
+- **모바일 구분선 추가**: AI 카드와 차트 영역 사이에 시각적 구분을 위한 `h-6` 구분선
 
 ## 📚 기타 참고사항
 
-- **Google News RSS 특성**: 관련도순으로 반환 (시간순 아님), 최대 100건, 최근 30일 이내 뉴스만 제공
-- **RSS 제목 가공**: Google News RSS 제목에 `" - 매체명"` 접미사가 포함되어 있어 `stripSourceFromTitle()`로 제거
-- **명세서**: `spec/news/google-news-rss.md`에 향후 구현 예정인 홈 페이지 AI 선별 뉴스(Gemini API) 기능도 포함
-- **Phase 3(홈 AI 뉴스)는 미구현**: 이번 작업은 Phase 1(데이터 레이어) + Phase 2(기업 상세 뉴스 탭)만 완료
+### 캐싱 구조 (2단계)
+
+| 레이어                  | 위치            | TTL    | 역할                                           |
+| ----------------------- | --------------- | ------ | ---------------------------------------------- |
+| `unstable_cache`        | Next.js 서버    | 24시간 | corpCode별 Gemini 결과 캐싱 (모든 사용자 공유) |
+| React Query `staleTime` | 브라우저 메모리 | 24시간 | 같은 세션 내 재요청 방지                       |
+
+### Gemini 모델 선택 이력
+
+| 모델                    | 문제                                         | 결과     |
+| ----------------------- | -------------------------------------------- | -------- |
+| `gemini-2.0-flash`      | 무료 티어 rate limit 초과 (429)              | 변경     |
+| `gemini-2.5-flash`      | thinking 모델이라 파싱 복잡 + 일일 20회 제한 | 변경     |
+| `gemini-2.5-flash-lite` | ~1,000 RPD, 비-thinking, 파싱 단순           | **채택** |
+
+### 환경변수
+
+- `GEMINI_API_KEY`: Google AI Studio에서 발급한 API 키 (`.env.local`에 설정)
 
 ## ✅ 테스트 결과
 
-- 기업 상세 → 뉴스 탭 → 해당 기업 관련 뉴스 목록 표시 확인 필요
-- 최신순 / 관련도순 토글 동작 확인 필요
-- 뉴스 링크 클릭 → 새 탭에서 원문 열림 확인 필요
-- `pnpm --filter web exec tsc --noEmit` 통과 확인 필요
+- `pnpm --filter web build` 성공
+- API 엔드포인트 `/api/companies/{corpCode}/ai-summary` HTTP 200 응답 확인 (~4.3초)
+- 시머 로딩 애니메이션 + 요약 본문 표시 정상 동작
+- Gemini 실패 시 카드 숨김 (기존 콘텐츠 영향 없음)

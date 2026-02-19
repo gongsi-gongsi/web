@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
+import { AiSummaryCard } from '@/features/ai-company-summary'
 import type { FinancialViewMode } from '@/entities/company'
 import { SegmentControl, FinancialTableContent, SummaryChartsContent } from './financial-statements'
 import { FinancialTableSkeleton, SummaryChartsSkeleton } from './financial-statements-skeleton'
@@ -70,6 +71,12 @@ export function SummarySection({ corpCode }: SummarySectionProps) {
       <Suspense fallback={<CompanyOverviewSkeleton />}>
         <CompanyOverview corpCode={corpCode} />
       </Suspense>
+
+      {/* 모바일 구분선 */}
+      <div className="bg-background h-6 md:hidden" />
+
+      {/* AI 기업 분석 */}
+      <AiSummaryCard corpCode={corpCode} />
 
       {/* 모바일 구분선 */}
       <div className="bg-background h-6 md:hidden" />
