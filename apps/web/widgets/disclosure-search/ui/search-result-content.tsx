@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import {
   useSearchDisclosures,
   deduplicateDisclosures,
   type SearchDisclosuresParams,
 } from '@/entities/disclosure'
+import { useSummarizedDisclosureIds } from '@/features/ai-disclosure-summary'
 import { useIntersectionObserver } from '@/shared/hooks'
 import { DisclosureTable } from '@/widgets/today-disclosures/ui/disclosure-table'
 import { DisclosureCardList } from '@/widgets/today-disclosures/ui/disclosure-card-list'
@@ -19,6 +20,8 @@ interface SearchResultContentProps {
 
 export function SearchResultContent({ params }: SearchResultContentProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSearchDisclosures(params)
+  const { data: summaryIds } = useSummarizedDisclosureIds()
+  const summarizedIds = useMemo(() => new Set(summaryIds ?? []), [summaryIds])
 
   const { ref, inView } = useIntersectionObserver({
     rootMargin: '200px',
@@ -49,12 +52,12 @@ export function SearchResultContent({ params }: SearchResultContentProps) {
         <>
           {/* 모바일 버전 */}
           <div className="pb-2 pt-2 md:hidden">
-            <DisclosureCardList disclosures={disclosures} showMeta />
+            <DisclosureCardList disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
 
           {/* PC 버전 */}
           <div className="hidden md:block">
-            <DisclosureTable disclosures={disclosures} showMeta />
+            <DisclosureTable disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
         </>
       )}

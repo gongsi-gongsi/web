@@ -1,15 +1,18 @@
 import Link from 'next/link'
 import { cn } from '@gs/ui'
 import { getMarketBadge, type Disclosure } from '@/entities/disclosure'
+import { AiSummaryButton } from '@/features/ai-disclosure-summary'
 import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureCardProps {
   disclosure: Disclosure
   showMeta?: boolean
+  summarizedIds?: Set<string>
 }
 
-export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
+export function DisclosureCard({ disclosure, showMeta, summarizedIds }: DisclosureCardProps) {
   const marketBadge = getMarketBadge(disclosure.market)
+  const isSummarized = summarizedIds?.has(disclosure.id) ?? false
 
   return (
     <Link
@@ -36,6 +39,9 @@ export function DisclosureCard({ disclosure, showMeta }: DisclosureCardProps) {
 
         {/* 공시 제목 - 나머지 공간 */}
         <span className="flex-1 truncate text-sm">{disclosure.title}</span>
+
+        {/* AI 요약 버튼 */}
+        <AiSummaryButton disclosure={disclosure} isSummarized={isSummarized} variant="card" />
       </div>
 
       {showMeta && (
