@@ -39,4 +39,8 @@ export const queries = createQueryKeyStore({
     companySummary: (corpCode: string) => [corpCode],
     disclosureSummaryIds: null,
   },
+  watchlist: {
+    all: null,
+    check: (corpCode: string) => [corpCode],
+  },
 })
