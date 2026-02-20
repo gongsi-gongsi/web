@@ -7,6 +7,7 @@ import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
 import { FinancialSection, SummarySection } from '@/widgets/financial-statements'
 import { useCompanyInfo } from '@/entities/company'
+import { ToggleWatchlistButton } from '@/features/toggle-watchlist'
 import { CompanyDisclosureSection } from './company-disclosure-section'
 import { CompanyNewsSection, NewsSkeleton } from './company-news-section'
 
@@ -94,17 +95,25 @@ function CompanyHeader({ corpCode }: { corpCode: string }) {
   return (
     <>
       {/* 모바일 회사명 */}
-      <div className="px-4 pb-2 pt-4 md:hidden">
-        <h1 className="text-xl font-bold">{corpName}</h1>
-        {stockCode && <p className="text-muted-foreground mt-0.5 text-sm">{stockCode}</p>}
+      <div className="flex items-center justify-between px-4 pb-2 pt-4 md:hidden">
+        <div>
+          <h1 className="text-xl font-bold">{corpName}</h1>
+          {stockCode && <p className="text-muted-foreground mt-0.5 text-sm">{stockCode}</p>}
+        </div>
+        <ToggleWatchlistButton corpCode={corpCode} />
       </div>
 
       {/* PC 헤더 */}
       <div className="mb-8 hidden md:block">
-        <h1 className="text-2xl font-bold md:text-3xl">{corpName}</h1>
-        <p className="text-muted-foreground mt-2 text-sm">
-          {stockCode && `${stockCode} · `}기업 코드: {corpCode}
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold md:text-3xl">{corpName}</h1>
+            <p className="text-muted-foreground mt-2 text-sm">
+              {stockCode && `${stockCode} · `}기업 코드: {corpCode}
+            </p>
+          </div>
+          <ToggleWatchlistButton corpCode={corpCode} />
+        </div>
       </div>
     </>
   )

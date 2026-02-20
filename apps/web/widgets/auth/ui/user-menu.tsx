@@ -1,6 +1,7 @@
 'use client'
 
 import type { User } from '@supabase/supabase-js'
+import Link from 'next/link'
 
 import {
   Avatar,
@@ -41,7 +42,9 @@ export function UserMenu({ user }: UserMenuProps) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem>마이페이지</DropdownMenuItem>
-        <DropdownMenuItem>관심 종목</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/interests">관심 종목</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={signOut}>
           로그아웃
