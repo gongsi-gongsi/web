@@ -9,6 +9,19 @@ const nextConfig: NextConfig = {
 
   // 개발 인디케이터 비활성화
   devIndicators: false,
+
+  // 보안 헤더
+  headers: async () => [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'DENY' },
+        { key: 'X-XSS-Protection', value: '1; mode=block' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      ],
+    },
+  ],
 }
 
 export default nextConfig

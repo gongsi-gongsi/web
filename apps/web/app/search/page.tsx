@@ -1,6 +1,12 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 
 import { CompanySearchPage } from '@/widgets/disclosure-search'
+
+export const metadata: Metadata = {
+  title: '기업 검색',
+  description: '종목명 또는 종목코드로 기업을 검색하세요',
+}
 
 export const dynamic = 'force-dynamic'
 
