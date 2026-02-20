@@ -1,9 +1,11 @@
 import type { Disclosure } from '@/entities/disclosure'
+import { AiSummaryButton } from '@/features/ai-disclosure-summary'
 import { formatDate } from '@/shared/lib/date'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure
   showMeta?: boolean
+  isSummarized?: boolean
 }
 
 const MARKET_LABELS: Record<string, string> = {
@@ -13,7 +15,11 @@ const MARKET_LABELS: Record<string, string> = {
   all: '-',
 }
 
-export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowProps) {
+export function DisclosureTableRow({
+  disclosure,
+  showMeta,
+  isSummarized = false,
+}: DisclosureTableRowProps) {
   const marketLabel = MARKET_LABELS[disclosure.market] || '-'
 
   function handleClick() {
@@ -40,6 +46,9 @@ export function DisclosureTableRow({ disclosure, showMeta }: DisclosureTableRowP
         <div className="truncate" title={disclosure.title}>
           {disclosure.title}
         </div>
+      </td>
+      <td className="px-4 py-3 text-sm">
+        <AiSummaryButton disclosure={disclosure} isSummarized={isSummarized} variant="table" />
       </td>
       {showMeta && (
         <>

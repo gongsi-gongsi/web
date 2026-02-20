@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import type { SearchPeriod, DisclosureType } from '@/entities/disclosure'
 import { useCompanyDisclosures, deduplicateDisclosures } from '@/entities/disclosure'
+import { useSummarizedDisclosureIds } from '@/features/ai-disclosure-summary'
 import { useIntersectionObserver } from '@/shared/hooks'
 import { DisclosureCardList } from '@/widgets/today-disclosures/ui/disclosure-card-list'
 import { DisclosureTable } from '@/widgets/today-disclosures/ui/disclosure-table'
@@ -24,6 +25,8 @@ export function CompanyDisclosureSection({ corpCode }: CompanyDisclosureSectionP
     period,
     type,
   })
+  const { data: summaryIds } = useSummarizedDisclosureIds()
+  const summarizedIds = useMemo(() => new Set(summaryIds ?? []), [summaryIds])
 
   const { ref, inView } = useIntersectionObserver({
     rootMargin: '200px',
@@ -68,12 +71,12 @@ export function CompanyDisclosureSection({ corpCode }: CompanyDisclosureSectionP
         <>
           {/* 모바일 버전 */}
           <div className="pb-2 md:hidden">
-            <DisclosureCardList disclosures={disclosures} showMeta />
+            <DisclosureCardList disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
 
           {/* PC 버전 */}
           <div className="hidden md:block">
-            <DisclosureTable disclosures={disclosures} showMeta />
+            <DisclosureTable disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
 
           {/* 스크롤 감지 영역 및 상태 표시 */}

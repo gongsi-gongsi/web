@@ -4,9 +4,14 @@ import type { Disclosure } from '@/entities/disclosure'
 interface DisclosureCardListProps {
   disclosures: Disclosure[]
   showMeta?: boolean
+  summarizedIds?: Set<string>
 }
 
-export function DisclosureCardList({ disclosures, showMeta }: DisclosureCardListProps) {
+export function DisclosureCardList({
+  disclosures,
+  showMeta,
+  summarizedIds,
+}: DisclosureCardListProps) {
   if (disclosures.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -18,7 +23,12 @@ export function DisclosureCardList({ disclosures, showMeta }: DisclosureCardList
   return (
     <div className="flex flex-col">
       {disclosures.map(disclosure => (
-        <DisclosureCard key={disclosure.id} disclosure={disclosure} showMeta={showMeta} />
+        <DisclosureCard
+          key={disclosure.id}
+          disclosure={disclosure}
+          showMeta={showMeta}
+          summarizedIds={summarizedIds}
+        />
       ))}
     </div>
   )
