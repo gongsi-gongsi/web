@@ -1,8 +1,14 @@
+import type { Metadata } from 'next'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { getTodayDisclosuresFromDartPaginated, type Market } from '@/entities/disclosure/server'
 import { getQueryClient } from '@/shared/lib/get-query-client'
 import { queries } from '@/shared/lib/query-keys'
 import { DisclosureListPage } from '@/widgets/disclosure-list-page'
+
+export const metadata: Metadata = {
+  title: '오늘의 공시',
+  description: '오늘 발표된 기업 공시를 실시간으로 확인하세요',
+}
 
 export default async function DisclosuresPage({
   searchParams,

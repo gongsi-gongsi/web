@@ -1,6 +1,12 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 
 import { LoginForm } from '@/widgets/auth'
+
+export const metadata: Metadata = {
+  title: '로그인',
+  description: '공시공시에 로그인하여 맞춤 서비스를 이용하세요',
+}
 
 export default function LoginPage() {
   return (
