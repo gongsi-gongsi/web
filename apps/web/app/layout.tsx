@@ -4,6 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import { Providers } from './providers'
 import { Header } from '@/widgets/header'
 import { BottomNav } from '@/widgets/bottom-nav'
+import { Footer } from '@/widgets/footer'
 import { OrganizationJsonLd, WebSiteJsonLd } from '@/shared/lib/seo'
 import './globals.css'
 
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Header />
           {children}
+          <Footer />
           <BottomNav />
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
