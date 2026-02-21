@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
 import { LoaderCircle } from 'lucide-react'
@@ -91,8 +92,15 @@ export function LoginForm() {
 
       {/* 안내 텍스트 */}
       <p className="text-muted-foreground text-center text-xs leading-relaxed">
-        로그인 시 <span className="underline">이용약관</span> 및{' '}
-        <span className="underline">개인정보 처리방침</span>에 동의하는 것으로 간주합니다.
+        로그인 시{' '}
+        <Link href="/terms" className="underline hover:text-current">
+          이용약관
+        </Link>{' '}
+        및{' '}
+        <Link href="/privacy" className="underline hover:text-current">
+          개인정보 처리방침
+        </Link>
+        에 동의하는 것으로 간주합니다.
       </p>
     </div>
   )
