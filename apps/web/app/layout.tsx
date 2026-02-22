@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Providers } from './providers'
 import { Header } from '@/widgets/header'
 import { BottomNav } from '@/widgets/bottom-nav'
@@ -62,6 +64,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <BottomNav />
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
