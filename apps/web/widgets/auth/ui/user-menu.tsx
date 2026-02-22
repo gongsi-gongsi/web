@@ -41,7 +41,9 @@ export function UserMenu({ user }: UserMenuProps) {
           <p className="text-muted-foreground text-xs">{user.email}</p>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>마이페이지</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/mypage">마이페이지</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/interests">관심 종목</Link>
         </DropdownMenuItem>
