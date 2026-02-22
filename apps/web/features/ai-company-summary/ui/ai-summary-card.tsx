@@ -73,7 +73,8 @@ export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
           <>
             <p className="text-sm leading-relaxed text-muted-foreground">{data.summary}</p>
             <p className="mt-2 text-xs text-muted-foreground/60">
-              AI가 생성한 요약이며 투자 조언이 아닙니다 · {generatedDate}
+              AI가 생성한 요약이며 투자 권유가 아닙니다. 투자 책임은 본인에게 있습니다 ·{' '}
+              {generatedDate}
             </p>
           </>
         )}
@@ -92,7 +93,8 @@ export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
               <>
                 <p className="text-sm leading-relaxed text-muted-foreground">{data.summary}</p>
                 <p className="mt-3 text-xs text-muted-foreground/60">
-                  AI가 생성한 요약이며 투자 조언이 아닙니다 · {generatedDate}
+                  AI가 생성한 요약이며 투자 권유가 아닙니다. 투자 책임은 본인에게 있습니다 ·{' '}
+                  {generatedDate}
                 </p>
               </>
             )}
