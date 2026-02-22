@@ -11,6 +11,9 @@ export function Footer() {
           <Link href="/terms" className="hover:text-foreground transition-colors">
             이용약관
           </Link>
+          <Link href="/disclaimer" className="hover:text-foreground transition-colors">
+            투자 면책 고지
+          </Link>
         </nav>
         <p>&copy; {new Date().getFullYear()} 공시공시. All rights reserved.</p>
       </div>
