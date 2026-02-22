@@ -94,6 +94,18 @@ export function PrivacyPage() {
                   <td className="border-border border px-3 py-2">Kakao Corp.</td>
                   <td className="border-border border px-3 py-2">소셜 로그인 인증 처리</td>
                 </tr>
+                <tr>
+                  <td className="border-border border px-3 py-2">Supabase Inc.</td>
+                  <td className="border-border border px-3 py-2">
+                    회원 인증 처리 및 데이터베이스 저장·관리
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-border border px-3 py-2">Vercel Inc.</td>
+                  <td className="border-border border px-3 py-2">
+                    웹 애플리케이션 호스팅 및 콘텐츠 전송
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -121,13 +133,55 @@ export function PrivacyPage() {
                     쿠키 식별자, 접속 IP, 페이지 방문 기록, 기기 정보
                   </td>
                 </tr>
+                <tr>
+                  <td className="border-border border px-3 py-2">Supabase Inc.</td>
+                  <td className="border-border border px-3 py-2">미국 (AWS)</td>
+                  <td className="border-border border px-3 py-2">
+                    회원 인증 및 데이터베이스 저장·관리
+                  </td>
+                  <td className="border-border border px-3 py-2">
+                    이메일, 이름, 프로필 이미지, 관심 종목 설정 정보
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-border border px-3 py-2">Vercel Inc.</td>
+                  <td className="border-border border px-3 py-2">미국</td>
+                  <td className="border-border border px-3 py-2">웹 애플리케이션 호스팅</td>
+                  <td className="border-border border px-3 py-2">접속 IP, 요청 로그</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">7. 개인정보의 파기 절차 및 방법</h2>
+          <h2 className="text-lg font-semibold">7. 개인정보의 안전성 확보 조치</h2>
+          <p className="mt-2">
+            서비스는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            <li>
+              <strong>암호화:</strong> 이용자의 비밀번호는 단방향 암호화하여 저장·관리하며,
+              개인정보의 전송 시 SSL/TLS 암호화 통신을 사용합니다.
+            </li>
+            <li>
+              <strong>접근 제한:</strong> 개인정보를 처리하는 데이터베이스 시스템에 대한 접근 권한의
+              부여·변경·말소를 통해 접근을 제한하며, 침입차단시스템을 이용하여 외부로부터의 무단
+              접근을 통제합니다.
+            </li>
+            <li>
+              <strong>접근 기록 관리:</strong> 개인정보 처리 시스템에 접근한 기록을 최소 1년 이상
+              보관·관리하고 있습니다.
+            </li>
+            <li>
+              <strong>보안 프로토콜:</strong> 모든 통신은 HTTPS(TLS 1.2 이상)를 통해 암호화되며,
+              인증 토큰은 httpOnly 쿠키로 안전하게 관리됩니다.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold">8. 개인정보의 파기 절차 및 방법</h2>
           <p className="mt-2">
             서비스는 개인정보 보유 기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을
             때에는 지체 없이 해당 개인정보를 파기합니다. 전자적 파일 형태의 개인정보는 복구 및
@@ -136,7 +190,7 @@ export function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">8. 이용자의 권리와 행사 방법</h2>
+          <h2 className="text-lg font-semibold">9. 이용자의 권리와 행사 방법</h2>
           <p className="mt-2">이용자는 개인정보 주체로서 다음과 같은 권리를 행사할 수 있습니다.</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>개인정보 열람 요구</li>
@@ -145,15 +199,15 @@ export function PrivacyPage() {
             <li>처리 정지 요구</li>
           </ul>
           <p className="mt-3">
-            위 권리 행사는 개인정보 보호책임자에게 이메일(contact@gongsi-gongsi.kr)로 요청할 수
-            있으며, 서비스는 요청을 접수한 날로부터 10일 이내에 처리 결과를 이메일로 통보합니다.
-            다만, 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위해 불가피한 경우 권리 행사가
-            제한될 수 있습니다.
+            위 권리 행사는 개인정보 보호책임자에게 이메일(loma1016@gmail.com)로 요청할 수 있으며,
+            서비스는 요청을 접수한 날로부터 10일 이내에 처리 결과를 이메일로 통보합니다. 다만,
+            법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위해 불가피한 경우 권리 행사가 제한될
+            수 있습니다.
           </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">9. 만 14세 미만 아동의 개인정보</h2>
+          <h2 className="text-lg font-semibold">10. 만 14세 미만 아동의 개인정보</h2>
           <p className="mt-2">
             서비스는 만 14세 미만 아동의 회원가입을 제한합니다. 만 14세 미만 아동의 개인정보를
             수집하지 않으며, 만 14세 미만임이 확인될 경우 해당 계정을 해지하고 수집된 개인정보를
@@ -162,7 +216,7 @@ export function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">10. 쿠키 및 자동 수집 장치</h2>
+          <h2 className="text-lg font-semibold">11. 쿠키 및 자동 수집 장치</h2>
           <p className="mt-2">
             서비스는 이용자의 서비스 이용 편의 제공 및 통계 분석을 위해 쿠키(cookie)를 사용합니다.
           </p>
@@ -193,7 +247,7 @@ export function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">11. 개인정보 보호책임자</h2>
+          <h2 className="text-lg font-semibold">12. 개인정보 보호책임자</h2>
           <p className="mt-2">
             서비스는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 이용자의
             불만 처리 및 피해 구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
@@ -201,12 +255,12 @@ export function PrivacyPage() {
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>성명: 김현재</li>
             <li>직책: 서비스 운영자</li>
-            <li>이메일: contact@gongsi-gongsi.kr</li>
+            <li>이메일: loma1016@gmail.com</li>
           </ul>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">12. 권익 침해 구제 방법</h2>
+          <h2 className="text-lg font-semibold">13. 권익 침해 구제 방법</h2>
           <p className="mt-2">
             이용자는 개인정보 침해에 대한 신고나 상담이 필요한 경우 아래 기관에 문의할 수 있습니다.
           </p>
@@ -251,7 +305,7 @@ export function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">13. 개인정보처리방침의 변경</h2>
+          <h2 className="text-lg font-semibold">14. 개인정보처리방침의 변경</h2>
           <p className="mt-2">
             이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경 내용의 추가, 삭제
             및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 서비스 내 공지 또는 이메일을 통하여
