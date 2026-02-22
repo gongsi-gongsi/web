@@ -65,7 +65,11 @@ export function SummaryContent({ data }: SummaryContentProps) {
       {/* 면책 조항 */}
       <div className="border-t border-border pt-3">
         <p className="text-xs text-muted-foreground">
-          AI가 생성한 요약이며 투자 판단의 근거로 사용하지 마세요.
+          본 내용은 AI가 자동 생성한 것으로 투자 권유가 아닙니다. 투자 판단과 책임은 이용자 본인에게
+          있습니다.{' '}
+          <a href="/disclaimer" className="underline">
+            면책 고지 전문
+          </a>
           <br />
           생성: {formatCreatedAt(data.createdAt)}
         </p>

@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import NextTopLoader from 'nextjs-toploader'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Providers } from './providers'
 import { Header } from '@/widgets/header'
 import { BottomNav } from '@/widgets/bottom-nav'
+import { Footer } from '@/widgets/footer'
 import { OrganizationJsonLd, WebSiteJsonLd } from '@/shared/lib/seo'
 import './globals.css'
 
@@ -52,14 +56,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning className={pretendard.variable}>
       <body className="bg-background text-foreground antialiased">
+        <NextTopLoader color="oklch(0.6671 0.1615 245.54)" showSpinner={false} height={2} />
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         <Providers>
           <Header />
           {children}
+          <Footer />
           <BottomNav />
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
