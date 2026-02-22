@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 
+import * as Sentry from '@sentry/nextjs'
+
 import { Button } from '@gs/ui'
 
 interface ErrorProps {
@@ -11,7 +13,7 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    console.error(error)
+    Sentry.captureException(error)
   }, [error])
 
   return (
