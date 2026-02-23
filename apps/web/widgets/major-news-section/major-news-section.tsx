@@ -59,3 +59,28 @@ export function MajorNewsSection() {
     </section>
   )
 }
+
+export function MajorNewsSectionSkeleton() {
+  return (
+    <section className="w-full">
+      <div className="hidden py-6 md:block md:px-4 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">주요 뉴스</h2>
+            <p className="mt-1 text-sm text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          </div>
+          <MajorNewsSkeleton />
+        </div>
+      </div>
+      <div className="bg-card md:hidden">
+        <div className="px-4 pb-4 pt-5">
+          <h2 className="text-lg font-bold">주요 뉴스</h2>
+          <p className="mt-1 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+        </div>
+        <div className="pb-4">
+          <MajorNewsSkeleton />
+        </div>
+      </div>
+    </section>
+  )
+}
