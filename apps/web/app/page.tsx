@@ -6,8 +6,11 @@ import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
 import { ServiceBanner } from '@/widgets/service-banner'
-import { PopularCompaniesSection } from '@/widgets/popular-companies-section'
-import { MajorNewsSection } from '@/widgets/major-news-section'
+import {
+  PopularCompaniesSection,
+  PopularCompaniesSectionSkeleton,
+} from '@/widgets/popular-companies-section'
+import { MajorNewsSection, MajorNewsSectionSkeleton } from '@/widgets/major-news-section'
 import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures, prefetchPopularCompanies } from '@/entities/disclosure/server'
 import { prefetchMajorMarketNews } from '@/entities/news/server'
@@ -15,53 +18,65 @@ import { prefetchMajorMarketNews } from '@/entities/news/server'
 // 빌드 시 프리렌더링 방지 (DB 연결 필요)
 export const dynamic = 'force-dynamic'
 
-export default async function Home() {
-  // 병렬로 프리패치 (개별 실패 허용)
-  const [todayResult, popularResult, majorNewsResult] = await Promise.allSettled([
-    prefetchTodayDisclosures('all', 6),
-    prefetchPopularCompanies(5),
-    prefetchMajorMarketNews(6),
-  ])
-
-  // 성공한 결과만 병합
-  const dehydratedState = {
-    mutations: [],
-    queries: [
-      ...(todayResult.status === 'fulfilled' ? todayResult.value.queries : []),
-      ...(popularResult.status === 'fulfilled' ? popularResult.value.queries : []),
-      ...(majorNewsResult.status === 'fulfilled' ? majorNewsResult.value.queries : []),
-    ],
-  }
-
+async function PopularCompaniesWithPrefetch() {
+  const dehydratedState = await prefetchPopularCompanies(5)
   return (
     <HydrationBoundary state={dehydratedState}>
-      <main className="min-h-screen bg-background pb-24 md:pb-0">
-        <MobileHeader
-          right={
-            <Link
-              href="/search"
-              className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
-              aria-label="검색"
-            >
-              <MagnifyingGlassIcon className="size-5" />
-            </Link>
-          }
-        />
-
-        <ServiceBanner />
-
-        <PopularCompaniesSection />
-
-        <MajorNewsSection />
-
-        <section className="py-6 md:px-4 lg:px-8">
-          <div className="mx-auto max-w-[1280px]">
-            <Suspense>
-              <TodayDisclosures />
-            </Suspense>
-          </div>
-        </section>
-      </main>
+      <PopularCompaniesSection />
     </HydrationBoundary>
+  )
+}
+
+async function MajorNewsWithPrefetch() {
+  const dehydratedState = await prefetchMajorMarketNews(6)
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <MajorNewsSection />
+    </HydrationBoundary>
+  )
+}
+
+async function TodayDisclosuresWithPrefetch() {
+  const dehydratedState = await prefetchTodayDisclosures('all', 6)
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <TodayDisclosures />
+    </HydrationBoundary>
+  )
+}
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-background pb-24 md:pb-0">
+      <MobileHeader
+        right={
+          <Link
+            href="/search"
+            className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+            aria-label="검색"
+          >
+            <MagnifyingGlassIcon className="size-5" />
+          </Link>
+        }
+      />
+
+      <ServiceBanner />
+
+      <Suspense fallback={<PopularCompaniesSectionSkeleton />}>
+        <PopularCompaniesWithPrefetch />
+      </Suspense>
+
+      <Suspense fallback={<MajorNewsSectionSkeleton />}>
+        <MajorNewsWithPrefetch />
+      </Suspense>
+
+      <section className="py-6 md:px-4 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <Suspense>
+            <TodayDisclosuresWithPrefetch />
+          </Suspense>
+        </div>
+      </section>
+    </main>
   )
 }

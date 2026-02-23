@@ -32,7 +32,7 @@ export function ServiceBanner() {
               src="/images/banner.png"
               alt="AI 애널리스트"
               width={500}
-              height={500}
+              height={390}
               className="h-auto w-[350px] lg:w-[500px]"
               priority
             />

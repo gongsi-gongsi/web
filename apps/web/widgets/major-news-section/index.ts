@@ -1,1 +1,1 @@
-export { MajorNewsSection } from './major-news-section'
+export { MajorNewsSection, MajorNewsSectionSkeleton } from './major-news-section'

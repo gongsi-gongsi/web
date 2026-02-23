@@ -1,1 +1,4 @@
-export { PopularCompaniesSection } from './popular-companies-section'
+export {
+  PopularCompaniesSection,
+  PopularCompaniesSectionSkeleton,
+} from './popular-companies-section'

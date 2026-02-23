@@ -72,3 +72,26 @@ export function PopularCompaniesSection() {
     </section>
   )
 }
+
+export function PopularCompaniesSectionSkeleton() {
+  return (
+    <section className="w-full">
+      <div className="hidden py-6 md:block md:px-4 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">인기 회사</h2>
+          </div>
+          <PopularCompanySkeleton />
+        </div>
+      </div>
+      <div className="bg-card md:hidden">
+        <div className="px-4 pb-4 pt-6">
+          <h2 className="text-lg font-bold">인기 회사</h2>
+        </div>
+        <div className="px-4 pb-6">
+          <PopularCompanySkeleton />
+        </div>
+      </div>
+    </section>
+  )
+}
