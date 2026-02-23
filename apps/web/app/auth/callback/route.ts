@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 
 import { syncUser } from '@/entities/user'
@@ -13,7 +14,14 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && data.user) {
-      await syncUser(data.user)
+      try {
+        await syncUser(data.user)
+      } catch (syncError) {
+        console.error('[Auth Callback] User sync failed:', syncError)
+        Sentry.captureException(syncError, {
+          extra: { userId: data.user.id, email: data.user.email },
+        })
+      }
 
       return NextResponse.redirect(`${origin}${redirectTo}`)
     }

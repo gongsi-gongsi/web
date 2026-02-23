@@ -34,7 +34,10 @@ export function DisclosureContent({ selectedMarket }: DisclosureContentProps) {
     }
   }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  const disclosures = deduplicateDisclosures(data.pages.flatMap(page => page.disclosures))
+  const disclosures = useMemo(
+    () => deduplicateDisclosures(data.pages.flatMap(page => page.disclosures)),
+    [data.pages]
+  )
 
   // 빈 목록
   if (disclosures.length === 0) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { ErrorBoundary } from '@suspensive/react'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { Button } from '@gs/ui'
@@ -8,12 +8,6 @@ import type { Market } from '@/entities/disclosure'
 import { TodayDisclosuresHeader } from './ui/today-disclosures-header'
 import { TodayDisclosuresContent } from './ui/today-disclosures-content'
 import { TodayDisclosuresFooter } from './ui/today-disclosures-footer'
-
-const VALID_MARKETS: Market[] = ['all', 'kospi', 'kosdaq', 'konex', 'etc']
-
-function isValidMarket(value: string | null): value is Market {
-  return value !== null && VALID_MARKETS.includes(value as Market)
-}
 
 interface ErrorFallbackProps {
   error: Error
@@ -32,22 +26,12 @@ function ErrorFallback({ reset }: ErrorFallbackProps) {
 }
 
 export function TodayDisclosures() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const [selectedMarket, setSelectedMarket] = useState<Market>('all')
   const { reset } = useQueryErrorResetBoundary()
-
-  const marketParam = searchParams.get('market')
-  const selectedMarket: Market = isValidMarket(marketParam) ? marketParam : 'all'
-
-  function handleMarketChange(market: Market) {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('market', market)
-    router.push(`?${params.toString()}`, { scroll: false })
-  }
 
   return (
     <div className="w-full">
-      <TodayDisclosuresHeader selectedMarket={selectedMarket} onMarketChange={handleMarketChange} />
+      <TodayDisclosuresHeader selectedMarket={selectedMarket} onMarketChange={setSelectedMarket} />
 
       <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
         <TodayDisclosuresContent selectedMarket={selectedMarket} />

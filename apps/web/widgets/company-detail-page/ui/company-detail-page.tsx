@@ -47,10 +47,18 @@ function CompanyTabs({ activeTab, onTabChange, className }: CompanyTabsProps) {
     }
 
     updateIndicator()
-    window.addEventListener('resize', updateIndicator)
+
+    let timeoutId: ReturnType<typeof setTimeout>
+    const debouncedUpdate = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(updateIndicator, 150)
+    }
+
+    window.addEventListener('resize', debouncedUpdate)
 
     return () => {
-      window.removeEventListener('resize', updateIndicator)
+      clearTimeout(timeoutId)
+      window.removeEventListener('resize', debouncedUpdate)
     }
   }, [activeTab])
 
