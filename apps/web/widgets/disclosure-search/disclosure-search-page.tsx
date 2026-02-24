@@ -5,6 +5,7 @@ import { Suspense, useState, useCallback, useEffect } from 'react'
 import { ErrorBoundary } from '@suspensive/react'
 
 import { useSuggestCompanies, usePopularCompanies } from '@/entities/disclosure'
+import { trackSearch } from '@/shared/lib/analytics'
 import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
 
@@ -27,6 +28,7 @@ export function CompanySearchPage() {
 
   const handleSearch = useCallback((q: string) => {
     setDebouncedQuery(q)
+    if (q.length >= 1) trackSearch(q)
   }, [])
 
   const handleInputChange = useCallback((value: string) => {
