@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
   // 개발 인디케이터 비활성화
   devIndicators: false,
 
+  // 패키지 barrel import 최적화 (tree-shaking 강화)
+  experimental: {
+    optimizePackageImports: ['@phosphor-icons/react'],
+  },
+
   // 보안 헤더
   headers: async () => [
     {
