@@ -24,6 +24,9 @@ export async function generateMetadata({ params }: CompanyDetailPageProps): Prom
   return {
     title: `${companyInfo.corpName} - 기업 분석`,
     description: `${companyInfo.corpName}(${companyInfo.stockCode})의 공시, 재무제표, AI 분석을 확인하세요`,
+    alternates: {
+      canonical: `/companies/${corpCode}`,
+    },
     openGraph: {
       title: `${companyInfo.corpName} - 공시공시`,
       description: `${companyInfo.corpName} 기업 공시 및 재무 분석`,

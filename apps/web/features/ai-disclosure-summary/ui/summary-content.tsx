@@ -33,6 +33,13 @@ export function SummaryContent({ data }: SummaryContentProps) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* AI 생성 콘텐츠 표시 */}
+      <div className="flex items-center gap-1.5 rounded-lg bg-violet-50 px-3 py-2 dark:bg-violet-950/30">
+        <span className="text-xs font-medium text-violet-700 dark:text-violet-400">
+          AI가 생성한 콘텐츠입니다
+        </span>
+      </div>
+
       {/* 감성 분석 */}
       <Section title="감성 분석">
         <div className={cn('inline-flex items-center gap-2 rounded-lg px-3 py-2', sentiment.bg)}>
