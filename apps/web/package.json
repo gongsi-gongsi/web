@@ -48,6 +48,7 @@
     "@gs/eslint-config": "workspace:*",
     "@gs/prettier-config": "workspace:*",
     "@gs/typescript-config": "workspace:*",
+    "@next/bundle-analyzer": "^16.1.6",
     "@playwright/test": "^1.42.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/adm-zip": "^0.5.7",

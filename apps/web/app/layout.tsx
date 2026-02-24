@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
+  alternates: {
+    canonical: './',
+  },
   robots: {
     index: true,
     follow: true,

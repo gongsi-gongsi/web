@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Card, CardContent } from '@gs/ui'
+import { trackAiCompanyAnalysis } from '@/shared/lib/analytics'
 import { useAiCompanySummary } from '../queries/hooks'
 
 interface AiSummaryCardProps {
@@ -25,7 +27,7 @@ function SectionTitle() {
     <div className="flex items-center gap-2">
       <span className="text-base font-semibold">AI 기업 분석</span>
       <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
-        Beta
+        AI 생성
       </span>
     </div>
   )
@@ -55,6 +57,10 @@ function SummaryShimmer() {
  */
 export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
   const { data, isLoading, isError } = useAiCompanySummary(corpCode)
+
+  useEffect(() => {
+    if (data) trackAiCompanyAnalysis(corpCode)
+  }, [data, corpCode])
 
   if (isError) return null
 

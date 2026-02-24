@@ -1,15 +1,73 @@
 'use client'
 
 import { Suspense, useState, useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import { Skeleton, cn } from '@gs/ui'
 import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
-import { FinancialSection, SummarySection } from '@/widgets/financial-statements'
 import { useCompanyInfo } from '@/entities/company'
 import { ToggleWatchlistButton } from '@/features/toggle-watchlist'
-import { CompanyDisclosureSection } from './company-disclosure-section'
-import { CompanyNewsSection, NewsSkeleton } from './company-news-section'
+import {
+  SummaryChartsSkeleton,
+  FinancialStatementsSkeleton,
+} from '@/widgets/financial-statements/ui/financial-statements-skeleton'
+
+function DisclosureSkeleton() {
+  return (
+    <div className="space-y-3 py-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Skeleton key={i} className="h-16 w-full rounded-lg" />
+      ))}
+    </div>
+  )
+}
+
+function NewsSkeleton() {
+  return (
+    <div className="space-y-2">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="rounded-xl bg-card px-4 py-4">
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="mt-1.5 h-5 w-3/4" />
+          <Skeleton className="mt-2.5 h-3 w-28" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const SummarySection = dynamic(
+  () =>
+    import('@/widgets/financial-statements/ui/financial-section').then(m => ({
+      default: m.SummarySection,
+    })),
+  { ssr: false, loading: () => <SummaryChartsSkeleton /> }
+)
+
+const FinancialSection = dynamic(
+  () =>
+    import('@/widgets/financial-statements/ui/financial-section').then(m => ({
+      default: m.FinancialSection,
+    })),
+  { ssr: false, loading: () => <FinancialStatementsSkeleton /> }
+)
+
+const CompanyDisclosureSection = dynamic(
+  () =>
+    import('./company-disclosure-section').then(m => ({
+      default: m.CompanyDisclosureSection,
+    })),
+  { ssr: false, loading: () => <DisclosureSkeleton /> }
+)
+
+const CompanyNewsSection = dynamic(
+  () =>
+    import('./company-news-section').then(m => ({
+      default: m.CompanyNewsSection,
+    })),
+  { ssr: false, loading: () => <NewsSkeleton /> }
+)
 
 interface CompanyDetailPageProps {
   corpCode: string
@@ -162,17 +220,13 @@ function TabContent({ activeTab, corpCode }: { activeTab: TabValue; corpCode: st
     case 'disclosure':
       return (
         <ErrorBoundaryWithFallback>
-          <Suspense fallback={<DisclosureSkeleton />}>
-            <CompanyDisclosureSection corpCode={corpCode} />
-          </Suspense>
+          <CompanyDisclosureSection corpCode={corpCode} />
         </ErrorBoundaryWithFallback>
       )
     case 'news':
       return (
         <ErrorBoundaryWithFallback>
-          <Suspense fallback={<NewsSkeleton />}>
-            <CompanyNewsSection corpCode={corpCode} />
-          </Suspense>
+          <CompanyNewsSection corpCode={corpCode} />
         </ErrorBoundaryWithFallback>
       )
     case 'community':
@@ -182,16 +236,6 @@ function TabContent({ activeTab, corpCode }: { activeTab: TabValue; corpCode: st
         </div>
       )
   }
-}
-
-function DisclosureSkeleton() {
-  return (
-    <div className="space-y-3 py-4">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Skeleton key={i} className="h-16 w-full rounded-lg" />
-      ))}
-    </div>
-  )
 }
 
 function ComingSoon({ title }: { title: string }) {

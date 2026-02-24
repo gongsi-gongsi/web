@@ -10,6 +10,7 @@ import { cn } from '@gs/ui'
 
 import { useCurrentUser } from '@/entities/user/model/use-current-user'
 import { useWatchlistCheck, useAddToWatchlist, useRemoveFromWatchlist } from '@/entities/watchlist'
+import { trackAddWatchlist, trackRemoveWatchlist } from '@/shared/lib/analytics'
 
 interface ToggleWatchlistButtonProps {
   corpCode: string
@@ -40,12 +41,18 @@ export function ToggleWatchlistButton({ corpCode, className }: ToggleWatchlistBu
 
     if (isWatchlisted) {
       removeFromWatchlist(corpCode, {
-        onSuccess: () => toast.success('관심 종목에서 제거되었습니다'),
+        onSuccess: () => {
+          toast.success('관심 종목에서 제거되었습니다')
+          trackRemoveWatchlist(corpCode)
+        },
         onError: () => toast.error('잠시 후 다시 시도해주세요'),
       })
     } else {
       addToWatchlist(corpCode, {
-        onSuccess: () => toast.success('관심 종목에 추가되었습니다'),
+        onSuccess: () => {
+          toast.success('관심 종목에 추가되었습니다')
+          trackAddWatchlist(corpCode)
+        },
         onError: () => toast.error('잠시 후 다시 시도해주세요'),
       })
     }
