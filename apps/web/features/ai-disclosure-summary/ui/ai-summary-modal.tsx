@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { ResponsiveModal } from '@gs/ui'
 import type { Disclosure } from '@/entities/disclosure'
+import { trackAiDisclosureSummary } from '@/shared/lib/analytics'
 import { useGenerateDisclosureSummary } from '../queries/hooks'
 import type { AiDisclosureSummaryRequest } from '../model/types'
 import { SummaryProgress } from './summary-progress'
@@ -41,6 +42,7 @@ export function AiSummaryModal({ open, onOpenChange, disclosure }: AiSummaryModa
     hasMutatedRef.current = true
 
     mutation.mutate({ rceptNo: disclosure.id, body: requestBody })
+    trackAiDisclosureSummary(disclosure.companyName)
   }, [open, disclosure.id, requestBody, mutation])
 
   const description = `${disclosure.companyName} | ${disclosure.title}`
