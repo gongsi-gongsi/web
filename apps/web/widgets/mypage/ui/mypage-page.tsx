@@ -2,11 +2,19 @@
 
 import { useState } from 'react'
 
+import Image from 'next/image'
 import Link from 'next/link'
 
-import { HeartIcon, SignOutIcon, UserCircleIcon, WarningIcon } from '@phosphor-icons/react'
+import {
+  HeartIcon,
+  MoonIcon,
+  SignOutIcon,
+  SunIcon,
+  UserCircleIcon,
+  WarningIcon,
+} from '@phosphor-icons/react'
 
-import { Button, Card, Separator, Skeleton } from '@gs/ui'
+import { Button, Card, Separator, Skeleton, useTheme } from '@gs/ui'
 
 import { useCurrentUser } from '@/entities/user/model/use-current-user'
 import { useSignOut } from '@/features/auth'
@@ -44,7 +52,11 @@ function UnauthenticatedState() {
 export function MypagePage() {
   const { user, isLoading } = useCurrentUser()
   const { signOut } = useSignOut()
+  const { resolvedTheme, setTheme } = useTheme()
   const [withdrawOpen, setWithdrawOpen] = useState(false)
+
+  const isDark = resolvedTheme === 'dark'
+  const toggleTheme = () => setTheme(isDark ? 'light' : 'dark')
 
   const name = user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? '사용자'
   const email = user?.email ?? ''
@@ -54,7 +66,7 @@ export function MypagePage() {
   return (
     <>
       {/* 모바일 헤더 */}
-      <MobileHeader center={<span className="text-base font-semibold">마이페이지</span>} />
+      <MobileHeader />
 
       {/* 모바일 레이아웃 */}
       <div className="min-h-screen bg-background pb-24 md:hidden">
@@ -68,7 +80,13 @@ export function MypagePage() {
               {/* 프로필 */}
               <div className="flex items-center gap-4">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt={name} className="size-16 rounded-full object-cover" />
+                  <Image
+                    src={avatarUrl}
+                    alt={name}
+                    width={64}
+                    height={64}
+                    className="size-16 rounded-full object-cover"
+                  />
                 ) : (
                   <div className="flex size-16 items-center justify-center rounded-full bg-muted text-xl font-semibold">
                     {initial}
@@ -81,7 +99,7 @@ export function MypagePage() {
               </div>
 
               {/* 메뉴 */}
-              <Card className="gap-0 py-0">
+              <Card className="gap-0 overflow-hidden py-0">
                 <Link
                   href="/interests"
                   className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/50"
@@ -89,6 +107,24 @@ export function MypagePage() {
                   <HeartIcon className="size-5 text-muted-foreground" />
                   <span className="text-sm">관심 종목</span>
                 </Link>
+                <Separator />
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="flex w-full items-center justify-between px-4 py-3.5 transition-colors hover:bg-muted/50"
+                >
+                  <div className="flex items-center gap-3">
+                    {isDark ? (
+                      <MoonIcon className="size-5 text-muted-foreground" weight="fill" />
+                    ) : (
+                      <SunIcon className="size-5 text-muted-foreground" weight="fill" />
+                    )}
+                    <span className="text-sm">테마</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {isDark ? '다크 모드' : '라이트 모드'}
+                  </span>
+                </button>
                 <Separator />
                 <button
                   type="button"
@@ -101,7 +137,7 @@ export function MypagePage() {
               </Card>
 
               {/* 회원탈퇴 */}
-              <Card className="gap-0 py-0">
+              <Card className="gap-0 overflow-hidden py-0">
                 <button
                   type="button"
                   onClick={() => setWithdrawOpen(true)}
@@ -130,7 +166,13 @@ export function MypagePage() {
             <Card className="p-6">
               <div className="flex items-center gap-4">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt={name} className="size-16 rounded-full object-cover" />
+                  <Image
+                    src={avatarUrl}
+                    alt={name}
+                    width={64}
+                    height={64}
+                    className="size-16 rounded-full object-cover"
+                  />
                 ) : (
                   <div className="flex size-16 items-center justify-center rounded-full bg-muted text-xl font-semibold">
                     {initial}
@@ -144,7 +186,7 @@ export function MypagePage() {
             </Card>
 
             {/* 메뉴 */}
-            <Card className="gap-0 py-0">
+            <Card className="gap-0 overflow-hidden py-0">
               <Link
                 href="/interests"
                 className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-muted/50"
@@ -152,6 +194,24 @@ export function MypagePage() {
                 <HeartIcon className="size-5 text-muted-foreground" />
                 <span className="text-sm">관심 종목</span>
               </Link>
+              <Separator />
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="flex w-full items-center justify-between px-6 py-4 transition-colors hover:bg-muted/50"
+              >
+                <div className="flex items-center gap-3">
+                  {isDark ? (
+                    <MoonIcon className="size-5 text-muted-foreground" weight="fill" />
+                  ) : (
+                    <SunIcon className="size-5 text-muted-foreground" weight="fill" />
+                  )}
+                  <span className="text-sm">테마</span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {isDark ? '다크 모드' : '라이트 모드'}
+                </span>
+              </button>
               <Separator />
               <button
                 type="button"
@@ -166,7 +226,7 @@ export function MypagePage() {
             {/* 회원탈퇴 */}
             <div>
               <h2 className="mb-3 text-sm font-medium text-muted-foreground">계정</h2>
-              <Card className="gap-0 py-0">
+              <Card className="gap-0 overflow-hidden py-0">
                 <button
                   type="button"
                   onClick={() => setWithdrawOpen(true)}

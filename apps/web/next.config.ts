@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
   // 개발 인디케이터 비활성화
   devIndicators: false,
 
+  // 외부 이미지 도메인 허용 (OAuth 아바타)
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { hostname: '*.kakaocdn.net' },
+    ],
+  },
+
   // 패키지 barrel import 최적화 (tree-shaking 강화)
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
@@ -44,7 +52,7 @@ const nextConfig: NextConfig = {
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://va.vercel-scripts.com https://*.sentry.io",
             "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob: https://*.supabase.co https://lh3.googleusercontent.com",
+            "img-src 'self' data: blob: https://*.supabase.co https://lh3.googleusercontent.com http://*.kakaocdn.net https://*.kakaocdn.net",
             "font-src 'self'",
             "connect-src 'self' https://*.supabase.co https://*.sentry.io https://www.google-analytics.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
             "frame-src 'self'",
