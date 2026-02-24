@@ -140,7 +140,7 @@ export function InterestsPage() {
   return (
     <>
       {/* 모바일 헤더 */}
-      <MobileHeader center={<span className="text-base font-semibold">관심 종목</span>} />
+      <MobileHeader />
 
       {/* 모바일 레이아웃 */}
       <div className="min-h-screen bg-background pb-24 md:hidden">
