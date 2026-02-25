@@ -1,11 +1,12 @@
 import { Suspense } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { HydrationBoundary } from '@tanstack/react-query'
 
 import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
-import { ServiceBanner } from '@/widgets/service-banner'
+import { BannerSearch } from '@/widgets/service-banner'
 import {
   PopularCompaniesSection,
   PopularCompaniesSectionSkeleton,
@@ -60,7 +61,26 @@ export default function Home() {
         }
       />
 
-      <ServiceBanner />
+      {/* 검색바 - PC only */}
+      <section className="hidden px-4 pt-3 md:block lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <BannerSearch />
+        </div>
+      </section>
+
+      {/* 이미지 배너 */}
+      <section className="mb-6 px-4 pt-3 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <Image
+            src="/images/main-banner.png"
+            alt="메인 배너"
+            width={1280}
+            height={250}
+            className="h-auto max-h-[250px] w-full rounded-2xl object-cover"
+            priority
+          />
+        </div>
+      </section>
 
       <Suspense fallback={<PopularCompaniesSectionSkeleton />}>
         <PopularCompaniesWithPrefetch />

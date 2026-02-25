@@ -15,95 +15,206 @@
    ============================================================================ */
 
 :root {
-  --background: oklch(0.9787 0.0017 247.84);
-  --foreground: oklch(0.15 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --gray-icon: oklch(0.55 0.015 250);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.6671 0.1615 245.54);
-  --primary-foreground: oklch(1 0 0);
-  --primary-weak: oklch(0.6671 0.1615 245.54 / 0.15);
-  --primary-weak-foreground: oklch(0.6671 0.1615 245.54);
-  --secondary: oklch(0.96 0.005 250);
-  --secondary-foreground: oklch(0.25 0.02 250);
-  --muted: oklch(0.97 0.005 250);
-  --muted-foreground: oklch(0.45 0.015 250);
-  --accent: oklch(0.967 0.0029 264.54);
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.6678 0.2172 21.65);
-  --destructive-foreground: oklch(1 0 0);
-  --destructive-weak: oklch(0.6678 0.2172 21.65 / 0.15);
-  --destructive-weak-foreground: oklch(0.6678 0.2172 21.65);
-  --warning: oklch(0.9078 0.1666 103.66);
-  --warning-foreground: oklch(1 0 0);
-  --warning-weak: oklch(0.9078 0.1666 103.66 / 0.15);
-  --warning-weak-foreground: oklch(0.9078 0.1666 103.66);
-  --success: oklch(0.6 0.2 150);
-  --success-foreground: oklch(1 0 0);
-  --success-weak: oklch(0.6 0.2 150 / 0.15);
-  --success-weak-foreground: oklch(0.6 0.2 150);
-  --info: oklch(0.6 0.15 220);
-  --info-foreground: oklch(1 0 0);
-  --info-weak: oklch(0.6 0.15 220 / 0.15);
-  --info-weak-foreground: oklch(0.6 0.15 220);
-  --border: oklch(0.91 0.005 250);
-  --input: oklch(0.96 0.005 250);
-  --ring: oklch(0.6671 0.1615 245.54);
-  --chart-1: oklch(0.6671 0.1615 245.54);
-  --chart-2: oklch(0.8162 0.0913 243.7635);
-  --chart-3: oklch(0.925 0.0327 238.1471);
-  --chart-4: oklch(0.6131 0.0993 255.8151);
-  --chart-5: oklch(0.8122 0.06 247.0277);
-  --social-kakao-bg: oklch(0.95 0.15 100);
-  --social-kakao-fg: oklch(0.15 0 0);
-  --social-google-bg: oklch(1 0 0);
-  --social-google-fg: oklch(0.15 0 0);
-  --social-google-blue: oklch(0.55 0.2 250);
-  --social-google-green: oklch(0.6 0.2 150);
-  --social-google-yellow: oklch(0.8 0.2 90);
-  --social-google-red: oklch(0.6 0.25 30);
-  --disclosure-type-a-bg: oklch(0.6 0.2 250);
-  --disclosure-type-a-fg: oklch(1 0 0);
-  --disclosure-type-b-bg: oklch(0.6 0.25 25);
-  --disclosure-type-b-fg: oklch(1 0 0);
-  --disclosure-type-c-bg: oklch(0.6 0.2 300);
-  --disclosure-type-c-fg: oklch(1 0 0);
-  --disclosure-type-d-bg: oklch(0.55 0.2 60);
-  --disclosure-type-d-fg: oklch(1 0 0);
-  --disclosure-type-e-bg: oklch(0.5 0.02 260);
-  --disclosure-type-e-fg: oklch(1 0 0);
-  --disclosure-type-f-bg: oklch(0.6 0.2 150);
-  --disclosure-type-f-fg: oklch(1 0 0);
-  --disclosure-type-g-bg: oklch(0.55 0.2 270);
-  --disclosure-type-g-fg: oklch(1 0 0);
-  --disclosure-type-h-bg: oklch(0.6 0.15 180);
-  --disclosure-type-h-fg: oklch(1 0 0);
-  --disclosure-type-i-bg: oklch(0.65 0.15 200);
-  --disclosure-type-i-fg: oklch(0.1 0 0);
-  --disclosure-type-j-bg: oklch(0.65 0.2 330);
-  --disclosure-type-j-fg: oklch(0.1 0 0);
-  --market-kospi-bg: oklch(0.95 0.05 250);
-  --market-kospi-text: oklch(0.35 0.2 250);
-  --market-kospi-border: oklch(0.5 0.2 250);
-  --market-kosdaq-bg: oklch(0.95 0.05 290);
-  --market-kosdaq-text: oklch(0.35 0.25 290);
-  --market-kosdaq-border: oklch(0.5 0.25 290);
-  --market-konex-bg: oklch(0.95 0.06 50);
-  --market-konex-text: oklch(0.4 0.25 50);
-  --market-konex-border: oklch(0.55 0.25 50);
-  --market-etc-bg: oklch(0.95 0.01 260);
-  --market-etc-text: oklch(0.4 0.05 260);
-  --market-etc-border: oklch(0.55 0.05 260);
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.1884 0.0128 248.5103);
-  --sidebar-primary: oklch(0.6671 0.1615 245.54);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.9624 0.0192 235.7208);
-  --sidebar-accent-foreground: oklch(0.6671 0.1615 245.54);
-  --sidebar-border: oklch(0.9614 0.0045 214.3285);
-  --sidebar-ring: oklch(0.6671 0.1615 245.54);
+  /* ==========================================================================
+     Color Palette
+     ========================================================================== */
+
+  /* Error */
+  --color-error-50: #fbf9f9;
+  --color-error-100: #f5ebec;
+  --color-error-200: #efd3d5;
+  --color-error-300: #ebaeb3;
+  --color-error-400: #eb858d;
+  --color-error-500: #f04452;
+  --color-error-600: #ec1526;
+  --color-error-700: #bd1422;
+  --color-error-800: #84151e;
+  --color-error-900: #531218;
+  --color-error-950: #300e11;
+
+  /* Neutral */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #efeff0;
+  --color-neutral-200: #dedfe1;
+  --color-neutral-300: #c7cace;
+  --color-neutral-400: #afb5bc;
+  --color-neutral-500: #8b95a1;
+  --color-neutral-600: #707c8a;
+  --color-neutral-700: #5c6570;
+  --color-neutral-800: #444a51;
+  --color-neutral-900: #2e3136;
+  --color-neutral-950: #1d1e21;
+
+  /* Primary */
+  --color-primary-50: #f7f9fb;
+  --color-primary-100: #e7eef3;
+  --color-primary-200: #c9deec;
+  --color-primary-300: #9ecae8;
+  --color-primary-400: #6cb7e9;
+  --color-primary-500: #1d9bf0;
+  --color-primary-600: #0e84d3;
+  --color-primary-700: #0f6ba8;
+  --color-primary-800: #114d76;
+  --color-primary-900: #10334c;
+  --color-primary-950: #0c202d;
+
+  /* Success */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  --color-success-950: #052e16;
+
+  /* Warning */
+  --color-warning-50: #fbf9f7;
+  --color-warning-100: #f3ede4;
+  --color-warning-200: #eeddc3;
+  --color-warning-300: #ecc892;
+  --color-warning-400: #f2b459;
+  --color-warning-500: #fe9800;
+  --color-warning-600: #d57f00;
+  --color-warning-700: #aa6704;
+  --color-warning-800: #774b0a;
+  --color-warning-900: #4c320b;
+  --color-warning-950: #2e1f0a;
+
+  /* Secondary */
+  --color-secondary-50: #f9f7fa;
+  --color-secondary-100: #eee7f0;
+  --color-secondary-200: #decce5;
+  --color-secondary-300: #cba4d9;
+  --color-secondary-400: #bb77d1;
+  --color-secondary-500: #a234c7;
+  --color-secondary-600: #882ca7;
+  --color-secondary-700: #6e2686;
+  --color-secondary-800: #4f205f;
+  --color-secondary-900: #35183e;
+  --color-secondary-950: #211126;
+
+  /* ==========================================================================
+     Semantic Tokens (Light Mode)
+     ========================================================================== */
+
+  /* 기본 UI */
+  --background: #ffffff;
+  --foreground: var(--color-neutral-950);
+  --card: #ffffff;
+  --card-foreground: var(--color-neutral-950);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-neutral-950);
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-100);
+  --ring: var(--color-primary-500);
+  --gray-icon: var(--color-neutral-500);
+
+  /* 브랜드 */
+  --primary: var(--color-primary-500);
+  --primary-foreground: #ffffff;
+  --primary-weak: var(--color-primary-100);
+  --primary-weak-foreground: var(--color-primary-700);
+
+  /* 보조 */
+  --secondary: var(--color-neutral-100);
+  --secondary-foreground: var(--color-neutral-800);
+  --muted: var(--color-neutral-50);
+  --muted-foreground: var(--color-neutral-500);
+  --accent: var(--color-neutral-100);
+  --accent-foreground: var(--color-neutral-950);
+
+  /* 상태 - Error */
+  --destructive: var(--color-error-500);
+  --destructive-foreground: #ffffff;
+  --destructive-weak: var(--color-error-100);
+  --destructive-weak-foreground: var(--color-error-700);
+
+  /* 상태 - Warning */
+  --warning: var(--color-warning-500);
+  --warning-foreground: #ffffff;
+  --warning-weak: var(--color-warning-100);
+  --warning-weak-foreground: var(--color-warning-700);
+
+  /* 상태 - Success */
+  --success: var(--color-success-500);
+  --success-foreground: #ffffff;
+  --success-weak: var(--color-success-100);
+  --success-weak-foreground: var(--color-success-700);
+
+  /* 상태 - Info */
+  --info: var(--color-primary-500);
+  --info-foreground: #ffffff;
+  --info-weak: var(--color-primary-100);
+  --info-weak-foreground: var(--color-primary-700);
+
+  /* 차트 */
+  --chart-1: var(--color-primary-500);
+  --chart-2: var(--color-primary-300);
+  --chart-3: var(--color-primary-200);
+  --chart-4: var(--color-primary-700);
+  --chart-5: var(--color-primary-400);
+
+  /* 소셜 로그인 */
+  --social-kakao-bg: #fee500;
+  --social-kakao-fg: #191919;
+  --social-google-bg: #ffffff;
+  --social-google-fg: var(--color-neutral-950);
+  --social-google-blue: #4285f4;
+  --social-google-green: #34a853;
+  --social-google-yellow: #fbbc05;
+  --social-google-red: #ea4335;
+
+  /* 공시 유형 배지 */
+  --disclosure-type-a-bg: var(--color-primary-500);
+  --disclosure-type-a-fg: #ffffff;
+  --disclosure-type-b-bg: var(--color-error-500);
+  --disclosure-type-b-fg: #ffffff;
+  --disclosure-type-c-bg: var(--color-secondary-500);
+  --disclosure-type-c-fg: #ffffff;
+  --disclosure-type-d-bg: var(--color-warning-500);
+  --disclosure-type-d-fg: #ffffff;
+  --disclosure-type-e-bg: var(--color-neutral-500);
+  --disclosure-type-e-fg: #ffffff;
+  --disclosure-type-f-bg: var(--color-success-500);
+  --disclosure-type-f-fg: #ffffff;
+  --disclosure-type-g-bg: var(--color-secondary-700);
+  --disclosure-type-g-fg: #ffffff;
+  --disclosure-type-h-bg: #0d9488;
+  --disclosure-type-h-fg: #ffffff;
+  --disclosure-type-i-bg: var(--color-primary-400);
+  --disclosure-type-i-fg: var(--color-neutral-950);
+  --disclosure-type-j-bg: #ec4899;
+  --disclosure-type-j-fg: #ffffff;
+
+  /* 시장 배지 */
+  --market-kospi-bg: var(--color-primary-100);
+  --market-kospi-text: var(--color-primary-700);
+  --market-kospi-border: var(--color-primary-500);
+  --market-kosdaq-bg: var(--color-secondary-100);
+  --market-kosdaq-text: var(--color-secondary-700);
+  --market-kosdaq-border: var(--color-secondary-500);
+  --market-konex-bg: var(--color-warning-100);
+  --market-konex-text: var(--color-warning-700);
+  --market-konex-border: var(--color-warning-500);
+  --market-etc-bg: var(--color-neutral-100);
+  --market-etc-text: var(--color-neutral-700);
+  --market-etc-border: var(--color-neutral-500);
+
+  /* 사이드바 */
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--color-neutral-950);
+  --sidebar-primary: var(--color-primary-500);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-neutral-100);
+  --sidebar-accent-foreground: var(--color-primary-500);
+  --sidebar-border: var(--color-neutral-200);
+  --sidebar-ring: var(--color-primary-500);
+
+  /* 레이아웃 */
   --radius: 0.5rem;
   --shadow-x: 0;
   --shadow-y: 0.25rem;

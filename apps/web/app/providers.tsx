@@ -20,7 +20,12 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        forcedTheme="light"
+        disableTransitionOnChange
+      >
         {children}
       </ThemeProvider>
       {process.env.NODE_ENV === 'development' && (

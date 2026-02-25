@@ -5,16 +5,9 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import {
-  HeartIcon,
-  MoonIcon,
-  SignOutIcon,
-  SunIcon,
-  UserCircleIcon,
-  WarningIcon,
-} from '@phosphor-icons/react'
+import { HeartIcon, SignOutIcon, UserCircleIcon, WarningIcon } from '@phosphor-icons/react'
 
-import { Button, Card, Separator, Skeleton, useTheme } from '@gs/ui'
+import { Button, Card, Separator, Skeleton } from '@gs/ui'
 
 import { useCurrentUser } from '@/entities/user/model/use-current-user'
 import { useSignOut } from '@/features/auth'
@@ -52,11 +45,7 @@ function UnauthenticatedState() {
 export function MypagePage() {
   const { user, isLoading } = useCurrentUser()
   const { signOut } = useSignOut()
-  const { resolvedTheme, setTheme } = useTheme()
   const [withdrawOpen, setWithdrawOpen] = useState(false)
-
-  const isDark = resolvedTheme === 'dark'
-  const toggleTheme = () => setTheme(isDark ? 'light' : 'dark')
 
   const name = user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? '사용자'
   const email = user?.email ?? ''
@@ -107,24 +96,6 @@ export function MypagePage() {
                   <HeartIcon className="size-5 text-muted-foreground" />
                   <span className="text-sm">관심 종목</span>
                 </Link>
-                <Separator />
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="flex w-full items-center justify-between px-4 py-3.5 transition-colors hover:bg-muted/50"
-                >
-                  <div className="flex items-center gap-3">
-                    {isDark ? (
-                      <MoonIcon className="size-5 text-muted-foreground" weight="fill" />
-                    ) : (
-                      <SunIcon className="size-5 text-muted-foreground" weight="fill" />
-                    )}
-                    <span className="text-sm">테마</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">
-                    {isDark ? '다크 모드' : '라이트 모드'}
-                  </span>
-                </button>
                 <Separator />
                 <button
                   type="button"
@@ -194,24 +165,6 @@ export function MypagePage() {
                 <HeartIcon className="size-5 text-muted-foreground" />
                 <span className="text-sm">관심 종목</span>
               </Link>
-              <Separator />
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="flex w-full items-center justify-between px-6 py-4 transition-colors hover:bg-muted/50"
-              >
-                <div className="flex items-center gap-3">
-                  {isDark ? (
-                    <MoonIcon className="size-5 text-muted-foreground" weight="fill" />
-                  ) : (
-                    <SunIcon className="size-5 text-muted-foreground" weight="fill" />
-                  )}
-                  <span className="text-sm">테마</span>
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  {isDark ? '다크 모드' : '라이트 모드'}
-                </span>
-              </button>
               <Separator />
               <button
                 type="button"
