@@ -25,13 +25,22 @@ export function DisclosureListPage() {
       </div>
 
       {/* PC 버전 */}
-      <div className="mx-auto hidden max-w-screen-2xl py-8 md:block md:px-4 lg:px-8">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold md:text-3xl">오늘의 공시</h1>
-            <span className="text-sm text-muted-foreground">{todayLabel} 기준</span>
+      <div className="mx-auto hidden max-w-[1280px] py-10 md:block md:px-4 lg:px-8">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+                오늘의 공시
+              </h1>
+              <span className="flex items-center gap-1.5 rounded-full bg-success-weak px-2.5 py-1 text-xs font-medium text-success-weak-foreground">
+                <span className="inline-block size-1.5 animate-pulse rounded-full bg-success" />
+                실시간
+              </span>
+            </div>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              {todayLabel} 기준 · 1분마다 자동 갱신
+            </p>
           </div>
-          <p className="mt-2 text-sm text-primary">오늘 등록된 모든 공시를 확인하세요</p>
         </div>
 
         <DisclosureList />

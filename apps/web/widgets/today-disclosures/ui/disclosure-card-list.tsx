@@ -21,7 +21,7 @@ export function DisclosureCardList({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="divide-y divide-border/50">
       {disclosures.map(disclosure => (
         <DisclosureCard
           key={disclosure.id}

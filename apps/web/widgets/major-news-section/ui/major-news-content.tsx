@@ -16,20 +16,25 @@ export function MajorNewsContent() {
     )
   }
 
+  const [featured, ...rest] = data.items
+
   return (
     <>
-      {/* 모바일: 플랫한 리스트 (간격 없음) */}
-      <div className="md:hidden">
+      {/* 모바일: 플랫한 리스트 */}
+      <div className="divide-y divide-border/50 md:hidden">
         {data.items.map((item, index) => (
           <MajorNewsCard key={`${item.link}-${index}`} item={item} />
         ))}
       </div>
 
-      {/* PC: 3열 그리드 카드 */}
-      <div className="hidden grid-cols-3 gap-4 md:grid">
-        {data.items.map((item, index) => (
-          <MajorNewsCard key={`${item.link}-${index}`} item={item} />
-        ))}
+      {/* PC: Feature Article + Sidebar */}
+      <div className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-[3fr_2fr]">
+        <MajorNewsCard item={featured} variant="featured" />
+        <div className="overflow-hidden divide-y divide-border/50 rounded-xl border border-border/50 bg-card">
+          {rest.map((item, index) => (
+            <MajorNewsCard key={`${item.link}-${index}`} item={item} variant="compact" />
+          ))}
+        </div>
       </div>
     </>
   )

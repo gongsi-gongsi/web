@@ -23,6 +23,11 @@ export function DisclosureList() {
         <MarketTabs selectedMarket={selectedMarket} onMarketChange={setSelectedMarket} />
       </div>
 
+      {/* PC 목록 헤더 */}
+      <div className="mb-3 hidden items-center justify-between px-5 md:flex">
+        <span className="text-xs font-medium text-muted-foreground">공시 목록</span>
+      </div>
+
       {/* 콘텐츠 */}
       <ErrorBoundary fallback={ErrorFallback}>
         <Suspense key={selectedMarket} fallback={<DisclosureListSkeleton />}>

@@ -5,7 +5,8 @@ import { HydrationBoundary } from '@tanstack/react-query'
 import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
-import { ServiceBanner } from '@/widgets/service-banner'
+import { BannerSearch } from '@/widgets/service-banner'
+import { BannerSlider } from '@/widgets/banner-slider'
 import {
   PopularCompaniesSection,
   PopularCompaniesSectionSkeleton,
@@ -52,7 +53,7 @@ export default function Home() {
         right={
           <Link
             href="/search"
-            className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+            className="flex size-9 items-center justify-end rounded-md text-muted-foreground hover:text-foreground"
             aria-label="검색"
           >
             <MagnifyingGlassIcon className="size-5" />
@@ -60,7 +61,19 @@ export default function Home() {
         }
       />
 
-      <ServiceBanner />
+      {/* 검색바 - PC only */}
+      <section className="hidden px-4 pt-3 md:block lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <BannerSearch />
+        </div>
+      </section>
+
+      {/* 이미지 배너 슬라이더 */}
+      <section className="mb-6 px-4 pt-3 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
+          <BannerSlider />
+        </div>
+      </section>
 
       <Suspense fallback={<PopularCompaniesSectionSkeleton />}>
         <PopularCompaniesWithPrefetch />

@@ -70,7 +70,7 @@ export function CompanyDisclosureSection({ corpCode }: CompanyDisclosureSectionP
       ) : (
         <>
           {/* 모바일 버전 */}
-          <div className="pb-2 md:hidden">
+          <div className="md:hidden">
             <DisclosureCardList disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
 

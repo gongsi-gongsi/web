@@ -20,13 +20,13 @@ export function SearchFilterChips({
   onFilterOpen,
 }: SearchFilterChipsProps) {
   return (
-    <div className="bg-card sticky top-14 z-40 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-3 md:bg-background md:px-0 md:pt-0">
+    <div className="bg-card sticky top-14 z-40 flex items-center gap-2 overflow-x-auto px-4 pb-3 pt-3 md:static md:z-auto md:bg-transparent md:px-0 md:pt-0">
       <Button
         variant="outline"
         size="icon"
         onClick={onFilterOpen}
         aria-label="필터 설정"
-        className="shrink-0"
+        className="shrink-0 rounded-full"
       >
         <FadersIcon className="size-4" />
       </Button>
@@ -37,10 +37,10 @@ export function SearchFilterChips({
           onClick={() => onPeriodChange(option.value)}
           aria-pressed={period === option.value}
           className={cn(
-            'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors',
+            'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors duration-150',
             period === option.value
               ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border text-muted-foreground hover:bg-accent'
+              : 'border-border text-muted-foreground hover:bg-accent hover:text-foreground'
           )}
         >
           {option.label}

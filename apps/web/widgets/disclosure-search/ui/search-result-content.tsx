@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo } from 'react'
 
+import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+
 import {
   useSearchDisclosures,
   deduplicateDisclosures,
@@ -42,33 +44,31 @@ export function SearchResultContent({ params }: SearchResultContentProps) {
       <SearchResultHeader query={params.q} totalCount={totalCount} />
 
       {disclosures.length === 0 ? (
-        <div className="py-12 text-center">
-          <p className="text-sm text-muted-foreground">해당 회사의 공시를 찾을 수 없습니다</p>
-          <p className="mt-2 text-xs text-muted-foreground">
+        <div className="py-16 text-center">
+          <MagnifyingGlassIcon className="mx-auto mb-3 size-12 text-muted-foreground/40" />
+          <p className="text-base font-medium text-foreground">검색 결과가 없습니다</p>
+          <p className="mt-1.5 text-sm text-muted-foreground">
             다른 회사명을 입력하거나 필터를 변경해 보세요
           </p>
         </div>
       ) : (
         <>
-          {/* 모바일 버전 */}
-          <div className="pb-2 pt-2 md:hidden">
+          <div className="pt-1 pb-2 md:hidden">
             <DisclosureCardList disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
 
-          {/* PC 버전 */}
           <div className="hidden md:block">
             <DisclosureTable disclosures={disclosures} showMeta summarizedIds={summarizedIds} />
           </div>
         </>
       )}
 
-      {/* 스크롤 감지 영역 및 상태 표시 */}
-      <div ref={ref} className="py-6 text-center">
+      <div ref={ref} className="py-8 text-center">
         {isFetchingNextPage && (
           <p className="text-sm text-muted-foreground">공시를 불러오는 중...</p>
         )}
         {!hasNextPage && disclosures.length > 0 && (
-          <p className="text-sm text-muted-foreground">모든 검색 결과를 불러왔습니다</p>
+          <p className="text-xs text-muted-foreground/60">모든 검색 결과를 불러왔습니다</p>
         )}
       </div>
     </>

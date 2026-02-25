@@ -86,12 +86,12 @@ export function BannerSearch() {
   )
 
   return (
-    <div ref={containerRef} className="relative max-w-xl">
+    <div ref={containerRef} className="relative mx-auto max-w-xl">
       {/* 검색 인풋 */}
-      <div className="relative rounded-2xl border border-white/20 bg-background shadow-xl dark:border-white/10">
+      <div className="relative rounded-2xl border border-border bg-background shadow-sm">
         <Input
           type="text"
-          placeholder="기업명 또는 종목 코드를 검색해보세요"
+          placeholder="기업명으로 검색해보세요"
           value={typingQuery}
           onChange={handleInputChange}
           onFocus={handleFocus}
