@@ -54,7 +54,7 @@ export function AiSummaryModal({ open, onOpenChange, disclosure }: AiSummaryModa
       title="AI 공시 요약"
       description={description}
     >
-      <div className="max-h-[60vh] overflow-y-auto px-1">
+      <div className="max-h-[60vh] overflow-y-auto scrollbar-hide px-1">
         {mutation.isPending && <SummaryProgress isLoading />}
 
         {mutation.isError &&

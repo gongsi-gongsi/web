@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache'
 import { getCompanyInfo } from '@/entities/company/api/company-info/server'
 import { getQuarterlyFinancials } from '@/entities/company/api/financials/server'
+import { getDisclosuresByCorpCode } from '@/entities/disclosure/server'
 import { getGoogleNews } from '@/entities/news/api/google-news/server'
 import { generateContent } from '@/shared/lib/gemini'
 import { buildCompanySummaryPrompt } from '../lib/build-prompt'
@@ -8,8 +9,8 @@ import type { AiCompanySummary } from '../model/types'
 
 /**
  * [서버 전용] AI 기업 요약을 생성합니다
- * 재무 데이터 + 뉴스 제목을 조합하여 Gemini Flash로 분석합니다
- * unstable_cache로 corpCode별 24시간 서버 캐싱 (모든 사용자 동일 결과)
+ * 재무 데이터 + 최근 공시 + 뉴스 제목을 조합하여 Gemini Flash로 분석합니다
+ * unstable_cache로 corpCode별 6시간 서버 캐싱 (모든 사용자 동일 결과)
  * @param corpCode - 기업 고유번호 (8자리)
  * @returns AI 기업 요약
  * @throws {Error} 기업 정보 조회 실패 또는 Gemini 호출 실패 시
@@ -21,17 +22,24 @@ async function _generateCompanySummary(corpCode: string): Promise<AiCompanySumma
     throw new Error(`기업 정보를 찾을 수 없습니다: ${corpCode}`)
   }
 
-  // 2. 재무 데이터 + 뉴스를 기업명으로 병렬 조회
-  const [financials, newsResponse] = await Promise.all([
+  // 2. 재무 데이터 + 최근 공시 + 뉴스를 병렬 조회
+  const [financials, disclosures, newsResponse] = await Promise.all([
     getQuarterlyFinancials(corpCode).catch(() => null),
+    getDisclosuresByCorpCode({ corpCode, period: '3m', pageCount: 10 }).catch(() => null),
     getGoogleNews(`${companyInfo.corpName} 주식`, 30).catch(() => null),
   ])
 
   const newsTitles = newsResponse?.items.map(item => item.title) ?? []
+  const disclosureTitles = disclosures?.disclosures.map(d => `[${d.receivedAt}] ${d.title}`) ?? []
 
   // 3. 프롬프트 빌드
   const financialData = financials?.data ?? []
-  const prompt = buildCompanySummaryPrompt(companyInfo.corpName, financialData, newsTitles)
+  const prompt = buildCompanySummaryPrompt(
+    companyInfo.corpName,
+    financialData,
+    newsTitles,
+    disclosureTitles
+  )
 
   // 4. Gemini 호출
   const rawResponse = await generateContent(prompt)
@@ -58,5 +66,5 @@ async function _generateCompanySummary(corpCode: string): Promise<AiCompanySumma
 export const generateCompanySummary = unstable_cache(
   _generateCompanySummary,
   ['ai-company-summary'],
-  { revalidate: 86400 }
+  { revalidate: 21600 }
 )
