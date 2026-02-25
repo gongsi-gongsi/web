@@ -40,7 +40,6 @@ export function CompanySearchPage() {
 
   return (
     <div className="bg-card md:bg-transparent">
-      {/* 모바일 헤더: 뒤로가기 + 검색 인풋 */}
       <MobileHeader
         left={<BackButton />}
         center={
@@ -55,19 +54,20 @@ export function CompanySearchPage() {
         }
       />
 
-      {/* PC: 검색바 */}
       <div className="hidden md:block">
         <SearchAutocomplete
           value={typingQuery}
           onSearch={handleSearch}
           onChange={handleInputChange}
           autoFocus
-          className="flex-1"
+          variant="banner"
+          placeholder="기업명으로 검색해보세요"
+          className="max-w-3xl"
         />
       </div>
 
       {showSuggestions ? (
-        <div className="mt-2">
+        <div className="mt-1 md:mt-3 md:max-w-3xl">
           {showSuggestionResults ? (
             <ErrorBoundary fallback={SearchErrorFallback}>
               <Suspense key={debouncedQuery} fallback={<CompanySuggestionSkeleton />}>

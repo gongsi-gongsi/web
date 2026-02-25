@@ -49,36 +49,59 @@ function formatFinancialContext(financials: FinancialData[]): string {
 }
 
 /**
+ * 오늘 날짜를 YYYY-MM-DD 형식으로 반환합니다
+ */
+function getTodayString(): string {
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+/**
  * AI 기업 요약 생성을 위한 프롬프트를 빌드합니다
  * @param companyName - 기업명
  * @param financialData - 분기별 재무 데이터
  * @param newsTitles - 최근 뉴스 제목 목록
+ * @param disclosureTitles - 최근 공시 제목 목록 (날짜 포함)
  * @returns Gemini API에 전달할 프롬프트 문자열
  */
 export function buildCompanySummaryPrompt(
   companyName: string,
   financialData: FinancialData[],
-  newsTitles: string[]
+  newsTitles: string[],
+  disclosureTitles: string[] = []
 ): string {
   const financialContext = formatFinancialContext(financialData)
   const newsContext =
     newsTitles.length > 0 ? newsTitles.map((t, i) => `${i + 1}. ${t}`).join('\n') : '관련 뉴스 없음'
+  const disclosureContext =
+    disclosureTitles.length > 0
+      ? disclosureTitles.map((t, i) => `${i + 1}. ${t}`).join('\n')
+      : '최근 공시 없음'
 
   return `당신은 한국 주식 시장 전문 애널리스트입니다.
-아래 재무 데이터와 최근 뉴스를 분석하여 "${companyName}"에 대한 간결한 요약을 작성해주세요.
+아래 재무 데이터, 최근 공시, 뉴스를 분석하여 "${companyName}"에 대한 간결한 요약을 작성해주세요.
+
+## 오늘 날짜
+${getTodayString()}
 
 ## 재무 데이터 (최근 분기)
 ${financialContext}
+
+## 최근 DART 공시 (최근 3개월)
+${disclosureContext}
 
 ## 최근 뉴스 제목
 ${newsContext}
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트는 포함하지 마세요.
-재무 현황, 주요 이슈, 전망을 하나의 문단으로 자연스럽게 통합하세요.
+재무 현황, 최근 공시 내용, 주요 이슈, 전망을 하나의 문단으로 자연스럽게 통합하세요.
 3~4문장, 한국어로 작성하세요.
 
 {
-  "summary": "재무 현황 + 주요 이슈 + 전망을 통합한 간결한 요약"
+  "summary": "재무 현황 + 최근 공시 + 주요 이슈 + 전망을 통합한 간결한 요약"
 }`
 }
