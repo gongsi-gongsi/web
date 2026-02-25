@@ -23,6 +23,7 @@ export {
 
 // 유틸리티 함수 (서버/클라이언트 공통)
 export { getMarketBadge } from './lib/get-market-badge'
+export { getDisclosureTypeColor } from './lib/get-disclosure-type-color'
 export { deduplicateDisclosures } from './lib/deduplicate-disclosures'
 
 // 타입 정의 (서버/클라이언트 공통)

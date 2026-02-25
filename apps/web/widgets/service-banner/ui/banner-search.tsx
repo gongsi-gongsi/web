@@ -91,7 +91,7 @@ export function BannerSearch() {
       <div className="relative rounded-2xl border border-border bg-background shadow-sm">
         <Input
           type="text"
-          placeholder="기업명 또는 종목 코드를 검색해보세요"
+          placeholder="기업명으로 검색해보세요"
           value={typingQuery}
           onChange={handleInputChange}
           onFocus={handleFocus}

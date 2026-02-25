@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { HydrationBoundary } from '@tanstack/react-query'
 
@@ -7,6 +6,7 @@ import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr'
 
 import { MobileHeader } from '@/widgets/header'
 import { BannerSearch } from '@/widgets/service-banner'
+import { BannerSlider } from '@/widgets/banner-slider'
 import {
   PopularCompaniesSection,
   PopularCompaniesSectionSkeleton,
@@ -53,7 +53,7 @@ export default function Home() {
         right={
           <Link
             href="/search"
-            className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+            className="flex size-9 items-center justify-end rounded-md text-muted-foreground hover:text-foreground"
             aria-label="검색"
           >
             <MagnifyingGlassIcon className="size-5" />
@@ -68,17 +68,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 이미지 배너 */}
+      {/* 이미지 배너 슬라이더 */}
       <section className="mb-6 px-4 pt-3 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <Image
-            src="/images/main-banner.png"
-            alt="메인 배너"
-            width={1280}
-            height={250}
-            className="h-auto max-h-[250px] w-full rounded-2xl object-cover"
-            priority
-          />
+          <BannerSlider />
         </div>
       </section>
 

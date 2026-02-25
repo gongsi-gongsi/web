@@ -20,6 +20,11 @@ export function DisclaimerPage() {
             </strong>
             , 금융위원회 또는 금융감독원에 등록된 투자자문사가 아닙니다.
           </p>
+          <p className="mt-2">
+            본 서비스는 불특정 다수인을 대상으로 하는{' '}
+            <strong>&lsquo;정보 제공 서비스&rsquo;</strong>이며, 개별적인 투자 상담이나 1:1 자문
+            행위를 하지 않습니다.
+          </p>
         </section>
 
         <section>
@@ -79,7 +84,20 @@ export function DisclaimerPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">6. 제3자 정보</h2>
+          <h2 className="text-lg font-semibold">6. 데이터 출처 및 제3자 정보</h2>
+          <p className="mt-2">
+            본 서비스는{' '}
+            <Link
+              href="https://opendart.fss.or.kr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              금융감독원 전자공시시스템(DART)의 Open API
+            </Link>
+            를 활용하며, 제공되는 정보의 원천 데이터는 금융감독원 및 각 공시 기업에 저작권이
+            있습니다.
+          </p>
           <p className="mt-2">
             본 서비스에서 제공하는 기업 정보, 재무 데이터, 주가 정보 등은 DART, 한국거래소 등 외부
             기관의 데이터에 기반합니다. 해당 기관의 데이터 정책 변경, 서비스 중단 등에 의해 정보

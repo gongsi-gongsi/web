@@ -4,6 +4,7 @@ import { formatRelativeTime } from '@/entities/news'
 
 interface MajorNewsCardProps {
   item: NewsItem
+  variant?: 'featured' | 'compact'
 }
 
 /**
@@ -25,33 +26,49 @@ function getSafeUrl(url: string): string {
   }
 }
 
-export function MajorNewsCard({ item }: MajorNewsCardProps) {
+export function MajorNewsCard({ item, variant = 'compact' }: MajorNewsCardProps) {
   const safeLink = getSafeUrl(item.link)
 
   return (
     <a href={safeLink} target="_blank" rel="noopener noreferrer">
-      {/* 모바일: 플랫한 리스트 아이템 (토스 앱 스타일) */}
-      <div className="flex flex-col border-b border-border px-4 py-3 hover:bg-accent/50 active:bg-accent md:hidden">
-        <h3 className="truncate text-sm font-semibold leading-[1.35] text-foreground">
-          {item.title}
-        </h3>
-        <p className="mt-1.5 text-[11px] text-muted-foreground">
+      {/* 모바일: 플랫한 리스트 아이템 */}
+      <div className="flex flex-col px-4 py-3 active:bg-accent/50 md:hidden">
+        <p className="text-[11px] font-medium text-primary">
           {item.source} · {formatRelativeTime(item.pubDate)}
         </p>
+        <h3 className="mt-1 line-clamp-2 text-[15px] font-semibold leading-[1.35] text-foreground">
+          {item.title}
+        </h3>
       </div>
 
-      {/* PC: 카드형 (토스 증권 스타일) */}
-      <Card
-        interactive
-        className="hidden h-full flex-col rounded-xl border border-border/50 bg-card px-4 py-4 hover:border-border hover:bg-accent hover:shadow-sm md:flex"
-      >
-        <h3 className="line-clamp-2 text-[15px] font-semibold leading-[1.35] text-foreground">
-          {item.title}
-        </h3>
-        <p className="mt-2 text-xs text-muted-foreground">
-          {item.source} · {formatRelativeTime(item.pubDate)}
-        </p>
-      </Card>
+      {/* PC: variant에 따라 다른 레이아웃 */}
+      {variant === 'featured' ? (
+        <Card
+          interactive
+          className="group hidden h-full flex-col rounded-xl border border-border/50 bg-card px-5 py-5 shadow-none hover:border-border md:flex"
+        >
+          <span className="w-fit rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+            {item.source}
+          </span>
+          <h3 className="mt-3 line-clamp-3 text-xl font-bold leading-[1.35] text-foreground group-hover:text-primary">
+            {item.title}
+          </h3>
+          <p className="mt-auto pt-3 text-xs text-muted-foreground">
+            {formatRelativeTime(item.pubDate)}
+          </p>
+        </Card>
+      ) : (
+        <div className="hidden px-4 py-3.5 hover:bg-accent/50 md:block">
+          <h3 className="truncate text-[15px] font-semibold leading-[1.35] text-foreground">
+            {item.title}
+          </h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            <span className="font-medium text-foreground/70">{item.source}</span>
+            {' · '}
+            {formatRelativeTime(item.pubDate)}
+          </p>
+        </div>
+      )}
     </a>
   )
 }
