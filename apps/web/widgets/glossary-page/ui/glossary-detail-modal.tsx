@@ -8,6 +8,12 @@ import {
   type GlossaryTerm,
 } from '@/entities/glossary'
 
+const DIFFICULTY_COLOR: Record<GlossaryTerm['difficulty'], string> = {
+  beginner: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+  intermediate: 'bg-blue-500/10 text-blue-700 dark:text-blue-400',
+  advanced: 'bg-orange-500/10 text-orange-700 dark:text-orange-400',
+}
+
 interface GlossaryDetailModalProps {
   term: GlossaryTerm | null
   open: boolean
@@ -34,8 +40,10 @@ export function GlossaryDetailModal({
     >
       <div className="space-y-5 px-1 py-2">
         <div className="flex gap-2">
-          <Badge variant="outline">{GLOSSARY_CATEGORY_LABEL[term.category]}</Badge>
-          <Badge variant="secondary">{GLOSSARY_DIFFICULTY_LABEL[term.difficulty]}</Badge>
+          <Badge variant="secondary">{GLOSSARY_CATEGORY_LABEL[term.category]}</Badge>
+          <Badge className={DIFFICULTY_COLOR[term.difficulty]}>
+            {GLOSSARY_DIFFICULTY_LABEL[term.difficulty]}
+          </Badge>
         </div>
 
         <div>

@@ -1,34 +1,34 @@
-'use client';
+'use client'
 
-import * as React from 'react';
+import * as React from 'react'
 
-import * as SheetPrimitive from '@radix-ui/react-dialog';
-import { XIcon } from 'lucide-react';
+import * as SheetPrimitive from '@radix-ui/react-dialog'
+import { XIcon } from 'lucide-react'
 
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib/utils'
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
+  return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
 const SheetTrigger = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Trigger>,
   React.ComponentProps<typeof SheetPrimitive.Trigger>
 >(({ ...props }, ref) => {
-  return <SheetPrimitive.Trigger ref={ref} data-slot="sheet-trigger" {...props} />;
-});
-SheetTrigger.displayName = 'SheetTrigger';
+  return <SheetPrimitive.Trigger ref={ref} data-slot="sheet-trigger" {...props} />
+})
+SheetTrigger.displayName = 'SheetTrigger'
 
 const SheetClose = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Close>,
   React.ComponentProps<typeof SheetPrimitive.Close>
 >(({ ...props }, ref) => {
-  return <SheetPrimitive.Close ref={ref} data-slot="sheet-close" {...props} />;
-});
-SheetClose.displayName = 'SheetClose';
+  return <SheetPrimitive.Close ref={ref} data-slot="sheet-close" {...props} />
+})
+SheetClose.displayName = 'SheetClose'
 
 function SheetPortal({ ...props }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
-  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
+  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />
 }
 
 const SheetOverlay = React.forwardRef<
@@ -45,9 +45,9 @@ const SheetOverlay = React.forwardRef<
       )}
       {...props}
     />
-  );
-});
-SheetOverlay.displayName = 'SheetOverlay';
+  )
+})
+SheetOverlay.displayName = 'SheetOverlay'
 
 function SheetContent({
   className,
@@ -55,7 +55,7 @@ function SheetContent({
   side = 'right',
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: 'top' | 'right' | 'bottom' | 'left'
 }) {
   return (
     <SheetPortal>
@@ -71,7 +71,7 @@ function SheetContent({
           side === 'top' &&
             'data-[state=open]:animate-slide-in-from-top data-[state=closed]:animate-slide-out-to-top inset-x-0 top-0 h-auto border-b',
           side === 'bottom' &&
-            'data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom inset-x-0 bottom-0 h-auto rounded-t-3xl border-t',
+            'data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom inset-x-0 bottom-0 h-auto max-h-[85vh] overflow-y-auto rounded-t-3xl border-t',
           className
         )}
         {...props}
@@ -83,13 +83,13 @@ function SheetContent({
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </SheetPortal>
-  );
+  )
 }
 
 function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div data-slot="sheet-header" className={cn('flex flex-col gap-1.5', className)} {...props} />
-  );
+  )
 }
 
 function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
@@ -99,7 +99,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
       className={cn('mt-auto flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
       {...props}
     />
-  );
+  )
 }
 
 function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {
@@ -109,7 +109,7 @@ function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPr
       className={cn('text-foreground font-semibold', className)}
       {...props}
     />
-  );
+  )
 }
 
 function SheetDescription({
@@ -122,7 +122,7 @@ function SheetDescription({
       className={cn('text-muted-foreground text-sm', className)}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -134,4 +134,4 @@ export {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-};
+}

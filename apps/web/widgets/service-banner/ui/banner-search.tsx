@@ -88,7 +88,7 @@ export function BannerSearch() {
   return (
     <div ref={containerRef} className="relative mx-auto max-w-xl">
       {/* 검색 인풋 */}
-      <div className="relative rounded-2xl border border-border bg-background shadow-sm">
+      <div className="relative rounded-2xl border border-border bg-background shadow-sm transition-all duration-300 focus-within:scale-[1.02] focus-within:shadow-lg focus-within:border-primary/50 focus-within:ring-[3px] focus-within:ring-primary/20">
         <Input
           type="text"
           placeholder="기업명으로 검색해보세요"
