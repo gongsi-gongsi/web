@@ -45,7 +45,7 @@ export function GlossarySearch({
 
       <div className="flex flex-wrap gap-2">
         <Badge
-          variant={selectedCategory === null ? 'default' : 'outline'}
+          variant={selectedCategory === null ? 'default' : 'secondary'}
           className="cursor-pointer"
           onClick={() => onCategoryChange(null)}
         >
@@ -54,7 +54,7 @@ export function GlossarySearch({
         {CATEGORIES.map(([key, label]) => (
           <Badge
             key={key}
-            variant={selectedCategory === key ? 'default' : 'outline'}
+            variant={selectedCategory === key ? 'default' : 'secondary'}
             className="cursor-pointer"
             onClick={() => onCategoryChange(selectedCategory === key ? null : key)}
           >

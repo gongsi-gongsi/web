@@ -11,6 +11,7 @@ import './desktop-header.css'
 const NAV_ITEMS = [
   { label: '홈', href: '/' },
   { label: '기업정보', href: '/companies' },
+  { label: '용어집', href: '/glossary' },
 ] as const
 
 export function DesktopHeader() {
