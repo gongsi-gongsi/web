@@ -30,7 +30,7 @@ export function GlossaryDetailPanel({ term, onSelectRelated }: GlossaryDetailPan
           <span className="text-muted-foreground text-sm">{term.termEn}</span>
         </div>
         <div className="flex gap-2 mt-3">
-          <Badge variant="outline">{GLOSSARY_CATEGORY_LABEL[term.category]}</Badge>
+          <Badge variant="secondary">{GLOSSARY_CATEGORY_LABEL[term.category]}</Badge>
           <Badge className={DIFFICULTY_COLOR[term.difficulty]}>
             {GLOSSARY_DIFFICULTY_LABEL[term.difficulty]}
           </Badge>
