@@ -28,12 +28,9 @@ import {
   type NoticeCategory,
 } from '@/entities/notice'
 
-const CATEGORY_FILTERS: { value: string; label: string }[] = [
+const CATEGORY_FILTERS = [
   { value: '', label: '전체' },
-  { value: 'NOTICE', label: '공지' },
-  { value: 'UPDATE', label: '업데이트' },
-  { value: 'EVENT', label: '이벤트' },
-  { value: 'MAINTENANCE', label: '점검' },
+  ...Object.entries(NOTICE_CATEGORY_LABELS).map(([value, label]) => ({ value, label })),
 ]
 
 export function NoticeListWidget() {

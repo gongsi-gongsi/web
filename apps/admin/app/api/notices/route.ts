@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const category = searchParams.get('category')
 
   const where = {
-    ...(category && { category: category as 'NOTICE' | 'UPDATE' | 'EVENT' | 'MAINTENANCE' }),
+    ...(category && { category: category as 'SERVICE' | 'EVENT' | 'MAINTENANCE' }),
   }
 
   const [notices, total] = await Promise.all([

@@ -186,8 +186,7 @@ model SearchLog {
 
 // 공지사항 카테고리
 enum NoticeCategory {
-  NOTICE
-  UPDATE
+  SERVICE
   EVENT
   MAINTENANCE
 }
