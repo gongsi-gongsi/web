@@ -12,7 +12,7 @@ import {
   type NoticeCategory,
 } from '@/entities/notice'
 import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor'
-import { CATEGORY_TEMPLATES } from '../lib/templates'
+import { CATEGORY_TEMPLATES } from '../lib'
 
 const CATEGORIES = Object.entries(NOTICE_CATEGORY_LABELS) as [NoticeCategory, string][]
 
@@ -34,9 +34,9 @@ export function NoticeForm({ notice }: NoticeFormProps) {
   const [isPreview, setIsPreview] = useState(false)
 
   const [title, setTitle] = useState(notice?.title ?? '')
-  const [category, setCategory] = useState<NoticeCategory>(notice?.category ?? 'NOTICE')
+  const [category, setCategory] = useState<NoticeCategory>(notice?.category ?? 'SERVICE')
   const [content, setContent] = useState(
-    notice?.content ?? CATEGORY_TEMPLATES['NOTICE']
+    notice?.content ?? CATEGORY_TEMPLATES['SERVICE']
   )
   const [isPublished, setIsPublished] = useState(notice?.isPublished ?? false)
   const [isPinned, setIsPinned] = useState(notice?.isPinned ?? false)
@@ -44,6 +44,12 @@ export function NoticeForm({ notice }: NoticeFormProps) {
   const isPending = createMutation.isPending || updateMutation.isPending
 
   function handleCategoryChange(newCategory: NoticeCategory) {
+    if (!isEdit && !isContentEmpty(content)) {
+      const confirmed = window.confirm(
+        '카테고리를 변경하면 작성 중인 내용이 템플릿으로 교체됩니다. 계속하시겠습니까?'
+      )
+      if (!confirmed) return
+    }
     setCategory(newCategory)
     if (!isEdit) {
       editorRef.current?.setContent(CATEGORY_TEMPLATES[newCategory])

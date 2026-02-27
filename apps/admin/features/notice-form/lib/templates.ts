@@ -1,40 +1,27 @@
 import type { NoticeCategory } from '@/entities/notice'
 
 export const CATEGORY_TEMPLATES: Record<NoticeCategory, string> = {
-  NOTICE: `<p>안녕하세요, 공시공시팀입니다.</p>
-<p></p>
-<p>아래 내용을 안내드립니다.</p>
-<p></p>
-<ul>
-  <li>내용을 입력해 주세요</li>
-  <li>내용을 입력해 주세요</li>
-</ul>
-<p></p>
-<p>이용해 주셔서 감사합니다.<br>공시공시팀 드림</p>`,
-
-  UPDATE: `<p>안녕하세요, 공시공시팀입니다.</p>
-<p></p>
+  SERVICE: `<p>안녕하세요, 공시공시팀입니다.</p>
 <p>서비스 업데이트 사항을 안내드립니다.</p>
 <p></p>
 <h2>새로운 기능</h2>
 <ul>
-  <li>기능을 입력해 주세요</li>
+  <li>내용을 입력해 주세요</li>
+</ul>
+<p></p>
+<h2>UI/UX 개선</h2>
+<ul>
+  <li>내용을 입력해 주세요</li>
 </ul>
 <p></p>
 <h2>버그 수정</h2>
 <ul>
-  <li>수정 내용을 입력해 주세요</li>
-</ul>
-<p></p>
-<h2>개선 사항</h2>
-<ul>
-  <li>개선 내용을 입력해 주세요</li>
+  <li>내용을 입력해 주세요</li>
 </ul>
 <p></p>
 <p>이용해 주셔서 감사합니다.<br>공시공시팀 드림</p>`,
 
   EVENT: `<p>안녕하세요, 공시공시팀입니다.</p>
-<p></p>
 <p>이벤트를 안내드립니다.</p>
 <p></p>
 <h2>이벤트 기간</h2>
@@ -59,7 +46,6 @@ export const CATEGORY_TEMPLATES: Record<NoticeCategory, string> = {
 <p>이용해 주셔서 감사합니다.<br>공시공시팀 드림</p>`,
 
   MAINTENANCE: `<p>안녕하세요, 공시공시팀입니다.</p>
-<p></p>
 <p>서비스 점검을 안내드립니다. 이용에 불편을 드려 대단히 죄송합니다.</p>
 <p></p>
 <h2>점검 일시</h2>
@@ -70,10 +56,9 @@ export const CATEGORY_TEMPLATES: Record<NoticeCategory, string> = {
   <li>점검 내용을 입력해 주세요</li>
 </ul>
 <p></p>
-<h2>점검 영향</h2>
-<ul>
-  <li>서비스 전체 이용 불가</li>
-</ul>
+<h2>원인 및 해결 방법</h2>
+<p><strong>원인</strong>: 원인을 입력해 주세요</p>
+<p><strong>해결 방법</strong>: 해결 방법을 입력해 주세요</p>
 <p></p>
 <p>점검 종료 후 정상 서비스됩니다. 양해해 주셔서 감사합니다.<br>공시공시팀 드림</p>`,
 }

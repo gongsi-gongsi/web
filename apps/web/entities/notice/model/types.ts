@@ -1,4 +1,4 @@
-export type NoticeCategory = 'NOTICE' | 'UPDATE' | 'EVENT' | 'MAINTENANCE'
+export type NoticeCategory = 'SERVICE' | 'EVENT' | 'MAINTENANCE'
 
 export interface NoticeListItem {
   id: string
