@@ -1,5 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
+  output        = "../../../node_modules/.prisma/client"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -181,4 +182,63 @@ model SearchLog {
   @@index([query, createdAt])
   @@index([corpCode, createdAt])
   @@map("search_logs")
+}
+
+// 공지사항 카테고리
+enum NoticeCategory {
+  NOTICE
+  UPDATE
+  EVENT
+  MAINTENANCE
+}
+
+// 관리자
+model AdminUser {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  name      String   @db.VarChar(100)
+  role      String   @default("admin") @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  notices Notice[]
+
+  @@map("admin_users")
+}
+
+// 배너
+model Banner {
+  id             String    @id @default(uuid()) @db.Uuid
+  title          String    @db.VarChar(200)
+  imageUrl       String    @map("image_url") @db.VarChar(500)
+  imageMobileUrl String?   @map("image_mobile_url") @db.VarChar(500)
+  linkUrl        String?   @map("link_url") @db.VarChar(500)
+  order          Int       @default(0)
+  isActive       Boolean   @default(true) @map("is_active")
+  startDate      DateTime? @map("start_date")
+  endDate        DateTime? @map("end_date")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([isActive, order])
+  @@map("banners")
+}
+
+// 공지사항
+model Notice {
+  id          String         @id @default(uuid()) @db.Uuid
+  title       String         @db.VarChar(300)
+  category    NoticeCategory
+  content     String         @db.Text
+  authorId    String         @map("author_id") @db.Uuid
+  isPublished Boolean        @default(false) @map("is_published")
+  isPinned    Boolean        @default(false) @map("is_pinned")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  author AdminUser @relation(fields: [authorId], references: [id])
+
+  @@index([category])
+  @@index([isPublished])
+  @@map("notices")
 }
