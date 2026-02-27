@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/shared/lib/supabase/server'
-import { generateDisclosureSummary } from '@/features/ai-disclosure-summary/api/generate-summary'
 import type { AiDisclosureSummaryRequest } from '@/features/ai-disclosure-summary/model/types'
 
 const RATE_LIMIT_PER_HOUR = 10
@@ -8,6 +7,9 @@ const RATE_WINDOW_MS = 60 * 60 * 1000
 
 /** 사용자별 요약 요청 타임스탬프 (인메모리 rate limiter) */
 const rateLimitMap = new Map<string, number[]>()
+
+const AI_SERVER_URL = process.env.AI_SERVER_URL ?? 'http://localhost:8000'
+const AI_SERVER_API_KEY = process.env.AI_SERVER_API_KEY ?? ''
 
 interface RouteParams {
   params: Promise<{
@@ -54,8 +56,43 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   }
 
   try {
-    const result = await generateDisclosureSummary(rceptNo, body)
-    return NextResponse.json(result)
+    // Python AI 서버로 프록시
+    const response = await fetch(`${AI_SERVER_URL}/api/v1/disclosures/${rceptNo}/summary`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': AI_SERVER_API_KEY,
+      },
+      body: JSON.stringify({
+        corp_code: body.corpCode,
+        corp_name: body.corpName,
+        stock_code: body.stockCode,
+        market: body.market,
+        report_name: body.reportName,
+        disclosure_type: body.disclosureType,
+        received_at: body.receivedAt,
+        dart_url: body.dartUrl,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({ detail: 'AI 서버 오류' }))
+      return NextResponse.json(
+        { error: errorBody.detail ?? 'AI 요약 생성에 실패했습니다' },
+        { status: response.status }
+      )
+    }
+
+    const result = await response.json()
+
+    // Python 서버 snake_case → 프론트엔드 camelCase 변환
+    return NextResponse.json({
+      summary: result.summary,
+      sentiment: result.sentiment,
+      keyFigures: result.key_figures,
+      analysis: result.analysis,
+      createdAt: result.created_at,
+    })
   } catch (error) {
     console.error(
       'Failed to generate disclosure summary:',

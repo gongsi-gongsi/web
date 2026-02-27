@@ -25,7 +25,7 @@ function formatGeneratedAt(isoString: string): string {
 function SectionTitle() {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-base font-semibold">AI 기업 분석</span>
+      <span className="text-base font-semibold">AI 기업 요약</span>
       <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
         AI 생성
       </span>
@@ -77,7 +77,7 @@ export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
           <SummaryShimmer />
         ) : (
           <>
-            <p className="text-sm leading-relaxed text-muted-foreground">{data.summary}</p>
+            <p className="text-sm leading-relaxed text-foreground">{data.summary}</p>
             <p className="mt-2 text-xs text-muted-foreground/60">
               AI가 생성한 요약이며 투자 권유가 아닙니다. 투자 책임은 본인에게 있습니다 ·{' '}
               {generatedDate}
@@ -97,7 +97,7 @@ export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
               <SummaryShimmer />
             ) : (
               <>
-                <p className="text-sm leading-relaxed text-muted-foreground">{data.summary}</p>
+                <p className="text-sm leading-relaxed text-foreground">{data.summary}</p>
                 <p className="mt-3 text-xs text-muted-foreground/60">
                   AI가 생성한 요약이며 투자 권유가 아닙니다. 투자 책임은 본인에게 있습니다 ·{' '}
                   {generatedDate}
