@@ -5,6 +5,9 @@ export function Footer() {
     <footer className="border-border text-muted-foreground border-t pb-24 md:pb-0">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-6 text-xs sm:flex-row sm:justify-between">
         <nav className="flex gap-4" aria-label="법적 고지">
+          <Link href="/notices" className="hover:text-foreground transition-colors">
+            공지사항
+          </Link>
           <Link href="/privacy" className="hover:text-foreground transition-colors">
             개인정보처리방침
           </Link>
