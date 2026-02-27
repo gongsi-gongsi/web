@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import DOMPurify from 'isomorphic-dompurify'
 import { Button, Input, Label, Switch } from '@gs/ui'
 import {
   useCreateNotice,
@@ -10,9 +11,14 @@ import {
   type Notice,
   type NoticeCategory,
 } from '@/entities/notice'
-import { RichTextEditor } from './rich-text-editor'
+import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor'
+import { CATEGORY_TEMPLATES } from '../lib/templates'
 
 const CATEGORIES = Object.entries(NOTICE_CATEGORY_LABELS) as [NoticeCategory, string][]
+
+function isContentEmpty(html: string) {
+  return !html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim()
+}
 
 interface NoticeFormProps {
   notice?: Notice
@@ -24,18 +30,30 @@ export function NoticeForm({ notice }: NoticeFormProps) {
   const updateMutation = useUpdateNotice()
   const isEdit = !!notice
 
+  const editorRef = useRef<RichTextEditorRef>(null)
+  const [isPreview, setIsPreview] = useState(false)
+
   const [title, setTitle] = useState(notice?.title ?? '')
   const [category, setCategory] = useState<NoticeCategory>(notice?.category ?? 'NOTICE')
-  const [content, setContent] = useState(notice?.content ?? '')
+  const [content, setContent] = useState(
+    notice?.content ?? CATEGORY_TEMPLATES['NOTICE']
+  )
   const [isPublished, setIsPublished] = useState(notice?.isPublished ?? false)
   const [isPinned, setIsPinned] = useState(notice?.isPinned ?? false)
 
   const isPending = createMutation.isPending || updateMutation.isPending
 
+  function handleCategoryChange(newCategory: NoticeCategory) {
+    setCategory(newCategory)
+    if (!isEdit) {
+      editorRef.current?.setContent(CATEGORY_TEMPLATES[newCategory])
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    if (!title.trim() || !content.trim()) {
+    if (!title.trim() || isContentEmpty(content)) {
       alert('제목과 내용은 필수입니다')
       return
     }
@@ -82,7 +100,7 @@ export function NoticeForm({ notice }: NoticeFormProps) {
               type="button"
               variant={category === value ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setCategory(value)}
+              onClick={() => handleCategoryChange(value)}
             >
               {label}
             </Button>
@@ -91,8 +109,46 @@ export function NoticeForm({ notice }: NoticeFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>내용 *</Label>
-        <RichTextEditor value={content} onChange={setContent} />
+        <div className="flex items-center justify-between">
+          <Label>내용 *</Label>
+          <div className="flex gap-1 rounded-md border border-border p-0.5">
+            <button
+              type="button"
+              onClick={() => setIsPreview(false)}
+              className={`rounded px-3 py-1 text-xs transition-colors ${
+                !isPreview
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              편집
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsPreview(true)}
+              className={`rounded px-3 py-1 text-xs transition-colors ${
+                isPreview
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              미리보기
+            </button>
+          </div>
+        </div>
+
+        <div className={isPreview ? 'hidden' : undefined}>
+          <RichTextEditor ref={editorRef} value={content} onChange={setContent} />
+        </div>
+
+        {isPreview && (
+          <div className="min-h-[240px] rounded-lg border border-border p-4">
+            <div
+              className="prose prose-sm max-w-none dark:prose-invert"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-6">
