@@ -48,12 +48,12 @@ export function GlossaryDetailModal({
 
         <div>
           <h4 className="mb-1.5 text-sm font-semibold">설명</h4>
-          <p className="text-muted-foreground text-sm leading-relaxed">{term.description}</p>
+          <p className="text-foreground text-sm leading-relaxed">{term.description}</p>
         </div>
 
         <div className="bg-muted/50 rounded-lg p-4">
           <h4 className="mb-1.5 text-sm font-semibold">쉬운 예시</h4>
-          <p className="text-muted-foreground text-sm leading-relaxed">{term.example}</p>
+          <p className="text-foreground text-sm leading-relaxed">{term.example}</p>
         </div>
 
         {relatedTerms.length > 0 && (
@@ -63,7 +63,7 @@ export function GlossaryDetailModal({
               {relatedTerms.map(related => (
                 <Badge
                   key={related.id}
-                  variant="outline"
+                  variant="secondary"
                   className="cursor-pointer hover:bg-accent"
                   onClick={() => {
                     onSelectRelated(related)
