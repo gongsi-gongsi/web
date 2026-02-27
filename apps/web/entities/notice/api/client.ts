@@ -7,11 +7,12 @@ import type { NoticeListResponse, NoticeDetail } from '../model/types'
  * @returns 공지사항 목록 및 페이지네이션 정보
  */
 export async function getNotices(
-  params: { page?: number; category?: string } = {}
+  params: { page?: number; category?: string; limit?: number } = {}
 ): Promise<NoticeListResponse> {
   const searchParams = new URLSearchParams()
   if (params.page != null) searchParams.set('page', String(params.page))
   if (params.category) searchParams.set('category', params.category)
+  if (params.limit != null) searchParams.set('limit', String(params.limit))
 
   const res = await fetch(`${getBaseUrl()}/api/notices?${searchParams}`, {
     next: { revalidate: 60 },

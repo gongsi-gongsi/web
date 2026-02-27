@@ -9,7 +9,7 @@ import { getNotices, getNotice } from '../api/client'
  * @param params - 페이지 번호, 카테고리 필터
  * @returns 공지사항 목록 및 페이지네이션 정보
  */
-export function useNotices(params: { page?: number; category?: string } = {}) {
+export function useNotices(params: { page?: number; category?: string; limit?: number } = {}) {
   return useSuspenseQuery({
     queryKey: queries.notices.list(params).queryKey,
     queryFn: () => getNotices(params),
