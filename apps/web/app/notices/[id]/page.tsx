@@ -5,6 +5,8 @@ import { MobileHeader } from '@/widgets/header'
 import { NoticeDetailPage, NoticeDetailSkeleton } from '@/widgets/notice-detail-page'
 import { prefetchNotice, getNotice } from '@/entities/notice'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({
   params,
 }: {

@@ -5,6 +5,8 @@ import { MobileHeader } from '@/widgets/header'
 import { NoticeListPage, NoticeListSkeleton } from '@/widgets/notice-list-page'
 import { prefetchNotices } from '@/entities/notice'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: '공지사항 | 공시공시',
   description: '공시공시 서비스 공지사항, 업데이트, 이벤트 안내',
