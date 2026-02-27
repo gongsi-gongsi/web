@@ -43,4 +43,11 @@ export const queries = createQueryKeyStore({
     all: null,
     check: (corpCode: string) => [corpCode],
   },
+  banners: {
+    active: null,
+  },
+  notices: {
+    list: (params: { page?: number; category?: string }) => [params],
+    detail: (id: string) => [id],
+  },
 })

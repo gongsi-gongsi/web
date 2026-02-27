@@ -16,9 +16,11 @@ const nextConfig: NextConfig = {
   // 개발 인디케이터 비활성화
   devIndicators: false,
 
-  // 외부 이미지 도메인 허용 (OAuth 아바타)
+  // 외부 이미지 도메인 허용
   images: {
+    qualities: [90],
     remotePatterns: [
+      { protocol: 'https', hostname: 'cmljmwditkdcykopkfxj.supabase.co' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { hostname: '*.kakaocdn.net' },
     ],
