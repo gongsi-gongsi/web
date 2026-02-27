@@ -11,8 +11,7 @@ const CATEGORY_BADGE_VARIANTS: Record<
   NoticeCategory,
   'default' | 'secondary' | 'destructive' | 'outline'
 > = {
-  NOTICE: 'default',
-  UPDATE: 'secondary',
+  SERVICE: 'secondary',
   EVENT: 'outline',
   MAINTENANCE: 'destructive',
 }
