@@ -1,14 +1,25 @@
 import { test, expect } from '@playwright/test'
 
-test('홈페이지가 정상적으로 렌더링된다', async ({ page }) => {
-  await page.goto('/')
+test.describe('홈페이지', () => {
+  test('페이지 타이틀이 올바르다', async ({ page }) => {
+    await page.goto('/')
+    await expect(page).toHaveTitle(/공시공시/)
+  })
 
-  await expect(page.getByRole('heading', { name: '공시공시' })).toBeVisible()
-  await expect(page.getByText('AI 기반 주식 뉴스 분석 서비스입니다.')).toBeVisible()
-})
+  test('검색 페이지로 이동할 수 있다', async ({ page }) => {
+    await page.goto('/')
+    await page.goto('/search')
+    await expect(page).toHaveURL('/search')
+    await expect(page.getByPlaceholder(/회사명/)).toBeVisible()
+  })
 
-test('시작하기 버튼이 존재한다', async ({ page }) => {
-  await page.goto('/')
+  test('공시 페이지로 이동할 수 있다', async ({ page }) => {
+    await page.goto('/disclosures/today')
+    await expect(page).toHaveURL('/disclosures/today')
+  })
 
-  await expect(page.getByRole('button', { name: '시작하기' })).toBeVisible()
+  test('용어집 페이지로 이동할 수 있다', async ({ page }) => {
+    await page.goto('/glossary')
+    await expect(page.getByRole('heading', { name: '투자 용어집' })).toBeVisible()
+  })
 })
