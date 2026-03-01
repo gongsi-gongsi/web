@@ -71,7 +71,7 @@ function SheetContent({
           side === 'top' &&
             'data-[state=open]:animate-slide-in-from-top data-[state=closed]:animate-slide-out-to-top inset-x-0 top-0 h-auto border-b',
           side === 'bottom' &&
-            'data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom inset-x-0 bottom-0 h-auto max-h-[85vh] overflow-y-auto rounded-t-3xl border-t',
+            'data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom inset-x-0 bottom-0 h-auto max-h-[70vh] overflow-y-auto rounded-t-3xl border-t',
           className
         )}
         {...props}

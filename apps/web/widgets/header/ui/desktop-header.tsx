@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { label: '홈', href: '/' },
   { label: '기업정보', href: '/companies' },
   { label: '용어집', href: '/glossary' },
+  { label: '소식', href: '/notices' },
 ] as const
 
 export function DesktopHeader() {

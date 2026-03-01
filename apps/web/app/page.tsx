@@ -15,6 +15,7 @@ import { MajorNewsSection, MajorNewsSectionSkeleton } from '@/widgets/major-news
 import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures, prefetchPopularCompanies } from '@/entities/disclosure/server'
 import { prefetchMajorMarketNews } from '@/entities/news/server'
+import { prefetchActiveBanners } from '@/entities/banner'
 
 // 빌드 시 프리렌더링 방지 (DB 연결 필요)
 export const dynamic = 'force-dynamic'
@@ -33,6 +34,17 @@ async function MajorNewsWithPrefetch() {
   return (
     <HydrationBoundary state={dehydratedState}>
       <MajorNewsSection />
+    </HydrationBoundary>
+  )
+}
+
+async function BannerSliderWithPrefetch() {
+  const dehydratedState = await prefetchActiveBanners()
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <Suspense>
+        <BannerSlider />
+      </Suspense>
     </HydrationBoundary>
   )
 }
@@ -71,7 +83,7 @@ export default function Home() {
       {/* 이미지 배너 슬라이더 */}
       <section className="mb-6 px-4 pt-3 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <BannerSlider />
+          <BannerSliderWithPrefetch />
         </div>
       </section>
 
