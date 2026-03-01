@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { queries } from '@/shared/lib/query-keys'
 import { getWatchlist, addToWatchlist, removeFromWatchlist, checkWatchlist } from '../api'
-import type { WatchlistCheckResponse, WatchlistResponse } from '../model'
+import type { WatchlistCheckResponse, WatchlistItem, WatchlistResponse } from '../model'
 
 /**
  * [클라이언트 전용] 관심 종목 목록을 조회합니다
@@ -73,6 +73,13 @@ export function useAddToWatchlist() {
       queryClient.setQueryData<WatchlistCheckResponse>(checkQueryKey, { isWatchlisted: true })
 
       return { previousCheck, previousAll }
+    },
+    onSuccess: (newItem: WatchlistItem) => {
+      // API가 반환한 실제 아이템으로 캐시를 즉시 업데이트합니다.
+      // 관심 페이지로 이동해도 refetch 없이 바로 반영됩니다.
+      queryClient.setQueryData<WatchlistResponse>(queries.watchlist.all.queryKey, old =>
+        old ? { items: [...old.items, newItem] } : { items: [newItem] }
+      )
     },
     onError: (_error, corpCode, context) => {
       if (context?.previousCheck !== undefined) {

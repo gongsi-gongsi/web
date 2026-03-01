@@ -25,7 +25,7 @@ export function Providers({ children }: ProvidersProps) {
       </ThemeProvider>
       {process.env.NODE_ENV === 'development' && (
         <Suspense fallback={null}>
-          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+          {/* <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" /> */}
         </Suspense>
       )}
     </QueryClientProvider>
