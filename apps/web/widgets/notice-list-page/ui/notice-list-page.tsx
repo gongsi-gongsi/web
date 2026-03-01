@@ -11,7 +11,41 @@ import {
   NOTICE_CATEGORY_ACCENT_COLOR,
   NOTICE_CATEGORY_DOT_CLASS,
 } from '@/entities/notice'
-import type { NoticeListItem } from '@/entities/notice'
+import type { NoticeCategory, NoticeListItem } from '@/entities/notice'
+
+const CATEGORY_FILTERS: { label: string; value: NoticeCategory | 'ALL' }[] = [
+  { label: '전체', value: 'ALL' },
+  { label: NOTICE_CATEGORY_LABELS.SERVICE, value: 'SERVICE' },
+  { label: NOTICE_CATEGORY_LABELS.EVENT, value: 'EVENT' },
+  { label: NOTICE_CATEGORY_LABELS.MAINTENANCE, value: 'MAINTENANCE' },
+]
+
+function CategoryFilterBar({
+  selected,
+  onChange,
+}: {
+  selected: NoticeCategory | 'ALL'
+  onChange: (v: NoticeCategory | 'ALL') => void
+}) {
+  return (
+    <div className="flex gap-1.5 px-4 pb-3 md:px-0">
+      {CATEGORY_FILTERS.map(({ label, value }) => (
+        <button
+          key={value}
+          onClick={() => onChange(value)}
+          className={cn(
+            'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+            selected === value
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-border bg-transparent text-muted-foreground hover:border-foreground/30 hover:text-foreground'
+          )}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 function FeaturedNoticeCard({ notice }: { notice: NoticeListItem }) {
   return (
@@ -107,8 +141,15 @@ function MobileNoticeItem({ notice }: { notice: NoticeListItem }) {
   )
 }
 
-function FeaturedLayout({ onShowAll }: { onShowAll: () => void }) {
-  const { data } = useNotices({ limit: 5 })
+function FeaturedLayout({
+  category,
+  onShowAll,
+}: {
+  category: NoticeCategory | 'ALL'
+  onShowAll: () => void
+}) {
+  const categoryParam = category === 'ALL' ? undefined : category
+  const { data } = useNotices({ limit: 5, category: categoryParam })
 
   if (data.data.length === 0) {
     return (
@@ -163,9 +204,16 @@ function FeaturedLayout({ onShowAll }: { onShowAll: () => void }) {
   )
 }
 
-function AllNoticesList({ onCollapse }: { onCollapse: () => void }) {
+function AllNoticesList({
+  category,
+  onCollapse,
+}: {
+  category: NoticeCategory | 'ALL'
+  onCollapse: () => void
+}) {
   const [page, setPage] = useState(1)
-  const { data } = useNotices({ page })
+  const categoryParam = category === 'ALL' ? undefined : category
+  const { data } = useNotices({ page, category: categoryParam })
 
   return (
     <div>
@@ -241,16 +289,35 @@ function AllNoticesList({ onCollapse }: { onCollapse: () => void }) {
 
 export function NoticeListPage() {
   const [showAll, setShowAll] = useState(false)
+  const [category, setCategory] = useState<NoticeCategory | 'ALL'>('ALL')
 
-  if (showAll) {
-    return <AllNoticesList onCollapse={() => setShowAll(false)} />
+  const handleCategoryChange = (v: NoticeCategory | 'ALL') => {
+    setCategory(v)
+    setShowAll(false)
   }
-  return <FeaturedLayout onShowAll={() => setShowAll(true)} />
+
+  return (
+    <div>
+      <CategoryFilterBar selected={category} onChange={handleCategoryChange} />
+      {showAll ? (
+        <AllNoticesList category={category} onCollapse={() => setShowAll(false)} />
+      ) : (
+        <FeaturedLayout category={category} onShowAll={() => setShowAll(true)} />
+      )}
+    </div>
+  )
 }
 
 export function NoticeListSkeleton() {
   return (
     <>
+      {/* 카테고리 필터 스켈레톤 */}
+      <div className="flex gap-1.5 px-4 pb-3 md:px-0">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="h-6 w-12 rounded-full" />
+        ))}
+      </div>
+
       {/* 모바일 */}
       <div className="divide-y divide-border/50 md:hidden">
         {Array.from({ length: 5 }).map((_, i) => (
