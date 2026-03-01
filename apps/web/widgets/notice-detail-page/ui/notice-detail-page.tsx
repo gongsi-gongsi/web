@@ -3,34 +3,24 @@
 import Link from 'next/link'
 import DOMPurify from 'isomorphic-dompurify'
 import { Badge, Skeleton } from '@gs/ui'
-import { ArrowLeft, CalendarBlank, User } from '@phosphor-icons/react'
-import { useNotice, NOTICE_CATEGORY_LABELS } from '@/entities/notice'
-import type { NoticeCategory } from '@/entities/notice'
+import { ArrowLeft } from '@phosphor-icons/react'
+import {
+  useNotice,
+  NOTICE_CATEGORY_LABELS,
+  NOTICE_CATEGORY_BADGE_VARIANTS,
+  NOTICE_CATEGORY_ACCENT_COLOR,
+} from '@/entities/notice'
 
 interface NoticeDetailPageProps {
   id: string
 }
 
-/** 카테고리별 헤더 액센트 컬러 (CSS variable) */
-const CATEGORY_ACCENT_COLOR: Record<NoticeCategory, string> = {
-  NOTICE: 'var(--primary)',
-  UPDATE: 'var(--color-secondary-500)',
-  EVENT: 'var(--success)',
-  MAINTENANCE: 'var(--destructive)',
-}
-
-const CATEGORY_BADGE_VARIANTS: Record<
-  NoticeCategory,
-  'default' | 'secondary' | 'destructive' | 'outline'
-> = {
-  NOTICE: 'default',
-  UPDATE: 'secondary',
-  EVENT: 'outline',
-  MAINTENANCE: 'destructive',
-}
-
 export function NoticeDetailPage({ id }: NoticeDetailPageProps) {
   const { data: notice } = useNotice(id)
+
+  const accentColor = NOTICE_CATEGORY_ACCENT_COLOR[notice.category]
+  const badgeVariant = NOTICE_CATEGORY_BADGE_VARIANTS[notice.category]
+  const categoryLabel = NOTICE_CATEGORY_LABELS[notice.category]
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">
@@ -45,42 +35,37 @@ export function NoticeDetailPage({ id }: NoticeDetailPageProps) {
 
       {/* Header */}
       <header className="mb-8">
-        {/* Category accent bar */}
-        <div
-          className="mb-5 h-0.5 w-12 rounded-full opacity-80"
-          style={{ background: CATEGORY_ACCENT_COLOR[notice.category] }}
-        />
-
-        <div className="mb-3 flex items-center gap-2">
-          <Badge variant={CATEGORY_BADGE_VARIANTS[notice.category]}>
-            {NOTICE_CATEGORY_LABELS[notice.category]}
+        {/* 카테고리 + 제목 + 날짜 한 줄 */}
+        <div className="flex items-start gap-3">
+          <Badge
+            variant={badgeVariant}
+            className="mt-0.5 shrink-0"
+            style={
+              badgeVariant === 'default'
+                ? { backgroundColor: accentColor, borderColor: accentColor }
+                : undefined
+            }
+          >
+            {categoryLabel}
           </Badge>
-        </div>
-
-        <h1 className="text-2xl font-bold leading-[1.35] text-foreground md:text-3xl">
-          {notice.title}
-        </h1>
-
-        {/* Metadata */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-border/60 pb-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <User size={14} className="shrink-0" />
-            {notice.author.name}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CalendarBlank size={14} className="shrink-0" />
+          <h1 className="flex-1 text-lg font-bold leading-[1.4] text-foreground md:text-xl">
+            {notice.title}
+          </h1>
+          <span className="mt-0.5 shrink-0 text-sm text-muted-foreground">
             {new Date(notice.createdAt).toLocaleDateString('ko-KR', {
               year: 'numeric',
-              month: 'long',
-              day: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
             })}
           </span>
         </div>
+
+        <div className="mt-4 border-b border-border/60" />
       </header>
 
       {/* Content */}
       <div
-        className="prose prose-sm max-w-none dark:prose-invert prose-p:text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-foreground prose-li:my-0.5 prose-ul:my-1 prose-ol:my-1 prose-p:leading-relaxed"
+        className="prose prose-sm max-w-none prose-p:text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-foreground prose-li:my-0.5 prose-ul:my-1 prose-ol:my-1 prose-p:leading-relaxed [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:rounded-lg [&_h2]:bg-muted/60 [&_h2]:px-3 [&_h2]:py-2 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-foreground"
         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(notice.content) }}
       />
 
@@ -104,14 +89,13 @@ export function NoticeDetailSkeleton() {
       <Skeleton className="mb-8 h-5 w-28" />
 
       <div className="mb-8">
-        <Skeleton className="mb-5 h-0.5 w-12 rounded-full" />
-        <Skeleton className="mb-3 h-5 w-16 rounded-full" />
-        <Skeleton className="h-8 w-full" />
-        <Skeleton className="mt-1.5 h-8 w-3/4" />
-        <div className="mt-4 flex gap-4 border-b border-border/60 pb-4">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-32" />
+        <div className="flex items-start gap-3">
+          <Skeleton className="mt-0.5 h-5 w-14 shrink-0 rounded-full" />
+          <Skeleton className="h-6 flex-1" />
+          <Skeleton className="mt-0.5 h-4 w-24 shrink-0" />
         </div>
+        <Skeleton className="mt-2 h-5 w-3/4" />
+        <div className="mt-4 border-b border-border/60" />
       </div>
 
       <div className="space-y-2.5">

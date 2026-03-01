@@ -1,16 +1,26 @@
--- 1. 기존 NOTICE, UPDATE → SERVICE 데이터 변환
-UPDATE "Notice" SET "category" = 'SERVICE' WHERE "category" IN ('NOTICE', 'UPDATE');
+-- 공지사항 카테고리 enum 생성 (SERVICE, EVENT, MAINTENANCE)
+CREATE TYPE "NoticeCategory" AS ENUM ('SERVICE', 'EVENT', 'MAINTENANCE');
 
--- 2. 새 enum 타입 생성 (SERVICE, EVENT, MAINTENANCE)
-CREATE TYPE "NoticeCategory_new" AS ENUM ('SERVICE', 'EVENT', 'MAINTENANCE');
+-- 공지사항 테이블 생성
+CREATE TABLE "notices" (
+    "id" UUID NOT NULL,
+    "title" VARCHAR(300) NOT NULL,
+    "category" "NoticeCategory" NOT NULL,
+    "content" TEXT NOT NULL,
+    "author_id" UUID NOT NULL,
+    "is_published" BOOLEAN NOT NULL DEFAULT false,
+    "is_pinned" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
--- 3. 컬럼을 새 enum 타입으로 변환
-ALTER TABLE "Notice"
-  ALTER COLUMN "category" TYPE "NoticeCategory_new"
-  USING "category"::text::"NoticeCategory_new";
+    CONSTRAINT "notices_pkey" PRIMARY KEY ("id")
+);
 
--- 4. 기존 enum 삭제
-DROP TYPE "NoticeCategory";
+-- 인덱스 생성
+CREATE INDEX "notices_category_idx" ON "notices"("category");
+CREATE INDEX "notices_is_published_idx" ON "notices"("is_published");
 
--- 5. 새 enum 이름 변경
-ALTER TYPE "NoticeCategory_new" RENAME TO "NoticeCategory";
+-- 외래키 추가
+ALTER TABLE "notices" ADD CONSTRAINT "notices_author_id_fkey"
+    FOREIGN KEY ("author_id") REFERENCES "admin_users"("id")
+    ON DELETE RESTRICT ON UPDATE CASCADE;

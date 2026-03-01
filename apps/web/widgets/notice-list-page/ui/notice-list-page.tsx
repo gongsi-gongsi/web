@@ -4,33 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { cn, Card, Badge, Skeleton } from '@gs/ui'
 import { ArrowRight, PushPinSimple, CaretLeft, CaretRight } from '@phosphor-icons/react'
-import { useNotices, NOTICE_CATEGORY_LABELS } from '@/entities/notice'
-import type { NoticeListItem, NoticeCategory } from '@/entities/notice'
-
-const CATEGORY_BADGE_VARIANTS: Record<
-  NoticeCategory,
-  'default' | 'secondary' | 'destructive' | 'outline'
-> = {
-  SERVICE: 'secondary',
-  EVENT: 'outline',
-  MAINTENANCE: 'destructive',
-}
-
-/** 카테고리별 상단 액센트 컬러 (CSS variable) */
-const CATEGORY_ACCENT_COLOR: Record<NoticeCategory, string> = {
-  NOTICE: 'var(--primary)',
-  UPDATE: 'var(--color-secondary-500)',
-  EVENT: 'var(--success)',
-  MAINTENANCE: 'var(--destructive)',
-}
-
-/** 카테고리별 왼쪽 도트 컬러 클래스 */
-const CATEGORY_DOT_CLASS: Record<NoticeCategory, string> = {
-  NOTICE: 'bg-primary',
-  UPDATE: 'bg-[var(--color-secondary-500)]',
-  EVENT: 'bg-success',
-  MAINTENANCE: 'bg-destructive',
-}
+import {
+  useNotices,
+  NOTICE_CATEGORY_LABELS,
+  NOTICE_CATEGORY_BADGE_VARIANTS,
+  NOTICE_CATEGORY_ACCENT_COLOR,
+  NOTICE_CATEGORY_DOT_CLASS,
+} from '@/entities/notice'
+import type { NoticeListItem } from '@/entities/notice'
 
 function FeaturedNoticeCard({ notice }: { notice: NoticeListItem }) {
   return (
@@ -42,11 +23,11 @@ function FeaturedNoticeCard({ notice }: { notice: NoticeListItem }) {
         {/* Category accent bar at top */}
         <div
           className="absolute inset-x-0 top-0 h-0.5 rounded-t-xl opacity-80"
-          style={{ background: CATEGORY_ACCENT_COLOR[notice.category] }}
+          style={{ background: NOTICE_CATEGORY_ACCENT_COLOR[notice.category] }}
         />
 
         <div className="flex items-center justify-between">
-          <Badge variant={CATEGORY_BADGE_VARIANTS[notice.category]}>
+          <Badge variant={NOTICE_CATEGORY_BADGE_VARIANTS[notice.category]}>
             {NOTICE_CATEGORY_LABELS[notice.category]}
           </Badge>
           <span className="text-xs text-muted-foreground">
@@ -85,7 +66,7 @@ function CompactNoticeItem({ notice }: { notice: NoticeListItem }) {
     >
       {/* Category dot */}
       <span
-        className={cn('mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full', CATEGORY_DOT_CLASS[notice.category])}
+        className={cn('mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full', NOTICE_CATEGORY_DOT_CLASS[notice.category])}
       />
       <div className="min-w-0 flex-1">
         <h3 className="truncate text-[15px] font-semibold leading-[1.35] text-foreground transition-colors duration-150 group-hover:text-primary">
@@ -108,7 +89,7 @@ function MobileNoticeItem({ notice }: { notice: NoticeListItem }) {
   return (
     <Link href={`/notices/${notice.id}`} className="flex items-start gap-3 px-4 py-3 active:bg-accent/50">
       <span
-        className={cn('mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full', CATEGORY_DOT_CLASS[notice.category])}
+        className={cn('mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full', NOTICE_CATEGORY_DOT_CLASS[notice.category])}
       />
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-medium text-primary">{NOTICE_CATEGORY_LABELS[notice.category]}</p>
@@ -207,7 +188,7 @@ function AllNoticesList({ onCollapse }: { onCollapse: () => void }) {
                 className="group flex items-start gap-3 px-4 py-4 transition-colors hover:bg-accent/50"
               >
                 <Badge
-                  variant={CATEGORY_BADGE_VARIANTS[notice.category]}
+                  variant={NOTICE_CATEGORY_BADGE_VARIANTS[notice.category]}
                   className="mt-0.5 shrink-0 text-xs"
                 >
                   {NOTICE_CATEGORY_LABELS[notice.category]}
