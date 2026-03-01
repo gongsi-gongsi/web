@@ -59,7 +59,9 @@ function SheetContent({
 }) {
   return (
     <SheetPortal>
-      <SheetOverlay />
+      <SheetPrimitive.Close asChild>
+        <SheetOverlay />
+      </SheetPrimitive.Close>
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(

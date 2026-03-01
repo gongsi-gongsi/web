@@ -1,7 +1,7 @@
 'use client'
 
 import { getBaseUrl } from '@/shared/lib/get-base-url'
-import type { WatchlistResponse, WatchlistCheckResponse } from '../model'
+import type { WatchlistItem, WatchlistResponse, WatchlistCheckResponse } from '../model'
 
 /**
  * [클라이언트 전용] 관심 종목 목록을 조회합니다
@@ -22,10 +22,10 @@ export async function getWatchlist(): Promise<WatchlistResponse> {
 /**
  * [클라이언트 전용] 관심 종목에 기업을 추가합니다
  * @param corpCode - 기업 고유번호 (8자리)
- * @returns void
+ * @returns 생성된 WatchlistItem
  * @throws {Error} API 호출 실패 시
  */
-export async function addToWatchlist(corpCode: string): Promise<void> {
+export async function addToWatchlist(corpCode: string): Promise<WatchlistItem> {
   const baseUrl = getBaseUrl()
   const response = await fetch(`${baseUrl}/api/watchlist`, {
     method: 'POST',
@@ -36,6 +36,8 @@ export async function addToWatchlist(corpCode: string): Promise<void> {
   if (!response.ok) {
     throw new Error('Failed to add to watchlist')
   }
+
+  return response.json()
 }
 
 /**
