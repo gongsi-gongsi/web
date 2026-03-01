@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/nextjs'
 import { createServerClient } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 import { syncUser } from '@/entities/user'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   const redirectTo = searchParams.get('redirectTo') || '/'
