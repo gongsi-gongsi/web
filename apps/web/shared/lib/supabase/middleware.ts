@@ -15,6 +15,11 @@ const PROTECTED_PATHS = ['/mypage', '/watchlist']
  * @returns 세션이 갱신된 응답 또는 리다이렉트 응답
  */
 export async function updateSession(request: NextRequest) {
+  // Supabase env vars가 없으면 (예: CI 테스트 환경) 인증 없이 통과
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
