@@ -139,11 +139,26 @@ export function formatQuarterlyFinancial(
   if (selected.length === 0) return null
 
   const quarter = REPORT_CODE_INFO[reportCode].quarter
+  const fsDivUsed = selected[0]?.fs_div ?? 'unknown'
   const accounts: Partial<Record<AccountKey, number | null>> = {}
+
+  // 분기별 계정 매핑 로그 (개발 환경에서 원인 파악용)
+  console.debug(
+    `[DART] ${year}.${quarter} (${reportCode}) fs_div=${fsDivUsed} 계정 목록:`,
+    selected.map(item => `${item.account_nm}=${item.thstrm_amount}`)
+  )
 
   for (const item of selected) {
     const accountKey = findAccountKey(item.account_nm)
     if (!accountKey) continue
+
+    // 이미 값이 있으면 덮어쓰지 않음 (분기별 계정명 차이로 인한 오염 방지)
+    if (accounts[accountKey] != null) {
+      console.debug(
+        `[DART] ${year}.${quarter} 중복 계정 무시: ${item.account_nm} → ${accountKey} (기존값 유지)`
+      )
+      continue
+    }
     accounts[accountKey] = parseAmount(item.thstrm_amount)
   }
 

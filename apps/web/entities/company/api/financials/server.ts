@@ -18,6 +18,67 @@ import { getProvisionalFinancial } from './provisional'
 /** 분기 정렬용 순서 */
 const QUARTER_ORDER: Record<Quarter, number> = { '1Q': 1, '2Q': 2, '3Q': 3, '4Q': 4 }
 
+/** 누적값 → 분기 단독값 변환 대상 (손익계산서 항목만) */
+const INCOME_KEYS = ['revenue', 'operatingProfit', 'netIncome'] as const
+type IncomeKey = (typeof INCOME_KEYS)[number]
+
+
+/**
+ * DART `fnlttSinglAcnt` API의 4Q(사업보고서) 손익 데이터를 분기 단독값으로 변환합니다
+ *
+ * DART API 반환 방식:
+ * - 1Q / 2Q(반기) / 3Q: thstrm_amount = 해당 분기 단독값 (이미 standalone)
+ * - 4Q (사업보고서):    thstrm_amount = 연간 누적값 (연간 전체)
+ *
+ * 따라서 4Q 단독값 = 연간 - Q1 - Q2 - Q3 (같은 연도 데이터 필요)
+ * Q1/Q2/Q3 중 하나라도 없으면 계산 불가 → 해당 항목 null 처리
+ *
+ * @param data - 분기별 재무 데이터 배열
+ * @returns 4Q 손익 항목이 분기 단독값으로 변환된 배열
+ */
+function convertCumulativeToStandalone(data: FinancialData[]): FinancialData[] {
+  // 같은 연도의 1Q~3Q 단독값을 조회용으로 스냅샷
+  const byQuarter = new Map<string, Pick<FinancialData, IncomeKey>>()
+  for (const d of data) {
+    if (d.quarter && !d.isProvisional) {
+      byQuarter.set(`${d.year}-${d.quarter}`, {
+        revenue: d.revenue,
+        operatingProfit: d.operatingProfit,
+        netIncome: d.netIncome,
+      })
+    }
+  }
+
+  return data.map(d => {
+    // 잠정실적은 이미 분기 단독값
+    if (d.isProvisional) return d
+    // 4Q(사업보고서)만 변환 대상 — 1Q/2Q/3Q는 DART가 이미 단독값으로 반환
+    if (!d.quarter || d.quarter !== '4Q') return d
+
+    const q1 = byQuarter.get(`${d.year}-1Q`)
+    const q2 = byQuarter.get(`${d.year}-2Q`)
+    const q3 = byQuarter.get(`${d.year}-3Q`)
+
+    // 1Q~3Q 중 하나라도 없으면 계산 불가
+    if (!q1 || !q2 || !q3) return d
+
+    const updated = { ...d }
+    for (const key of INCOME_KEYS) {
+      const annual = d[key]
+      const q1Val = q1[key]
+      const q2Val = q2[key]
+      const q3Val = q3[key]
+
+      if (annual !== null && q1Val !== null && q2Val !== null && q3Val !== null) {
+        updated[key] = annual - q1Val - q2Val - q3Val
+      } else {
+        updated[key] = null
+      }
+    }
+    return updated
+  })
+}
+
 /**
  * 재무 데이터를 시간순(오름차순)으로 정렬합니다
  * @param data - 재무 데이터 배열
@@ -237,14 +298,18 @@ export async function getQuarterlyFinancials(
     }
   })
 
+  // DART 누적값 → 분기 단독값 변환 (손익 항목: 매출, 영업이익, 순이익)
+  // 잠정실적 fallback 추가 전에 변환해야 원본 누적값 기준으로 정확히 계산됨
+  const standaloneData = convertCumulativeToStandalone(data)
+
   // 잠정실적 fallback: 최신 분기가 없으면 잠정실적으로 보완
-  if (data.length > 0) {
-    const next = getNextQuarter(data[0])
+  if (standaloneData.length > 0) {
+    const next = getNextQuarter(standaloneData[0])
     if (next) {
       try {
         const provisionalData = await getProvisionalFinancial(corpCode, next.year, next.quarter)
         if (provisionalData) {
-          data.unshift(provisionalData)
+          standaloneData.unshift(provisionalData)
         }
       } catch (error) {
         console.error('잠정실적 fallback 실패:', error)
@@ -255,7 +320,7 @@ export async function getQuarterlyFinancials(
   return {
     corpCode,
     mode: 'quarterly',
-    data: sortChronological(data),
+    data: sortChronological(standaloneData),
   }
 }
 
