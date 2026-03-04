@@ -6,11 +6,6 @@ export function DisclosureTableSkeleton() {
           key={index}
           className="flex items-center gap-5 border-b border-border/40 px-5 py-4 last:border-b-0"
         >
-          {/* 컬러 도트 */}
-          <div className="flex shrink-0 flex-col items-center gap-1">
-            <div className="size-2.5 animate-pulse rounded-full bg-muted" />
-          </div>
-
           {/* 시장 배지 */}
           <div className="w-8 shrink-0 text-center">
             <div className="mx-auto size-7 animate-pulse rounded-lg bg-muted" />

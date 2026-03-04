@@ -5,13 +5,10 @@ export function DisclosureGridSkeleton() {
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={index} className="flex flex-col rounded-2xl border border-border/60 bg-card p-5">
-          {/* 상단: 도트 + 공시유형 배지 + 시장 배지 */}
+          {/* 상단: 공시유형 배지 + 시장 배지 */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Skeleton className="size-2 rounded-full" />
-              <Skeleton className="h-5 w-14" />
-            </div>
-            <Skeleton className="h-5 w-6" />
+            <Skeleton className="h-5 w-14" />
+            <Skeleton className="size-7 rounded-lg" />
           </div>
 
           {/* 회사명 */}

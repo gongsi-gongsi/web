@@ -23,23 +23,23 @@ export function DisclosureGridCard({ disclosure }: DisclosureGridCardProps) {
           'hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-md'
         )}
       >
-        {/* 상단: 공시유형 도트 + 배지 + 시장 배지 */}
+        {/* 상단: 공시유형 배지 + 시장 배지 */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className={cn('inline-block size-2 rounded-full', typeColor.bg)} />
-            <span
-              className={cn(
-                'rounded-md px-2 py-0.5 text-[11px] font-semibold',
-                typeColor.bg,
-                typeColor.text
-              )}
-            >
-              {typeColor.label}
-            </span>
-          </div>
+          <span
+            className={cn(
+              'rounded-md px-2 py-0.5 text-[11px] font-semibold',
+              typeColor.bg,
+              typeColor.text
+            )}
+          >
+            {typeColor.label}
+          </span>
           {marketBadge && (
             <span
-              className={cn('rounded-lg px-1.5 py-0.5 text-[10px] font-bold', marketBadge.color)}
+              className={cn(
+                'inline-flex size-7 items-center justify-center rounded-lg text-[11px] font-bold',
+                marketBadge.color
+              )}
             >
               {marketBadge.label}
             </span>

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@gs/ui'
 import { useActiveBanners } from '@/entities/banner'
+import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 
 const AUTO_PLAY_INTERVAL = 7000
 
@@ -12,7 +13,7 @@ function isSafeUrl(url: string) {
   return /^https?:\/\//i.test(url)
 }
 
-export function BannerSlider() {
+function BannerSliderContent() {
   const { data: banners } = useActiveBanners()
   const [current, setCurrent] = useState(0)
 
@@ -76,5 +77,13 @@ export function BannerSlider() {
         )
       })}
     </div>
+  )
+}
+
+export function BannerSlider() {
+  return (
+    <ErrorBoundaryWithFallback fallback={() => null}>
+      <BannerSliderContent />
+    </ErrorBoundaryWithFallback>
   )
 }
