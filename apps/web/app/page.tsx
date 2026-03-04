@@ -16,6 +16,7 @@ import { TodayDisclosures } from '@/widgets/today-disclosures'
 import { prefetchTodayDisclosures, prefetchPopularCompanies } from '@/entities/disclosure/server'
 import { prefetchMajorMarketNews } from '@/entities/news/server'
 import { prefetchActiveBanners } from '@/entities/banner'
+import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 
 // 빌드 시 프리렌더링 방지 (DB 연결 필요)
 export const dynamic = 'force-dynamic'
@@ -83,7 +84,9 @@ export default function Home() {
       {/* 이미지 배너 슬라이더 */}
       <section className="mb-6 px-4 pt-3 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <BannerSliderWithPrefetch />
+          <ErrorBoundaryWithFallback fallback={() => null}>
+            <BannerSliderWithPrefetch />
+          </ErrorBoundaryWithFallback>
         </div>
       </section>
 
