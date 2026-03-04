@@ -34,11 +34,6 @@ export function DisclosureTableRow({
         !isLast && 'border-b border-border/40'
       )}
     >
-      {/* 공시유형 컬러 도트 */}
-      <div className="flex shrink-0 flex-col items-center gap-1">
-        <span className={cn('inline-block size-2.5 rounded-full', typeColor.bg)} />
-      </div>
-
       {/* 시장 배지 */}
       <div className="w-8 shrink-0 text-center">
         {marketBadge && (
