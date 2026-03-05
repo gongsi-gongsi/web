@@ -85,10 +85,10 @@ export function GrowthChart({ data }: GrowthChartProps) {
             tickLine={false}
           />
           <Tooltip
-            formatter={(value: number | undefined, name: string) => {
-              if (value === undefined) return ['-', name]
+            formatter={(value: number | undefined, name: string | undefined) => {
+              if (value === undefined) return ['-', name ?? '']
               if (name === '영업이익률') return [`${value.toFixed(1)}%`, name]
-              return [formatValue(value), name]
+              return [formatValue(value), name ?? '']
             }}
             contentStyle={{
               backgroundColor: 'var(--color-popover)',
