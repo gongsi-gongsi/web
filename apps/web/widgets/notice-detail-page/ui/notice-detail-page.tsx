@@ -10,6 +10,7 @@ import {
   NOTICE_CATEGORY_BADGE_VARIANTS,
   NOTICE_CATEGORY_ACCENT_COLOR,
 } from '@/entities/notice'
+import { ShareButton } from '@/shared/ui/share-button'
 
 interface NoticeDetailPageProps {
   id: string
@@ -51,13 +52,16 @@ export function NoticeDetailPage({ id }: NoticeDetailPageProps) {
           <h1 className="flex-1 text-lg font-bold leading-[1.4] text-foreground md:text-xl">
             {notice.title}
           </h1>
-          <span className="mt-0.5 shrink-0 text-sm text-muted-foreground">
-            {new Date(notice.createdAt).toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            })}
-          </span>
+          <div className="mt-0.5 flex shrink-0 items-center gap-1">
+            <span className="text-sm text-muted-foreground">
+              {new Date(notice.createdAt).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })}
+            </span>
+            <ShareButton className="-mr-2 size-7 text-muted-foreground" />
+          </div>
         </div>
 
         <div className="mt-4 border-b border-border/60" />

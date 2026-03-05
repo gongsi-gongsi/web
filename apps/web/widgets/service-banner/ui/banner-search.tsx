@@ -97,7 +97,7 @@ export function BannerSearch() {
           onFocus={handleFocus}
           onKeyDown={handleKeyDown}
           autoComplete="off"
-          className="h-12 border-none bg-transparent pl-4 pr-24 text-base shadow-none outline-none placeholder:text-foreground/40 focus:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 md:h-14 md:text-lg"
+          className="h-10 border-none bg-transparent pl-4 pr-24 text-base shadow-none outline-none placeholder:text-foreground/40 focus:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 md:h-11 md:text-base"
         />
 
         {/* X(클리어) 버튼: 입력값 있을 때만 표시 */}
@@ -118,10 +118,10 @@ export function BannerSearch() {
           size="icon"
           interactive
           onClick={handleSearch}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 shadow-md transition-all md:right-2 md:size-11"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 shadow-md transition-all md:right-1.5 md:size-8"
           aria-label="검색"
         >
-          <MagnifyingGlassIcon className="size-5 md:size-6" weight="bold" />
+          <MagnifyingGlassIcon className="size-4 md:size-4" weight="bold" />
         </Button>
       </div>
 

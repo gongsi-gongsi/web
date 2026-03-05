@@ -65,7 +65,9 @@ export function SearchResultContent({ params }: SearchResultContentProps) {
 
       <div ref={ref} className="py-8 text-center">
         {isFetchingNextPage && (
-          <p className="text-sm text-muted-foreground">공시를 불러오는 중...</p>
+          <div className="flex justify-center">
+            <div className="size-5 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+          </div>
         )}
         {!hasNextPage && disclosures.length > 0 && (
           <p className="text-xs text-muted-foreground/60">모든 검색 결과를 불러왔습니다</p>
