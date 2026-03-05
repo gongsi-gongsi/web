@@ -18,26 +18,6 @@ interface GrowthChartProps {
   data: FinancialData[]
 }
 
-interface ChartDataItem {
-  label: string
-  operatingProfit: number | null
-  operatingMargin: number | null
-}
-
-/**
- * 재무 데이터를 차트용 데이터로 변환합니다
- */
-function transformData(data: FinancialData[]): ChartDataItem[] {
-  return data.map(item => ({
-    label: item.label,
-    operatingProfit: item.operatingProfit,
-    operatingMargin: calculateOperatingMargin(item.operatingProfit, item.revenue),
-  }))
-}
-
-/**
- * 숫자를 억/조 단위로 포맷팅합니다
- */
 function formatValue(value: number | null): string {
   if (value === null) return '-'
   const absValue = Math.abs(value)
@@ -58,44 +38,13 @@ function formatYAxis(value: number): string {
   return value.toLocaleString()
 }
 
-interface CustomTooltipProps {
-  active?: boolean
-  payload?: Array<{
-    name: string
-    value: number | null
-    color: string
-    dataKey: string
-  }>
-  label?: string
-}
-
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (!active || !payload?.length) return null
-
-  return (
-    <div className="bg-popover border-border rounded-lg border p-3 shadow-md">
-      <p className="text-foreground mb-2 text-sm font-medium">{label}</p>
-      {payload.map(entry => (
-        <p key={entry.name} className="text-sm" style={{ color: entry.color }}>
-          {entry.name}:{' '}
-          {entry.dataKey === 'operatingMargin'
-            ? `${entry.value?.toFixed(1)}%`
-            : formatValue(entry.value)}
-        </p>
-      ))}
-    </div>
-  )
-}
-
 /**
  * 성장성 차트 컴포넌트
  * 영업이익(막대)과 영업이익률(선)을 표시합니다
  * @param data - 재무 데이터 배열
  */
 export function GrowthChart({ data }: GrowthChartProps) {
-  const chartData = transformData(data)
-
-  if (chartData.length === 0) {
+  if (data.length === 0) {
     return (
       <div className="text-muted-foreground flex h-64 items-center justify-center">
         차트 데이터가 없습니다
@@ -103,49 +52,59 @@ export function GrowthChart({ data }: GrowthChartProps) {
     )
   }
 
+  const chartData = data.map(d => ({
+    label: d.label,
+    operatingProfit: d.operatingProfit ?? 0,
+    operatingMargin: calculateOperatingMargin(d.operatingProfit, d.revenue) ?? 0,
+  }))
+
   return (
     <div className="h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
+        <ComposedChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
+            tickLine={false}
           />
           <YAxis
             yAxisId="left"
             tickFormatter={formatYAxis}
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
-            width={50}
+            tickLine={false}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            tickFormatter={value => `${value}%`}
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tickFormatter={(v: number) => `${v.toFixed(1)}%`}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
-            width={40}
+            tickLine={false}
           />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{ fontSize: '12px' }}
-            formatter={value => <span className="text-foreground">{value}</span>}
+          <Tooltip
+            formatter={(value: number, name: string) => {
+              if (name === '영업이익률') return [`${value.toFixed(1)}%`, name]
+              return [formatValue(value), name]
+            }}
+            contentStyle={{
+              backgroundColor: 'var(--color-popover)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '8px',
+              fontSize: '12px',
+            }}
+            labelStyle={{ color: 'var(--color-foreground)' }}
           />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
           <Bar
             yAxisId="left"
             dataKey="operatingProfit"
             name="영업이익"
             fill="#8b5cf6"
             radius={[4, 4, 0, 0]}
-            barSize={30}
+            maxBarSize={40}
           />
           <Line
             yAxisId="right"
@@ -153,9 +112,8 @@ export function GrowthChart({ data }: GrowthChartProps) {
             dataKey="operatingMargin"
             name="영업이익률"
             stroke="#f59e0b"
-            strokeWidth={2}
-            dot={{ fill: '#f59e0b', strokeWidth: 0, r: 4 }}
-            activeDot={{ r: 6 }}
+            strokeWidth={2.5}
+            dot={false}
           />
         </ComposedChart>
       </ResponsiveContainer>
