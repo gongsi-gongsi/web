@@ -20,7 +20,7 @@ export function CompanyDisclosureFilterChips({
   onFilterOpen,
 }: CompanyDisclosureFilterChipsProps) {
   return (
-    <div className="bg-card sticky top-[5.75rem] z-30 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-3 md:top-[2.75rem] md:z-40 md:bg-background md:px-0 md:pt-0">
+    <div className="bg-card sticky top-[5.75rem] z-30 flex items-center gap-2 overflow-x-auto px-4 pt-3 pb-3 md:top-[8.25rem] md:z-40 md:bg-background md:px-0 md:pt-0">
       <Button
         variant="outline"
         size="icon"

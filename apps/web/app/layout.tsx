@@ -9,6 +9,7 @@ import { Header } from '@/widgets/header'
 import { BottomNav } from '@/widgets/bottom-nav'
 import { Footer } from '@/widgets/footer'
 import { OrganizationJsonLd, WebSiteJsonLd } from '@/shared/lib/seo'
+import { ScrollToTop } from '@/shared/ui/scroll-to-top'
 import './globals.css'
 
 const pretendard = localFont({
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
   },
   alternates: {
-    canonical: './',
+    canonical: 'https://gongsi-gongsi.kr',
   },
   robots: {
     index: true,
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         <Providers>
+          <ScrollToTop />
           <Header />
           {children}
           <Footer />

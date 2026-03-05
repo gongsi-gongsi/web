@@ -82,7 +82,9 @@ export function CompanyDisclosureSection({ corpCode }: CompanyDisclosureSectionP
           {/* 스크롤 감지 영역 및 상태 표시 */}
           <div ref={ref} className="py-6 text-center">
             {isFetchingNextPage && (
-              <p className="text-muted-foreground text-sm">공시를 불러오는 중...</p>
+              <div className="flex justify-center">
+                <div className="size-5 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+              </div>
             )}
             {!hasNextPage && disclosures.length > 0 && (
               <p className="text-muted-foreground text-sm">모든 공시를 불러왔습니다</p>
