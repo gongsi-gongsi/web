@@ -14,20 +14,21 @@ function isSafeUrl(url: string) {
 }
 
 function BannerSliderContent() {
-  const { data: banners } = useActiveBanners()
+  const { data: banners, isLoading } = useActiveBanners()
   const [current, setCurrent] = useState(0)
 
   const next = useCallback(() => {
-    setCurrent(prev => (banners.length > 0 ? (prev + 1) % banners.length : 0))
-  }, [banners.length])
+    setCurrent(prev => ((banners?.length ?? 0) > 0 ? (prev + 1) % (banners?.length ?? 1) : 0))
+  }, [banners?.length])
 
   useEffect(() => {
-    if (banners.length <= 1) return
+    if (!banners || banners.length <= 1) return
     const timer = setInterval(next, AUTO_PLAY_INTERVAL)
     return () => clearInterval(timer)
-  }, [next, banners.length])
+  }, [next, banners?.length])
 
-  if (!banners.length) return null
+  if (isLoading) return <BannerSkeleton />
+  if (!banners?.length) return null
 
   return (
     <div className="relative overflow-hidden rounded-2xl">
@@ -64,8 +65,8 @@ function BannerSliderContent() {
             className={cn(
               'transition-opacity duration-700 ease-in-out',
               current === index
-                ? 'relative opacity-100'
-                : 'absolute inset-0 opacity-0 pointer-events-none'
+                ? 'relative z-10 opacity-100'
+                : 'absolute inset-0 z-0 opacity-0 pointer-events-none'
             )}
           >
             {banner.linkUrl && isSafeUrl(banner.linkUrl) ? (
@@ -73,7 +74,7 @@ function BannerSliderContent() {
                 href={banner.linkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cursor-pointer"
+                className="block cursor-pointer"
               >
                 {images}
               </Link>
@@ -83,6 +84,17 @@ function BannerSliderContent() {
           </div>
         )
       })}
+    </div>
+  )
+}
+
+function BannerSkeleton() {
+  return (
+    <div className="overflow-hidden rounded-2xl">
+      <div className="hidden animate-pulse md:block">
+        <div className="aspect-[1280/250] w-full bg-muted" />
+      </div>
+      <div className="h-[200px] w-full animate-pulse bg-muted md:hidden" />
     </div>
   )
 }
