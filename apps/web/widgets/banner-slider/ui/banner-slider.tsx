@@ -63,11 +63,18 @@ function BannerSliderContent() {
             key={banner.id}
             className={cn(
               'transition-opacity duration-700 ease-in-out',
-              current === index ? 'relative opacity-100' : 'absolute inset-0 opacity-0'
+              current === index
+                ? 'relative opacity-100'
+                : 'absolute inset-0 opacity-0 pointer-events-none'
             )}
           >
             {banner.linkUrl && isSafeUrl(banner.linkUrl) ? (
-              <Link href={banner.linkUrl} target="_blank" rel="noopener noreferrer">
+              <Link
+                href={banner.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer"
+              >
                 {images}
               </Link>
             ) : (
