@@ -1,11 +1,11 @@
 'use client'
 
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { queries } from '@/shared/lib/query-keys'
 import { getActiveBanners } from '../api/client'
 
 export function useActiveBanners() {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: queries.banners.active.queryKey,
     queryFn: getActiveBanners,
     staleTime: 60 * 1000,

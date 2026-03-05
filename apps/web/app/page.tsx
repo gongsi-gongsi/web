@@ -42,9 +42,7 @@ async function BannerSliderWithPrefetch() {
   const dehydratedState = await prefetchActiveBanners()
   return (
     <HydrationBoundary state={dehydratedState}>
-      <Suspense>
-        <BannerSlider />
-      </Suspense>
+      <BannerSlider />
     </HydrationBoundary>
   )
 }
