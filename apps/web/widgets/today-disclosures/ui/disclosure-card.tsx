@@ -3,6 +3,7 @@ import { cn } from '@gs/ui'
 import { getMarketBadge, getDisclosureTypeColor, type Disclosure } from '@/entities/disclosure'
 import { AiSummaryButton } from '@/features/ai-disclosure-summary'
 import { formatDate } from '@/shared/lib/date'
+import { ShareButton } from '@/shared/ui/share-button'
 
 interface DisclosureCardProps {
   disclosure: Disclosure
@@ -48,10 +49,14 @@ export function DisclosureCard({ disclosure, showMeta, summarizedIds }: Disclosu
           </span>
         </div>
 
-        {/* Row 2: 공시 제목 + AI 버튼 */}
-        <div className="flex items-center gap-2">
+        {/* Row 2: 공시 제목 + 버튼 */}
+        <div className="flex items-center gap-1">
           <span className="flex-1 truncate text-sm text-muted-foreground">{disclosure.title}</span>
           <AiSummaryButton disclosure={disclosure} isSummarized={isSummarized} variant="card" />
+          <ShareButton
+            url={disclosure.reportUrl}
+            className="size-7 shrink-0 text-muted-foreground"
+          />
         </div>
       </div>
 
