@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@gs/ui'
 import { useActiveBanners } from '@/entities/banner'
+import { ErrorBoundaryWithFallback } from '@/shared/lib/error-boundary'
 
 const AUTO_PLAY_INTERVAL = 7000
 
@@ -12,7 +13,7 @@ function isSafeUrl(url: string) {
   return /^https?:\/\//i.test(url)
 }
 
-export function BannerSlider() {
+function BannerSliderContent() {
   const { data: banners } = useActiveBanners()
   const [current, setCurrent] = useState(0)
 
@@ -62,11 +63,18 @@ export function BannerSlider() {
             key={banner.id}
             className={cn(
               'transition-opacity duration-700 ease-in-out',
-              current === index ? 'relative opacity-100' : 'absolute inset-0 opacity-0'
+              current === index
+                ? 'relative opacity-100'
+                : 'absolute inset-0 opacity-0 pointer-events-none'
             )}
           >
             {banner.linkUrl && isSafeUrl(banner.linkUrl) ? (
-              <Link href={banner.linkUrl} target="_blank" rel="noopener noreferrer">
+              <Link
+                href={banner.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer"
+              >
                 {images}
               </Link>
             ) : (
@@ -76,5 +84,13 @@ export function BannerSlider() {
         )
       })}
     </div>
+  )
+}
+
+export function BannerSlider() {
+  return (
+    <ErrorBoundaryWithFallback fallback={() => null}>
+      <BannerSliderContent />
+    </ErrorBoundaryWithFallback>
   )
 }

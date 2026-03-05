@@ -8,6 +8,7 @@ import { BackButton } from '@/shared/ui/back-button'
 import { MobileHeader } from '@/widgets/header'
 import { useCompanyInfo } from '@/entities/company'
 import { ToggleWatchlistButton } from '@/features/toggle-watchlist'
+import { ShareButton } from '@/shared/ui/share-button'
 import {
   SummaryChartsSkeleton,
   FinancialStatementsSkeleton,
@@ -166,7 +167,10 @@ function CompanyHeader({ corpCode }: { corpCode: string }) {
           <h1 className="text-xl font-bold">{corpName}</h1>
           {stockCode && <p className="text-muted-foreground mt-0.5 text-sm">{stockCode}</p>}
         </div>
-        <ToggleWatchlistButton corpCode={corpCode} />
+        <div className="flex items-center gap-1">
+          <ShareButton className="text-muted-foreground" />
+          <ToggleWatchlistButton corpCode={corpCode} />
+        </div>
       </div>
 
       {/* PC 헤더 */}
@@ -178,7 +182,10 @@ function CompanyHeader({ corpCode }: { corpCode: string }) {
               {stockCode && `${stockCode} · `}기업 코드: {corpCode}
             </p>
           </div>
-          <ToggleWatchlistButton corpCode={corpCode} />
+          <div className="flex items-center gap-1">
+            <ShareButton className="text-muted-foreground" />
+            <ToggleWatchlistButton corpCode={corpCode} />
+          </div>
         </div>
       </div>
     </>
@@ -249,6 +256,11 @@ function ComingSoon({ title }: { title: string }) {
 export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
   const [activeTab, setActiveTab] = useState<TabValue>('summary')
 
+  const handleTabChange = (tab: TabValue) => {
+    setActiveTab(tab)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <>
       {/* 모바일 헤더 */}
@@ -263,7 +275,7 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
 
         {/* 탭 메뉴 */}
         <div className="sticky top-14 z-40">
-          <CompanyTabs activeTab={activeTab} onTabChange={setActiveTab} className="px-4" />
+          <CompanyTabs activeTab={activeTab} onTabChange={handleTabChange} className="px-4" />
         </div>
 
         {/* 탭 콘텐츠 */}
@@ -277,11 +289,11 @@ export function CompanyDetailPage({ corpCode }: CompanyDetailPageProps) {
         </Suspense>
 
         {/* 탭 메뉴 */}
-        <div className="sticky top-0 z-40">
+        <div className="sticky top-16 z-40 bg-background pb-6">
           <CompanyTabs
             activeTab={activeTab}
-            onTabChange={setActiveTab}
-            className="mb-6 bg-background"
+            onTabChange={handleTabChange}
+            className="bg-background"
           />
         </div>
 

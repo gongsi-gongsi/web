@@ -4,6 +4,7 @@ import type { Disclosure } from '@/entities/disclosure'
 import { getMarketBadge, getDisclosureTypeColor } from '@/entities/disclosure'
 import { AiSummaryButton } from '@/features/ai-disclosure-summary'
 import { formatDate } from '@/shared/lib/date'
+import { ShareButton } from '@/shared/ui/share-button'
 
 interface DisclosureTableRowProps {
   disclosure: Disclosure
@@ -34,11 +35,6 @@ export function DisclosureTableRow({
         !isLast && 'border-b border-border/40'
       )}
     >
-      {/* 공시유형 컬러 도트 */}
-      <div className="flex shrink-0 flex-col items-center gap-1">
-        <span className={cn('inline-block size-2.5 rounded-full', typeColor.bg)} />
-      </div>
-
       {/* 시장 배지 */}
       <div className="w-8 shrink-0 text-center">
         {marketBadge && (
@@ -87,9 +83,13 @@ export function DisclosureTableRow({
         </div>
       )}
 
-      {/* AI 요약 */}
-      <div className="shrink-0">
+      {/* AI 요약 + 공유 */}
+      <div className="flex shrink-0 items-center gap-1">
         <AiSummaryButton disclosure={disclosure} isSummarized={isSummarized} variant="table" />
+        <ShareButton
+          url={disclosure.reportUrl}
+          className="size-7 text-muted-foreground/60 opacity-0 transition-opacity group-hover:opacity-100"
+        />
       </div>
 
       {/* 화살표 아이콘 */}

@@ -144,6 +144,11 @@ export function formatQuarterlyFinancial(
   for (const item of selected) {
     const accountKey = findAccountKey(item.account_nm)
     if (!accountKey) continue
+
+    // 이미 값이 있으면 덮어쓰지 않음 (분기별 계정명 차이로 인한 오염 방지)
+    if (accounts[accountKey] != null) {
+      continue
+    }
     accounts[accountKey] = parseAmount(item.thstrm_amount)
   }
 

@@ -18,25 +18,6 @@ interface FinancialChartProps {
   data: FinancialData[]
 }
 
-interface ChartDataItem {
-  label: string
-  revenue: number | null
-  netIncome: number | null
-  netMargin: number | null
-}
-
-function transformData(data: FinancialData[]): ChartDataItem[] {
-  return data.map(item => ({
-    label: item.label,
-    revenue: item.revenue,
-    netIncome: item.netIncome,
-    netMargin: calculateNetMargin(item.netIncome, item.revenue),
-  }))
-}
-
-/**
- * 숫자를 억/조 단위로 포맷팅
- */
 function formatValue(value: number | null): string {
   if (value === null) return '-'
   const absValue = Math.abs(value)
@@ -57,37 +38,8 @@ function formatYAxis(value: number): string {
   return value.toLocaleString()
 }
 
-interface CustomTooltipProps {
-  active?: boolean
-  payload?: Array<{
-    name: string
-    value: number
-    color: string
-    dataKey: string
-  }>
-  label?: string
-}
-
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (!active || !payload?.length) return null
-
-  return (
-    <div className="bg-popover border-border rounded-lg border p-3 shadow-md">
-      <p className="text-foreground mb-2 text-sm font-medium">{label}</p>
-      {payload.map(entry => (
-        <p key={entry.name} className="text-sm" style={{ color: entry.color }}>
-          {entry.name}:{' '}
-          {entry.dataKey === 'netMargin' ? `${entry.value?.toFixed(1)}%` : formatValue(entry.value)}
-        </p>
-      ))}
-    </div>
-  )
-}
-
 export function FinancialChart({ data }: FinancialChartProps) {
-  const chartData = transformData(data)
-
-  if (chartData.length === 0) {
+  if (data.length === 0) {
     return (
       <div className="text-muted-foreground flex h-64 items-center justify-center">
         차트 데이터가 없습니다
@@ -95,49 +47,61 @@ export function FinancialChart({ data }: FinancialChartProps) {
     )
   }
 
+  const chartData = data.map(d => ({
+    label: d.label,
+    revenue: d.revenue ?? 0,
+    netIncome: d.netIncome ?? 0,
+    netMargin: calculateNetMargin(d.netIncome, d.revenue) ?? 0,
+  }))
+
   return (
     <div className="h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
+        <ComposedChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
+            tickLine={false}
           />
           <YAxis
             yAxisId="left"
             tickFormatter={formatYAxis}
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
-            width={50}
+            tickLine={false}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            tickFormatter={value => `${value}%`}
-            tick={{ fontSize: 12 }}
-            tickLine={false}
+            tickFormatter={(v: number) => `${v.toFixed(1)}%`}
+            tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }}
             axisLine={false}
-            className="fill-muted-foreground"
-            width={40}
+            tickLine={false}
           />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{ fontSize: '12px' }}
-            formatter={value => <span className="text-foreground">{value}</span>}
+          <Tooltip
+            formatter={(value: number | undefined, name: string | undefined) => {
+              if (value === undefined) return ['-', name ?? '']
+              if (name === '순이익률') return [`${value.toFixed(1)}%`, name]
+              return [formatValue(value), name ?? '']
+            }}
+            contentStyle={{
+              backgroundColor: 'var(--color-popover)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '8px',
+              fontSize: '12px',
+            }}
+            labelStyle={{ color: 'var(--color-foreground)' }}
           />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
           <Bar
             yAxisId="left"
             dataKey="revenue"
             name="매출"
             fill="#3b82f6"
             radius={[4, 4, 0, 0]}
-            barSize={20}
+            maxBarSize={40}
           />
           <Bar
             yAxisId="left"
@@ -145,7 +109,7 @@ export function FinancialChart({ data }: FinancialChartProps) {
             name="순이익"
             fill="#22c55e"
             radius={[4, 4, 0, 0]}
-            barSize={20}
+            maxBarSize={40}
           />
           <Line
             yAxisId="right"
@@ -153,9 +117,8 @@ export function FinancialChart({ data }: FinancialChartProps) {
             dataKey="netMargin"
             name="순이익률"
             stroke="#f59e0b"
-            strokeWidth={2}
-            dot={{ fill: '#f59e0b', strokeWidth: 0, r: 4 }}
-            activeDot={{ r: 6 }}
+            strokeWidth={2.5}
+            dot={false}
           />
         </ComposedChart>
       </ResponsiveContainer>
