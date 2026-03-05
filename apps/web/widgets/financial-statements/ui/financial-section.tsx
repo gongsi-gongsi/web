@@ -7,6 +7,7 @@ import type { FinancialViewMode } from '@/entities/company'
 import { SegmentControl, FinancialTableContent, SummaryChartsContent } from './financial-statements'
 import { FinancialTableSkeleton, SummaryChartsSkeleton } from './financial-statements-skeleton'
 import { CompanyOverview, CompanyOverviewSkeleton } from './company-overview'
+import { FinancialHealthScore } from './financial-health-score'
 
 interface FinancialSectionProps {
   corpCode: string
@@ -67,16 +68,22 @@ export function SummarySection({ corpCode }: SummarySectionProps) {
 
   return (
     <div className="space-y-4">
-      {/* 기업 개요 */}
-      <Suspense fallback={<CompanyOverviewSkeleton />}>
-        <CompanyOverview corpCode={corpCode} />
-      </Suspense>
+      {/* 1열: 기업 개요 + AI 요약 (PC: 2컬럼, 모바일: 스택) */}
+      <div className="md:grid md:grid-cols-2 md:gap-6">
+        <div className="md:h-full">
+          <Suspense fallback={<CompanyOverviewSkeleton />}>
+            <CompanyOverview corpCode={corpCode} />
+          </Suspense>
+          <div className="bg-background h-6 md:hidden" />
+        </div>
+        <div className="md:h-full">
+          <AiSummaryCard corpCode={corpCode} />
+          <div className="bg-background h-6 md:hidden" />
+        </div>
+      </div>
 
-      {/* 모바일 구분선 */}
-      <div className="bg-background h-6 md:hidden" />
-
-      {/* AI 기업 분석 */}
-      <AiSummaryCard corpCode={corpCode} />
+      {/* 재무 건전성 스코어 */}
+      <FinancialHealthScore corpCode={corpCode} />
 
       {/* 모바일 구분선 */}
       <div className="bg-background h-6 md:hidden" />

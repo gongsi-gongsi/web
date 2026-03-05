@@ -95,8 +95,8 @@ export function CompanyOverview({ corpCode }: CompanyOverviewProps) {
       </div>
 
       {/* PC: 카드 형태 */}
-      <div className="hidden md:block">
-        <Card>
+      <div className="hidden md:block md:h-full">
+        <Card className="h-full">
           <CardHeader>
             <CardTitle>기업 개요</CardTitle>
           </CardHeader>

@@ -87,8 +87,8 @@ export function AiSummaryCard({ corpCode }: AiSummaryCardProps) {
       </div>
 
       {/* PC */}
-      <div className="hidden md:block">
-        <Card>
+      <div className="hidden md:block md:h-full">
+        <Card className="h-full">
           <CardContent>
             <div className="mb-3">
               <SectionTitle />
