@@ -81,10 +81,12 @@ export function FinancialChart({ data }: FinancialChartProps) {
             tickLine={false}
           />
           <Tooltip
-            formatter={(value: number | undefined, name: string | undefined) => {
-              if (value === undefined) return ['-', name ?? '']
-              if (name === '순이익률') return [`${value.toFixed(1)}%`, name]
-              return [formatValue(value), name ?? '']
+            formatter={(value, name) => {
+              const v = typeof value === 'number' ? value : undefined
+              const n = typeof name === 'string' ? name : ''
+              if (v === undefined) return ['-', n]
+              if (n === '순이익률') return [`${v.toFixed(1)}%`, n]
+              return [formatValue(v), n]
             }}
             contentStyle={{
               backgroundColor: 'var(--color-popover)',
