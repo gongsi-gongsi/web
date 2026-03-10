@@ -30,9 +30,9 @@ export function MajorNewsSection() {
       {/* PC 버전 */}
       <div className="hidden py-6 md:block md:px-4 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold">주요 뉴스</h2>
-            <p className="mt-1 text-sm text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          <div className="mb-5 border-l-[3px] border-primary pl-3">
+            <h2 className="text-2xl font-bold">주요 뉴스</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
           </div>
           <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
             <Suspense fallback={<MajorNewsSkeleton />}>
@@ -45,8 +45,10 @@ export function MajorNewsSection() {
       {/* 모바일 버전 */}
       <div className="bg-card md:hidden">
         <div className="px-4 pb-3 pt-5">
-          <h2 className="text-lg font-bold">주요 뉴스</h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          <div className="border-l-[3px] border-primary pl-3">
+            <h2 className="text-xl font-bold">주요 뉴스</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          </div>
         </div>
         <div className="pb-2">
           <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
@@ -65,17 +67,19 @@ export function MajorNewsSectionSkeleton() {
     <section className="w-full">
       <div className="hidden py-6 md:block md:px-4 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold">주요 뉴스</h2>
-            <p className="mt-1 text-sm text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          <div className="mb-5 border-l-[3px] border-primary pl-3">
+            <h2 className="text-2xl font-bold">주요 뉴스</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
           </div>
           <MajorNewsSkeleton />
         </div>
       </div>
       <div className="bg-card md:hidden">
         <div className="px-4 pb-3 pt-5">
-          <h2 className="text-lg font-bold">주요 뉴스</h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          <div className="border-l-[3px] border-primary pl-3">
+            <h2 className="text-xl font-bold">주요 뉴스</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">최근 24시간 주요 증시 뉴스</p>
+          </div>
         </div>
         <div className="pb-2">
           <MajorNewsSkeleton />

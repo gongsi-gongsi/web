@@ -42,19 +42,19 @@ interface InfoRowProps {
 
 function InfoRow({ label, value, isLink }: InfoRowProps) {
   return (
-    <div className="flex justify-between py-2">
-      <span className="text-muted-foreground text-sm">{label}</span>
+    <div className="flex items-start justify-between gap-3 py-2">
+      <span className="text-muted-foreground shrink-0 text-sm">{label}</span>
       {isLink && value !== '-' ? (
         <a
           href={value.startsWith('http') ? value : `https://${value}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary text-sm hover:underline"
+          className="text-primary min-w-0 break-all text-right text-sm hover:underline"
         >
           {value}
         </a>
       ) : (
-        <span className="text-sm">{value}</span>
+        <span className="min-w-0 break-words text-right text-sm">{value}</span>
       )}
     </div>
   )

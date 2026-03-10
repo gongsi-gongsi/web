@@ -1,5 +1,3 @@
-import { cn } from '@gs/ui'
-
 import type { QuizCategory } from '../types'
 
 const CATEGORY_LABELS: Record<QuizCategory, string> = {
@@ -26,30 +24,29 @@ interface CategoryScoreBarProps {
 
 export function CategoryScoreBar({ category, correct, total }: CategoryScoreBarProps) {
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0
+  const isPassing = percent >= 60
 
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-foreground">{CATEGORY_LABELS[category]}</span>
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold text-foreground">{CATEGORY_LABELS[category]}</span>
         <span
-          className={cn(
-            'font-semibold',
-            percent >= 60
-              ? 'text-emerald-600 dark:text-emerald-400'
-              : 'text-rose-600 dark:text-rose-400'
-          )}
+          className={`font-mono text-xs font-bold ${isPassing ? 'text-emerald-500' : 'text-rose-500'}`}
         >
-          {correct}/{total} ({percent}%)
+          {correct}/{total}
+          <span className="ml-1 font-normal text-muted-foreground">({percent}%)</span>
         </span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+      <div className="relative h-7 w-full overflow-hidden rounded-xl bg-muted">
         <div
-          className={cn(
-            'h-full rounded-full transition-all duration-700 ease-out',
-            CATEGORY_COLORS[category]
-          )}
+          className={`h-full rounded-xl transition-all duration-700 ease-out ${CATEGORY_COLORS[category]}`}
           style={{ width: `${percent}%` }}
         />
+        {percent >= 20 && (
+          <span className="absolute inset-y-0 left-3 flex items-center font-mono text-xs font-bold text-white">
+            {percent}%
+          </span>
+        )}
       </div>
     </div>
   )

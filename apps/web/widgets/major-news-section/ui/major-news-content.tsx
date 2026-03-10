@@ -5,7 +5,7 @@ import { useMajorMarketNews } from '@/entities/news'
 import { MajorNewsCard } from './major-news-card'
 
 export function MajorNewsContent() {
-  const { data } = useMajorMarketNews(5)
+  const { data } = useMajorMarketNews(6)
 
   if (data.items.length === 0) {
     return (
@@ -16,7 +16,8 @@ export function MajorNewsContent() {
     )
   }
 
-  const [featured, ...rest] = data.items
+  const featured = data.items.slice(0, 2)
+  const rest = data.items.slice(2)
 
   return (
     <>
@@ -27,12 +28,22 @@ export function MajorNewsContent() {
         ))}
       </div>
 
-      {/* PC: Feature Article + Sidebar */}
-      <div className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-[3fr_2fr]">
-        <MajorNewsCard item={featured} variant="featured" />
-        <div className="overflow-hidden divide-y divide-border/50 rounded-xl border border-border/50 bg-card">
+      {/* PC: 좌 2개(featured) + 우 4개(compact) — 높이 동기화 */}
+      <div className="hidden md:flex md:gap-5">
+        {/* 좌: featured 2개, 각각 우측 2칸 높이 */}
+        <div className="flex flex-1 flex-col gap-5">
+          {featured.map((item, index) => (
+            <div key={`${item.link}-${index}`} className="flex-1">
+              <MajorNewsCard item={item} variant="featured" />
+            </div>
+          ))}
+        </div>
+        {/* 우: compact 4개 */}
+        <div className="flex flex-1 flex-col divide-y divide-border/50 overflow-hidden rounded-xl border border-border/50 bg-card">
           {rest.map((item, index) => (
-            <MajorNewsCard key={`${item.link}-${index}`} item={item} variant="compact" />
+            <div key={`${item.link}-${index}`} className="flex flex-1">
+              <MajorNewsCard item={item} variant="compact" />
+            </div>
           ))}
         </div>
       </div>

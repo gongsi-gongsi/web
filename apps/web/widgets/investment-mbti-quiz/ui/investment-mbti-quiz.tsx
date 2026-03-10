@@ -12,6 +12,7 @@ import {
   TOTAL_QUESTIONS,
   useMbtiQuiz,
 } from '@/features/investment-mbti'
+import { MobileHeader } from '@/widgets/header'
 
 export function InvestmentMbtiQuiz() {
   const router = useRouter()
@@ -29,30 +30,34 @@ export function InvestmentMbtiQuiz() {
   // 로딩 화면
   if (step === 'loading') {
     return (
-      <main className="flex min-h-[calc(100dvh-3.5rem)] flex-col items-center justify-center px-4 pb-24 md:pb-0">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="animate-float">
-            <Image
-              src="/images/mbti/GSTR.png"
-              alt="분석 중"
-              width={160}
-              height={160}
-              className="object-contain"
-            />
-          </div>
-          <p className="text-lg font-bold text-foreground">결과를 분석하고 있어요...</p>
-          <p className="text-sm text-muted-foreground">잠시만 기다려주세요</p>
-          <div className="mt-2 flex gap-1">
-            {[0, 1, 2].map(i => (
-              <span
-                key={i}
-                className="block size-2 animate-pulse rounded-full bg-primary"
-                style={{ animationDelay: `${i * 0.2}s` }}
+      <>
+        <MobileHeader />
+        <main className="flex min-h-[calc(100dvh-3.5rem)] flex-col items-center justify-center gap-6 px-4 pb-24 md:pb-0">
+          <div className="flex flex-col items-center gap-5 text-center">
+            {/* 마법사형 캐릭터 */}
+            <div className="relative">
+              <div className="absolute inset-0 -z-10 animate-pulse rounded-full bg-primary/20 blur-2xl" />
+              <Image
+                src="/images/mbti/GSTR.png"
+                alt="분석 중"
+                width={140}
+                height={140}
+                className="animate-float object-contain"
               />
-            ))}
+            </div>
+
+            <div>
+              <p className="text-lg font-black text-foreground">결과 분석 중</p>
+              <p className="mt-1 text-sm text-muted-foreground">잠시만 기다려주세요</p>
+            </div>
+
+            {/* 로딩 바 */}
+            <div className="h-1 w-48 overflow-hidden rounded-full bg-muted">
+              <div className="h-full animate-[loading_1.5s_ease-in-out_forwards] rounded-full bg-primary" />
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </>
     )
   }
 
@@ -63,17 +68,19 @@ export function InvestmentMbtiQuiz() {
 
   return (
     <>
-      {/* 면책 동의 모달 (step === 'disclaimer' 일 때 자동 표시) */}
+      {/* 면책 동의 모달 */}
       <DisclaimerModal
         open={step === 'disclaimer'}
         onAccept={acceptDisclaimer}
         onClose={() => router.back()}
       />
 
+      <MobileHeader />
+
       <main className="flex min-h-[calc(100dvh-3.5rem)] flex-col items-start px-4 pb-24 pt-6 md:pb-8">
         <div className="mx-auto w-full max-w-lg">
           {/* 진행 상태 */}
-          <ProgressBar current={currentQuestion + 1} total={TOTAL_QUESTIONS} className="mb-8" />
+          <ProgressBar current={currentQuestion + 1} total={TOTAL_QUESTIONS} className="mb-10" />
 
           {/* 질문 카드 */}
           {question && (

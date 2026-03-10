@@ -45,8 +45,9 @@ export function PopularCompaniesSection() {
       {/* PC 버전 */}
       <div className="hidden py-6 md:block md:px-4 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold">인기 회사</h2>
+          <div className="mb-5 border-l-[3px] border-primary pl-3">
+            <h2 className="text-2xl font-bold">인기 회사</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">주간 공시 조회수 기준</p>
           </div>
           <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
             <Suspense fallback={<PopularCompanySkeleton />}>
@@ -59,7 +60,10 @@ export function PopularCompaniesSection() {
       {/* 모바일 버전 */}
       <div className="bg-card md:hidden">
         <div className="px-4 pb-4 pt-6">
-          <h2 className="text-lg font-bold">인기 회사</h2>
+          <div className="border-l-[3px] border-primary pl-3">
+            <h2 className="text-xl font-bold">인기 회사</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">주간 공시 조회수 기준</p>
+          </div>
         </div>
         <div className="px-4 pb-6">
           <ErrorBoundary fallback={ErrorFallback} onReset={reset}>
@@ -78,15 +82,19 @@ export function PopularCompaniesSectionSkeleton() {
     <section className="w-full">
       <div className="hidden py-6 md:block md:px-4 lg:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold">인기 회사</h2>
+          <div className="mb-5 border-l-[3px] border-primary pl-3">
+            <h2 className="text-2xl font-bold">인기 회사</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">주간 공시 조회수 기준</p>
           </div>
           <PopularCompanySkeleton />
         </div>
       </div>
       <div className="bg-card md:hidden">
         <div className="px-4 pb-4 pt-6">
-          <h2 className="text-lg font-bold">인기 회사</h2>
+          <div className="border-l-[3px] border-primary pl-3">
+            <h2 className="text-xl font-bold">인기 회사</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">주간 공시 조회수 기준</p>
+          </div>
         </div>
         <div className="px-4 pb-6">
           <PopularCompanySkeleton />

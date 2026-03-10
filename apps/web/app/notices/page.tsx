@@ -28,7 +28,7 @@ export default function NoticesPage() {
     <main className="min-h-screen bg-background pb-24 md:pb-0">
       <MobileHeader />
       <div className="mx-auto max-w-3xl">
-        <div className="px-4 py-5">
+        <div className="px-4 py-5 md:px-0">
           <h1 className="text-xl font-bold">공지사항</h1>
         </div>
         <NoticeListWithPrefetch />

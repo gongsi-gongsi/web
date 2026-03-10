@@ -1,7 +1,13 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { BookOpenTextIcon, HeartIcon, HouseIcon, UserIcon } from '@phosphor-icons/react'
+import {
+  BookOpenTextIcon,
+  GameControllerIcon,
+  HeartIcon,
+  HouseIcon,
+  UserIcon,
+} from '@phosphor-icons/react'
 
 import { NavigationItem } from './navigation-item'
 
@@ -9,6 +15,7 @@ const NAV_ITEMS = [
   { icon: HouseIcon, label: '홈', href: '/' },
   { icon: HeartIcon, label: '관심', href: '/interests' },
   { icon: BookOpenTextIcon, label: '용어집', href: '/glossary' },
+  { icon: GameControllerIcon, label: '놀이터', href: '/play' },
   { icon: UserIcon, label: '프로필', href: '/mypage' },
 ] as const
 
