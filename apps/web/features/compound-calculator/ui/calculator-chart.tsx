@@ -63,9 +63,11 @@ export function CalculatorChart({ snapshots }: CalculatorChartProps) {
               color: '#f1f5f9',
             }}
             labelStyle={{ color: '#f1f5f9', fontWeight: 600, marginBottom: 4 }}
-            formatter={(value: number | undefined, name: string | undefined) =>
-              [value !== undefined ? formatTooltipValue(value) : '', name ?? ''] as [string, string]
-            }
+            formatter={(value, name) => {
+              const num =
+                typeof value === 'number' ? formatTooltipValue(value) : String(value ?? '')
+              return [num, String(name ?? '')] as [string, string]
+            }}
             cursor={{ fill: 'rgba(255,255,255,0.04)' }}
           />
           <Bar dataKey="납입원금" stackId="a" fill="rgba(234,179,8,0.85)" radius={[0, 0, 0, 0]} />
