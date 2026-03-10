@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { TIERS_MAP, ResultCard } from '@/features/economic-quiz'
 import type { QuizResult, TierType } from '@/features/economic-quiz'
+import { MobileHeader } from '@/widgets/header'
 
 interface EconomicQuizResultProps {
   /** 서버 컴포넌트에서 isTierType()으로 검증된 티어 타입 */
@@ -59,10 +60,13 @@ export function EconomicQuizResult({ tier }: EconomicQuizResultProps) {
   }, [tier])
 
   return (
-    <main className="min-h-[calc(100dvh-3.5rem)] px-4 py-6 pb-24 md:pb-8">
-      <div className="mx-auto max-w-lg">
-        <ResultCard result={result} />
-      </div>
-    </main>
+    <>
+      <MobileHeader />
+      <main className="min-h-[calc(100dvh-3.5rem)] px-4 py-6 pb-24 md:pb-8">
+        <div className="mx-auto max-w-lg">
+          <ResultCard result={result} />
+        </div>
+      </main>
+    </>
   )
 }

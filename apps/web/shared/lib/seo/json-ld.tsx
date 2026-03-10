@@ -52,6 +52,48 @@ export function WebSiteJsonLd() {
   )
 }
 
+interface WebApplicationJsonLdProps {
+  name: string
+  description: string
+  url: string
+  applicationCategory?: string
+}
+
+/**
+ * 웹 애플리케이션(도구/게임)용 WebApplication JSON-LD
+ * @param name - 앱 이름
+ * @param description - 앱 설명
+ * @param url - 앱 URL
+ * @param applicationCategory - 앱 카테고리
+ */
+export function WebApplicationJsonLd({
+  name,
+  description,
+  url,
+  applicationCategory = 'FinanceApplication',
+}: WebApplicationJsonLdProps) {
+  return (
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name,
+        description,
+        url,
+        applicationCategory,
+        inLanguage: 'ko',
+        isAccessibleForFree: true,
+        operatingSystem: 'All',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'KRW',
+        },
+      }}
+    />
+  )
+}
+
 interface CompanyJsonLdProps {
   corpName: string
   stockCode?: string

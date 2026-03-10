@@ -21,7 +21,7 @@ export function DisclosureCard({ disclosure, showMeta, summarizedIds }: Disclosu
       href={disclosure.reportUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="block bg-card active:bg-accent/50"
+      className="block bg-card transition-colors hover:bg-accent/50 active:bg-accent/50"
     >
       <div className="flex flex-col gap-1.5 px-4 py-3">
         {/* Row 1: 시장배지 + 회사명 + 종목코드 + 공시유형 */}

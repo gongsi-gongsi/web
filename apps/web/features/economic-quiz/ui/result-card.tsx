@@ -19,6 +19,7 @@ const CATEGORY_ORDER: QuizCategory[] = ['STOCK', 'ECONOMY', 'BOND', 'FUND', 'DER
 
 export function ResultCard({ result, onReset }: ResultCardProps) {
   const tierData = TIERS_MAP[result.tier]
+  const scorePercent = Math.round((result.score / result.total) * 100)
 
   async function handleShare() {
     const shareUrl = `${window.location.origin}/economic-quiz/result/${result.tier}`
@@ -30,45 +31,55 @@ export function ResultCard({ result, onReset }: ResultCardProps) {
     }
   }
 
-  const scorePercent = Math.round((result.score / result.total) * 100)
-
   return (
     <div className="flex w-full flex-col gap-3">
       {/* 메인 결과 카드 */}
-      <div className="overflow-hidden rounded-3xl bg-card shadow-md">
+      <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
         {/* 헤더 */}
-        <div className="relative flex flex-col items-center bg-gradient-to-b from-primary/10 to-transparent px-6 pb-8 pt-10">
+        <div className="flex flex-col items-center gap-4 border-b border-border/60 px-6 py-8">
           {/* 이모지 */}
-          <div className="mb-4 flex size-28 items-center justify-center rounded-full bg-background shadow-lg">
-            <span className="text-6xl" role="img" aria-label={tierData.name}>
+          <div className="relative flex h-28 w-28 items-center justify-center">
+            <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl" />
+            <span className="relative text-6xl" role="img" aria-label={tierData.name}>
               {tierData.emoji}
             </span>
           </div>
 
           {/* 티어 배지 */}
           <span
-            className={`mb-2 rounded-full px-4 py-1 text-xs font-bold uppercase tracking-widest ${tierData.color}`}
+            className={`rounded-full px-4 py-1 text-xs font-bold uppercase tracking-widest ${tierData.color}`}
           >
             {result.tier}
           </span>
 
-          <h1 className="text-3xl font-black text-foreground">{tierData.name}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{tierData.description}</p>
+          <div className="text-center">
+            <h1 className="text-2xl font-black text-foreground">{tierData.name}</h1>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              {tierData.description}
+            </p>
+          </div>
 
           {/* 점수 */}
-          <div className="mt-6 flex items-baseline gap-1">
-            <span className="text-5xl font-black text-primary">{result.score}</span>
-            <span className="text-xl font-semibold text-muted-foreground">/{result.total}</span>
+          <div className="flex w-full items-center justify-center divide-x divide-border rounded-xl border border-border/60 bg-muted/30 py-4">
+            <div className="flex flex-1 flex-col items-center gap-0.5">
+              <span className="text-3xl font-black text-foreground">
+                {result.score}
+                <span className="text-lg font-semibold text-muted-foreground">/{result.total}</span>
+              </span>
+              <span className="text-xs text-muted-foreground">정답 수</span>
+            </div>
+            <div className="flex flex-1 flex-col items-center gap-0.5">
+              <span className="text-3xl font-black text-primary">{scorePercent}%</span>
+              <span className="text-xs text-muted-foreground">정답률</span>
+            </div>
           </div>
-          <p className="text-sm font-medium text-muted-foreground">정답률 {scorePercent}%</p>
         </div>
 
-        {/* 본문 */}
         <div className="flex flex-col gap-6 p-6">
           {/* 카테고리별 점수 */}
           <div>
-            <p className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              카테고리별 정답률
+            <p className="mb-4 font-mono text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              CATEGORY STATS
             </p>
             <div className="flex flex-col gap-4">
               {CATEGORY_ORDER.map(category => {

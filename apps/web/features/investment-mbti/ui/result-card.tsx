@@ -2,11 +2,11 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 
 import { Button, cn } from '@gs/ui'
 import { ArrowCounterClockwiseIcon, LinkIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useState } from 'react'
 
 import { AXIS_LABELS, TENDENCY_INFO } from '../data/axis-descriptions'
 import type { Tendency } from '../data/questions'
@@ -18,6 +18,17 @@ interface ResultCardProps {
   result: MbtiResult
   typeData: MbtiTypeData
   onReset?: () => void
+}
+
+const TENDENCY_EMOJI: Record<Tendency, string> = {
+  G: '📈',
+  V: '🛡️',
+  S: '⚡',
+  L: '🌱',
+  F: '📊',
+  T: '📉',
+  R: '⚖️',
+  I: '🎲',
 }
 
 export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
@@ -47,90 +58,90 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
   return (
     <div className="flex w-full flex-col gap-3">
       {/* 메인 결과 카드 */}
-      <div className="overflow-hidden rounded-3xl bg-card shadow-md">
-        {/* 헤더 */}
-        <div
-          className={cn(
-            'relative flex flex-col items-center px-6 pb-8 pt-10',
-            typeData.themeColor,
-            'bg-opacity-10'
-          )}
-        >
+      <div className="overflow-hidden rounded-3xl border border-border/60 bg-card">
+        {/* 헤더 — 유형 코드 + 이름 */}
+        <div className="flex flex-col items-center gap-4 border-b border-border/60 px-6 py-8">
           {/* 캐릭터 이미지 */}
-          <div className="mb-4 flex size-48 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg dark:bg-card">
+          <div className="relative">
+            <div className="absolute inset-0 -z-10 rounded-full bg-primary/10 blur-2xl" />
             {!imgError ? (
               <Image
                 src={typeData.imagePath}
                 alt={typeData.name}
-                width={192}
-                height={192}
-                className="object-contain"
+                width={160}
+                height={160}
+                className="object-contain drop-shadow-md"
                 onError={() => setImgError(true)}
               />
             ) : (
-              <span className="text-7xl" role="img" aria-label={typeData.name}>
+              <span
+                className="flex h-36 w-36 items-center justify-center text-7xl"
+                role="img"
+                aria-label={typeData.name}
+              >
                 {typeData.emoji}
               </span>
             )}
           </div>
 
-          {/* 유형 코드 */}
-          <div className="mb-1 flex items-center gap-2">
+          {/* 4글자 타입 코드 */}
+          <div className="flex items-center gap-2">
             {Array.from(result.type).map((char, i) => (
-              <span
+              <div
                 key={`${char}-${i}`}
-                className="flex size-12 items-center justify-center rounded-2xl bg-background/80 text-xl font-black text-foreground shadow-sm backdrop-blur-sm"
+                className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-primary/40 bg-primary/10 text-2xl font-black text-primary"
               >
                 {char}
-              </span>
+              </div>
             ))}
           </div>
 
-          <h1 className="mt-2 text-2xl font-black text-foreground">{typeData.name}</h1>
-          <p className="mt-0.5 text-sm font-medium text-muted-foreground">{typeData.subtitle}</p>
-          <p className="mt-3 text-center text-sm italic text-muted-foreground">
-            &ldquo;{typeData.tagline}&rdquo;
-          </p>
+          <div className="text-center">
+            <h1 className="text-2xl font-black text-foreground">{typeData.name}</h1>
+            <p className="mt-0.5 text-sm text-muted-foreground">{typeData.subtitle}</p>
+            <p className="mt-2 text-sm italic text-muted-foreground/70">
+              &ldquo;{typeData.tagline}&rdquo;
+            </p>
+          </div>
         </div>
 
-        {/* 본문 */}
         <div className="flex flex-col gap-6 p-6">
           {/* 설명 */}
           <p className="text-sm leading-relaxed text-secondary-foreground">
             {typeData.description}
           </p>
 
-          {/* 성향 강도 */}
+          {/* 성향 강도 — stat bars */}
           <div>
-            <p className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              성향 강도
+            <p className="mb-4 text-[11px] font-bold tracking-widest text-muted-foreground">
+              투자 성향 지표
             </p>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4">
               <TendencyBar
                 axisLabel={AXIS_LABELS.GV}
                 leftLetter="G"
-                leftLabel="수익추구형"
+                leftLabel="수익추구"
                 leftPercent={result.percentages.GV.G}
                 rightLetter="V"
-                rightLabel="안정추구형"
+                rightLabel="안정추구"
                 rightPercent={result.percentages.GV.V}
               />
               <TendencyBar
                 axisLabel={AXIS_LABELS.SL}
                 leftLetter="S"
-                leftLabel="단기매매형"
+                leftLabel="단기매매"
                 leftPercent={result.percentages.SL.S}
                 rightLetter="L"
-                rightLabel="장기투자형"
+                rightLabel="장기투자"
                 rightPercent={result.percentages.SL.L}
               />
               <TendencyBar
                 axisLabel={AXIS_LABELS.FT}
                 leftLetter="F"
-                leftLabel="펀더멘털형"
+                leftLabel="펀더멘털"
                 leftPercent={result.percentages.FT.F}
                 rightLetter="T"
-                rightLabel="기술적분석형"
+                rightLabel="기술적분석"
                 rightPercent={result.percentages.FT.T}
               />
               <TendencyBar
@@ -145,28 +156,31 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
             </div>
           </div>
 
-          {/* 축별 성향 설명 */}
+          {/* 성향 분석 */}
           <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              성향 분석
+            <p className="mb-3 text-[11px] font-bold tracking-widest text-muted-foreground">
+              강점 분석
             </p>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
               {(Array.from(result.type) as Tendency[]).map(tendency => {
                 const info = TENDENCY_INFO[tendency]
                 const percent = axisPercentMap[tendency]
                 return (
-                  <div key={tendency} className="flex gap-3">
-                    <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">
-                      {tendency}
+                  <div
+                    key={tendency}
+                    className="flex gap-3 rounded-xl border border-border/50 bg-muted/30 p-3"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-base">
+                      {TENDENCY_EMOJI[tendency]}
                     </div>
-                    <div className="flex-1">
-                      <div className="mb-1 flex items-baseline justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between gap-2">
                         <span className="text-sm font-bold text-foreground">{info.label}</span>
-                        <span className="text-xs font-semibold text-muted-foreground">
+                        <span className="font-mono text-xs font-semibold text-primary shrink-0">
                           {percent}%
                         </span>
                       </div>
-                      <p className="text-xs leading-relaxed text-muted-foreground">
+                      <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
                         {info.description}
                       </p>
                     </div>
@@ -178,9 +192,9 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
 
           {/* 강점 / 약점 */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950/20">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                강점
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50/50 p-4 dark:bg-emerald-950/20">
+              <p className="mb-2.5 text-[10px] font-bold tracking-widest text-emerald-700 dark:text-emerald-400">
+                장점
               </p>
               <ul className="space-y-1.5">
                 {typeData.strengths.map(s => (
@@ -188,15 +202,15 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
                     key={s}
                     className="flex items-start gap-1.5 text-xs text-emerald-800 dark:text-emerald-300"
                   >
-                    <span className="mt-0.5 shrink-0">✓</span>
+                    <span className="mt-0.5 shrink-0 font-bold">✓</span>
                     <span>{s}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl bg-rose-50 p-4 dark:bg-rose-950/20">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">
-                약점
+            <div className="rounded-2xl border border-rose-500/20 bg-rose-50/50 p-4 dark:bg-rose-950/20">
+              <p className="mb-2.5 text-[10px] font-bold tracking-widest text-rose-700 dark:text-rose-400">
+                주의점
               </p>
               <ul className="space-y-1.5">
                 {typeData.weaknesses.map(w => (
@@ -204,7 +218,7 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
                     key={w}
                     className="flex items-start gap-1.5 text-xs text-rose-800 dark:text-rose-300"
                   >
-                    <span className="mt-0.5 shrink-0">!</span>
+                    <span className="mt-0.5 shrink-0 font-bold">!</span>
                     <span>{w}</span>
                   </li>
                 ))}
@@ -213,12 +227,12 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
           </div>
 
           {/* 투자 경향 */}
-          <div className="rounded-2xl bg-primary/5 p-4 dark:bg-primary/10">
-            <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-primary/80">
-              이 성향의 투자자들이 주로 관심 갖는 경향
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
+            <p className="mb-2 text-[10px] font-bold tracking-widest text-primary/80">
+              투자 스타일
             </p>
             <p className="text-xs leading-relaxed text-foreground/70">{typeData.tendency}</p>
-            <p className="mt-2 text-[10px] text-muted-foreground/60">
+            <p className="mt-2 text-[10px] text-muted-foreground/50">
               * 특정 종목 매수·매도를 권유하는 것이 아닙니다.
             </p>
           </div>
@@ -240,13 +254,13 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
                 onClick={onReset}
               >
                 <ArrowCounterClockwiseIcon className="absolute left-4 size-4" />
-                다시 검사하기
+                다시하기
               </Button>
             ) : (
               <Button asChild variant="outline" className="relative flex-1 justify-center">
                 <Link href="/investment-mbti">
                   <ArrowCounterClockwiseIcon className="absolute left-4 size-4" />
-                  다시 검사하기
+                  다시하기
                 </Link>
               </Button>
             )}
@@ -254,9 +268,14 @@ export function ResultCard({ result, typeData, onReset }: ResultCardProps) {
         </div>
       </div>
 
-      {/* 하단 면책 공고 */}
-      <div className="rounded-2xl bg-muted/50 p-4 text-[11px] leading-relaxed text-muted-foreground">
-        <p className="mb-2 font-bold text-foreground/70">[투자 위험 고지 및 면책 공고]</p>
+      {/* 면책 공고 */}
+      <div
+        className={cn(
+          'rounded-2xl border border-border/40 bg-muted/30 p-4',
+          'text-[11px] leading-relaxed text-muted-foreground'
+        )}
+      >
+        <p className="mb-2 font-bold text-foreground/60">[투자 위험 고지 및 면책 공고]</p>
         <p className="mb-2">
           본 투자성향 진단 서비스는 정보 제공 목적의 오락성 콘텐츠로, 다음 사항을 명확히 고지합니다.
         </p>

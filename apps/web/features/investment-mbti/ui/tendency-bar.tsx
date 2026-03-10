@@ -26,44 +26,49 @@ export function TendencyBar({
   return (
     <div className={cn('w-full', className)}>
       {/* Header */}
-      <div className="mb-2 flex items-center justify-between text-xs">
+      <div className="mb-1.5 flex items-center justify-between text-xs">
         <span
           className={cn(
-            'font-semibold',
-            isDominantLeft ? 'text-foreground' : 'text-muted-foreground/50'
+            'font-bold',
+            isDominantLeft ? 'text-foreground' : 'text-muted-foreground/40'
           )}
         >
           {leftLabel}
         </span>
-        <span className="text-[11px] text-muted-foreground/50">{axisLabel}</span>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
+          {axisLabel}
+        </span>
         <span
           className={cn(
-            'font-semibold',
-            !isDominantLeft ? 'text-foreground' : 'text-muted-foreground/50'
+            'font-bold',
+            !isDominantLeft ? 'text-foreground' : 'text-muted-foreground/40'
           )}
         >
           {rightLabel}
         </span>
       </div>
 
-      {/* Bar row */}
-      <div className="flex items-center gap-2.5">
-        {/* Track */}
-        <div className="relative h-9 flex-1 rounded-2xl bg-muted">
-          {/* Filled portion */}
-          <div
-            className="absolute left-0 top-0 h-full overflow-hidden rounded-2xl bg-primary"
-            style={{ width: `${leftPercent}%` }}
-          >
-            <span className="flex h-full items-center pl-3 text-xs font-bold text-primary-foreground">
-              {leftLetter} {leftPercent}
+      {/* Dual bar */}
+      <div className="flex h-8 w-full overflow-hidden rounded-xl bg-muted">
+        {/* Left fill */}
+        <div
+          className="flex items-center justify-start pl-2.5 bg-primary transition-all duration-500"
+          style={{ width: `${leftPercent}%` }}
+        >
+          {leftPercent >= 25 && (
+            <span className="font-mono text-xs font-black text-primary-foreground">
+              {leftLetter} {leftPercent}%
             </span>
-          </div>
+          )}
         </div>
-        {/* Right value */}
-        <span className="w-12 shrink-0 text-right text-xs font-semibold text-muted-foreground">
-          {rightPercent} {rightLetter}
-        </span>
+        {/* Right fill */}
+        <div className="flex flex-1 items-center justify-end pr-2.5 bg-muted">
+          {rightPercent >= 25 && (
+            <span className="font-mono text-xs font-semibold text-muted-foreground">
+              {rightPercent}% {rightLetter}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )

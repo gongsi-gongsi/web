@@ -65,3 +65,12 @@ export function trackEconomicQuizStart() {
 export function trackEconomicQuizComplete(tier: string, score: number) {
   sendEvent({ action: 'economic_quiz_complete', category: 'quiz', label: tier, value: score })
 }
+
+/** 복리 계산기 사용 이벤트 */
+export function trackCompoundCalculatorUse(years: number, rate: number) {
+  sendEvent({
+    action: 'compound_calculator_use',
+    category: 'calculator',
+    label: `${years}yr_${rate}pct`,
+  })
+}

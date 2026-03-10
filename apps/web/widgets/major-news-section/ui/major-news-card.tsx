@@ -30,9 +30,14 @@ export function MajorNewsCard({ item, variant = 'compact' }: MajorNewsCardProps)
   const safeLink = getSafeUrl(item.link)
 
   return (
-    <a href={safeLink} target="_blank" rel="noopener noreferrer">
+    <a
+      href={safeLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="md:flex md:h-full md:w-full md:flex-col"
+    >
       {/* 모바일: 플랫한 리스트 아이템 */}
-      <div className="flex flex-col px-4 py-3 active:bg-accent/50 md:hidden">
+      <div className="flex flex-col px-4 py-3 transition-colors hover:bg-accent/50 active:bg-accent/50 md:hidden">
         <p className="text-[11px] font-medium text-primary">
           {item.source} · {formatRelativeTime(item.pubDate)}
         </p>
@@ -45,21 +50,21 @@ export function MajorNewsCard({ item, variant = 'compact' }: MajorNewsCardProps)
       {variant === 'featured' ? (
         <Card
           interactive
-          className="group hidden h-full flex-col rounded-xl border border-border/50 bg-card px-5 py-5 shadow-none hover:border-border md:flex"
+          className="group hidden h-full flex-col rounded-xl border border-border/50 bg-card px-4 py-4 shadow-none hover:border-border md:flex"
         >
           <span className="w-fit rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
             {item.source}
           </span>
-          <h3 className="mt-3 line-clamp-3 text-xl font-bold leading-[1.35] text-foreground group-hover:text-primary">
+          <h3 className="mt-2 line-clamp-2 text-lg font-bold leading-[1.35] text-foreground group-hover:text-primary">
             {item.title}
           </h3>
-          <p className="mt-auto pt-3 text-xs text-muted-foreground">
+          <p className="mt-auto pt-2 text-xs text-muted-foreground">
             {formatRelativeTime(item.pubDate)}
           </p>
         </Card>
       ) : (
-        <div className="hidden px-4 py-3.5 hover:bg-accent/50 md:block">
-          <h3 className="truncate text-[15px] font-semibold leading-[1.35] text-foreground">
+        <div className="hidden h-full w-full flex-col justify-center px-4 py-2.5 transition-colors hover:bg-accent/50 md:flex">
+          <h3 className="line-clamp-2 text-[15px] font-semibold leading-[1.35] text-foreground">
             {item.title}
           </h3>
           <p className="mt-1 text-xs text-muted-foreground">

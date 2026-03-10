@@ -59,14 +59,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning className={pretendard.variable}>
-      <body className="bg-background text-foreground antialiased">
+      <body className="bg-background text-foreground flex min-h-dvh flex-col antialiased">
         <NextTopLoader color="oklch(0.6671 0.1615 245.54)" showSpinner={false} height={2} />
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         <Providers>
           <ScrollToTop />
           <Header />
-          {children}
+          <div className="flex-1">{children}</div>
           <Footer />
           <BottomNav />
         </Providers>

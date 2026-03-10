@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { MBTI_TYPES, ResultCard } from '@/features/investment-mbti'
 import type { MbtiResult, MbtiType } from '@/features/investment-mbti'
+import { MobileHeader } from '@/widgets/header'
 
 interface InvestmentMbtiResultProps {
   /** 서버 컴포넌트에서 isMbtiType()으로 검증된 유형 코드 */
@@ -73,10 +74,13 @@ export function InvestmentMbtiResult({ type }: InvestmentMbtiResultProps) {
   }, [type])
 
   return (
-    <main className="min-h-[calc(100dvh-3.5rem)] px-4 py-6 pb-24 md:pb-8">
-      <div className="mx-auto max-w-lg">
-        <ResultCard result={result} typeData={typeData} />
-      </div>
-    </main>
+    <>
+      <MobileHeader />
+      <main className="min-h-[calc(100dvh-3.5rem)] px-4 py-6 pb-24 md:pb-8">
+        <div className="mx-auto max-w-lg">
+          <ResultCard result={result} typeData={typeData} />
+        </div>
+      </main>
+    </>
   )
 }

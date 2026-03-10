@@ -50,6 +50,9 @@ export function FinancialSection({ corpCode }: FinancialSectionProps) {
         <p className="text-muted-foreground text-xs">
           데이터 출처: 금융감독원 전자공시시스템(DART)
         </p>
+        <p className="mt-1 text-xs text-muted-foreground/70">
+          실제 재무제표와 상이한 데이터가 있다면 문의해 주세요.
+        </p>
       </div>
     </div>
   )
@@ -115,6 +118,9 @@ export function SummarySection({ corpCode }: SummarySectionProps) {
       <div className="px-4 pt-4 md:px-0">
         <p className="text-muted-foreground text-xs">
           데이터 출처: 금융감독원 전자공시시스템(DART)
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground/70">
+          실제 재무제표와 상이한 데이터가 있다면 문의해 주세요.
         </p>
       </div>
     </div>
