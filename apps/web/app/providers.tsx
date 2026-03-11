@@ -16,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
         {children}
-        <Toaster richColors />
+        <Toaster richColors position="top-center" />
       </ThemeProvider>
     </QueryClientProvider>
   )

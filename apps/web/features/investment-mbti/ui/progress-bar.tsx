@@ -11,13 +11,16 @@ export function ProgressBar({ current, total, className }: ProgressBarProps) {
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-        <span className="font-medium">
-          {current} / {total}
+      <div className="mb-2 flex items-center justify-between">
+        <span className="font-mono text-xs font-bold text-muted-foreground">
+          MISSION <span className="text-foreground">{String(current).padStart(2, '0')}</span>
+          <span className="text-muted-foreground/50"> / {String(total).padStart(2, '0')}</span>
         </span>
-        <span>{percent}%</span>
+        <span className="font-mono text-xs font-bold text-primary">{percent}%</span>
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+
+      {/* XP bar */}
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
         <div
           className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
           style={{ width: `${percent}%` }}

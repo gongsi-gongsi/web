@@ -55,3 +55,22 @@ export function trackAiCompanyAnalysis(corpCode: string) {
 export function trackSearch(query: string) {
   sendEvent({ action: 'search', category: 'engagement', label: query })
 }
+
+/** 경제 용어 퀴즈 시작 이벤트 */
+export function trackEconomicQuizStart() {
+  sendEvent({ action: 'economic_quiz_start', category: 'quiz' })
+}
+
+/** 경제 용어 퀴즈 완료 이벤트 */
+export function trackEconomicQuizComplete(tier: string, score: number) {
+  sendEvent({ action: 'economic_quiz_complete', category: 'quiz', label: tier, value: score })
+}
+
+/** 복리 계산기 사용 이벤트 */
+export function trackCompoundCalculatorUse(years: number, rate: number) {
+  sendEvent({
+    action: 'compound_calculator_use',
+    category: 'calculator',
+    label: `${years}yr_${rate}pct`,
+  })
+}

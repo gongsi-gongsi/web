@@ -1,1 +1,1 @@
-export { OrganizationJsonLd, WebSiteJsonLd, CompanyJsonLd } from './json-ld'
+export { OrganizationJsonLd, WebSiteJsonLd, CompanyJsonLd, WebApplicationJsonLd } from './json-ld'
