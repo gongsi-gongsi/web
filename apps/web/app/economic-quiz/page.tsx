@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { WebApplicationJsonLd } from '@/shared/lib/seo'
 import { EconomicQuizLanding } from '@/widgets/economic-quiz-landing'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '경제 용어 퀴즈',
   description:

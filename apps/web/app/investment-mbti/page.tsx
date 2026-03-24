@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { WebApplicationJsonLd } from '@/shared/lib/seo'
 import { InvestmentMbtiLanding } from '@/widgets/investment-mbti-landing'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '투자성향 MBTI',
   description:

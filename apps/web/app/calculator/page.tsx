@@ -4,6 +4,8 @@ import { WebApplicationJsonLd } from '@/shared/lib/seo'
 import { CompoundCalculator } from '@/widgets/compound-calculator'
 import { MobileHeader } from '@/widgets/header'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '복리 계산기',
   description:
