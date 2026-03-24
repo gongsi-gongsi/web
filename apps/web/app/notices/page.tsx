@@ -5,7 +5,7 @@ import { MobileHeader } from '@/widgets/header'
 import { NoticeListPage, NoticeListSkeleton } from '@/widgets/notice-list-page'
 import { prefetchNotices } from '@/entities/notice'
 
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: '공지사항 | 공시공시',
