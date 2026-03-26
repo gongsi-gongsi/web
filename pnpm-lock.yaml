@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@types/pg': ^8.16.0
+
 importers:
 
   .:
@@ -3371,9 +3374,6 @@ packages:
 
   '@types/pg-pool@2.0.7':
     resolution: {integrity: sha512-U4CwmGVQcbEuqpyju8/ptOKg6gEC+Tqsvj2xS9o1g71bUh8twxnC6ZL5rZKCsGN0iyH0CwgUyc9VR5owNQF9Ng==}
-
-  '@types/pg@8.15.6':
-    resolution: {integrity: sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ==}
 
   '@types/pg@8.16.0':
     resolution: {integrity: sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ==}
@@ -8670,7 +8670,7 @@ snapshots:
       '@opentelemetry/instrumentation': 0.211.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.39.0
       '@opentelemetry/sql-common': 0.41.2(@opentelemetry/api@1.9.0)
-      '@types/pg': 8.15.6
+      '@types/pg': 8.16.0
       '@types/pg-pool': 2.0.7
     transitivePeerDependencies:
       - supports-color
@@ -10358,12 +10358,6 @@ snapshots:
   '@types/pg-pool@2.0.7':
     dependencies:
       '@types/pg': 8.16.0
-
-  '@types/pg@8.15.6':
-    dependencies:
-      '@types/node': 20.19.30
-      pg-protocol: 1.11.0
-      pg-types: 2.2.0
 
   '@types/pg@8.16.0':
     dependencies:

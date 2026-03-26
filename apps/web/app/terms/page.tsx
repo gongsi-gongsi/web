@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import { TermsPage } from '@/widgets/legal-page'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '이용약관',
   description: '공시공시 서비스의 이용약관입니다.',

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import { PlayLanding } from '@/widgets/play-landing'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '놀이터',
   description:

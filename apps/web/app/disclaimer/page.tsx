@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import { DisclaimerPage } from '@/widgets/legal-page'
 
+export const dynamic = 'force-static'
+
 export const metadata: Metadata = {
   title: '투자 면책 고지',
   description:

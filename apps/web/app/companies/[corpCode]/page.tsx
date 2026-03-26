@@ -4,6 +4,8 @@ import { getCompanyInfo } from '@/entities/company/api/company-info/server'
 import { CompanyJsonLd } from '@/shared/lib/seo'
 import { CompanyDetailPage } from '@/widgets/company-detail-page'
 
+export const revalidate = 86400
+
 interface CompanyDetailPageProps {
   params: Promise<{ corpCode: string }>
 }
